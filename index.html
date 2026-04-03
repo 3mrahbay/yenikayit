@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yeni Kayıt 2026-2027 — Bir Çiçek Koleji</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 <style>
 :root {
   --sage: #3D6B4F;
@@ -520,13 +517,24 @@ img, video, iframe {
 }
 
 .slider-card {
-  min-width: 100%;
+  min-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+#yorumSlider {
+  overflow: visible;
+}
+.yorum-card {
+  box-sizing: border-box;
 }
 @media (max-width: 768px) {
   .iletisim-grid { grid-template-columns: 1fr 1fr !important; gap:12px !important; }
 }
 /* Responsive */
 @media (max-width:768px) {
+  .harita-grid { grid-template-columns:1fr !important; gap:24px !important; padding:32px 16px !important; }
+  .harita-iframe-wrap { height:260px !important; }
+  .harita-iframe-wrap iframe { height:260px !important; }
   .hero-section { grid-template-columns:1fr; gap:32px; padding:28px 20px !important; }
   .hero-right { display:none; }
   .hero-title { font-size:36px !important; }
@@ -680,12 +688,12 @@ img, video, iframe {
             <div id="cd-erken" style="font-size:11px; color:var(--sage); font-weight:700; text-align:right;"></div>
           </div>
           <!-- Normal Kayıt -->
-          <div class="price-option" style="border-color:rgba(255,255,255,0.35); background:rgba(255,255,255,0.12); border-width:1.5px;">
+          <div class="price-option" style="background:#29ABD4; border-color:#1E8BAD;">
             <div class="price-option-left">
-              <div class="price-option-tag" style="color:rgba(255,255,255,0.85); font-weight:700;">Normal Kayıt</div>
-              <div class="price-option-name" style="color:white; font-weight:600;">01 Haziran – 30 Eylül 2026</div>
+              <div class="price-option-tag" style="color:rgba(255,255,255,0.9);">Normal Kayıt Dönemi</div>
+              <div class="price-option-name" style="color:white;">01 Haziran – 30 Eylül 2026</div>
             </div>
-            <div id="cd-normal" style="font-size:11px; color:rgba(255,255,255,0.85); font-weight:700; text-align:right;"></div>
+            <div id="cd-normal" style="font-size:11px; color:white; font-weight:700; text-align:right;"></div>
           </div>
         </div>
         <!-- Referans ile ön kayıt -->
@@ -804,7 +812,7 @@ img, video, iframe {
         <a href="https://www.google.com/search?q=bir+%C3%A7i%C3%A7ek+koleji+yorum" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:50px; padding:8px 18px; font-size:13px; font-weight:600; color:var(--sage-dark); text-decoration:none; margin-bottom:32px;">⭐ 4.7 · Google Yorumları → Tüm yorumları gör</a>
 
                 <!-- Slider -->
-        <div style="position:relative; overflow:hidden; width:100%;">
+        <div id="sliderWrapper" style="position:relative; overflow:hidden; width:100%;">
           <div id="yorumSlider" style="display:flex; gap:24px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); will-change:transform;">
             <div class="yorum-card slider-card" style="flex-shrink:0;">
               <div class="yorum-text">İki yıldır Birçiçek ailesinin üyesiyiz, üyesiyiz diyorum çünkü sadece kızımız değil biz ebeveynlerde her türlü eğitimin, seminerin, eğlencenin içine dahil edildik. Çok sevgili Nur hanım ve eşleri Emrah bey'in çocuklara ve işlerine olan aşkı tüm ekip arkadaşlarına da sirayet etmiş. Değerler eğitiminden, dil eğitimine, orman okulundan tüm rehberlerimizin özveri ve çocuklarımızla uyumuna söyleyebilecek tek şey iyi ki varsınız, iyi ki yollarımız sizlerle keşti. 💖</div>
@@ -842,12 +850,6 @@ img, video, iframe {
           <div style="display:flex; justify-content:center; gap:12px; margin-top:24px; align-items:center;">
             <button onclick="sliderPrev()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">‹</button>
             <div id="sliderDots" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;"></div>
-            <button onclick="sliderNext()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">›</button>
-          </div>
-        </div>
-          <div style="display:flex; justify-content:center; gap:12px; margin-top:24px; align-items:center;">
-            <button onclick="sliderPrev()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">‹</button>
-            <div id="sliderDots" style="display:flex; gap:8px;"></div>
             <button onclick="sliderNext()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">›</button>
           </div>
         </div>
@@ -955,23 +957,64 @@ img, video, iframe {
   </div>
 
   <!-- HARİTA -->
-  <div style="background:var(--white);">
-    <div style="max-width:1100px; margin:0 auto; padding:48px 40px 24px;">
-      <div class="section-tag">Bize Ulaşın</div>
-      <h2 class="section-title">Bizi Ziyaret Edin</h2>
-      <p style="font-size:16px; color:var(--text-mid); margin-bottom:24px;">Aydınlı Mahallesi Bahçeler Sk. No: 45, 34953 Tuzla/İstanbul</p>
+  <div style="background:var(--sage-dark);">
+    <div class="harita-grid" style="max-width:1100px; margin:0 auto; padding:48px 40px 32px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;">
+      <div>
+        <div style="font-size:12px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.5); margin-bottom:10px; font-weight:700;">Bizi Ziyaret Edin</div>
+        <h2 style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:white; margin-bottom:20px; line-height:1.2;">Bir Çiçek Koleji<br>Anaokulu</h2>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:36px; height:36px; background:rgba(255,255,255,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">📍</div>
+            <div>
+              <div style="font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:2px;">Adres</div>
+              <div style="font-size:15px; color:white; font-weight:500; line-height:1.5;">Aydınlı Mahallesi Bahçeler Sk. No: 45<br>34953 Tuzla / İstanbul</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:36px; height:36px; background:rgba(255,255,255,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">📞</div>
+            <div>
+              <div style="font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:2px;">Telefon</div>
+              <a href="tel:+902163935457" style="font-size:15px; color:white; font-weight:500; text-decoration:none;">0216 393 54 57</a>
+              <span style="color:rgba(255,255,255,0.3); margin:0 8px;">·</span>
+              <a href="tel:+905551035457" style="font-size:15px; color:white; font-weight:500; text-decoration:none;">0555 103 54 57</a>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:36px; height:36px; background:rgba(255,255,255,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">✉️</div>
+            <div>
+              <div style="font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:2px;">E-posta</div>
+              <a href="mailto:eposta@bircicekkoleji.com" style="font-size:15px; color:white; font-weight:500; text-decoration:none;">eposta@bircicekkoleji.com</a>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:36px; height:36px; background:rgba(255,255,255,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">🕐</div>
+            <div>
+              <div style="font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:2px;">Eğitim Saatleri</div>
+              <div style="font-size:15px; color:white; font-weight:500;">Tam Gün: 08:00 – 18:00<br>Yarım Gün: 08:00 – 13:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
+          <a href="https://maps.google.com/?q=Aydınlı+Mahallesi+Bahçeler+Sk+No+45+Tuzla+İstanbul" target="_blank"
+            style="background:var(--gold); color:white; border-radius:50px; padding:13px 24px; font-size:14px; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:8px;">
+            📍 Yol Tarifi Al
+          </a>
+          <a href="https://wa.me/905551035457?text=Merhaba, okul hakkında bilgi almak istiyorum." target="_blank"
+            style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:white; border-radius:50px; padding:13px 24px; font-size:14px; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:8px;">
+            💬 WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="harita-iframe-wrap" style="border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); height:380px; position:relative;">
+        <iframe
+          src="https://maps.google.com/maps?q=Ayd%C4%B1nl%C4%B1+Mahallesi+Bah%C3%A7eler+Sk+No%3A+45+Tuzla+%C4%B0stanbul&t=&z=16&ie=UTF8&iwloc=&output=embed"
+          width="100%" height="380" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div style="position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; border-radius:20px; border:2px solid rgba(255,255,255,0.1);"></div>
+      </div>
     </div>
-    <div style="width:100%; height:450px; position:relative; overflow:hidden; background:#e8ede8;">
-      <iframe
-        src="https://maps.google.com/maps?q=Ayd%C4%B1nl%C4%B1+Mahallesi+Bah%C3%A7eler+Sk+No+45+Tuzla+%C4%B0stanbul&t=&z=16&ie=UTF8&iwloc=&output=embed"
-        width="100%" height="450" style="border:0; display:block;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-      <a href="https://maps.google.com/?q=Bir+Çiçek+Koleji+Anaokulu+Tuzla+Aydınlı" target="_blank"
-        style="position:absolute; bottom:20px; right:20px; background:var(--sage); color:white; border-radius:50px; padding:12px 24px; font-size:14px; font-weight:700; text-decoration:none; box-shadow:0 4px 20px rgba(0,0,0,0.2);">
-        📍 Yol Tarifi Al
-      </a>
-    </div>
+
   </div>
 
   <!-- FOOTER -->
@@ -1261,6 +1304,11 @@ img, video, iframe {
   </div>
 </div>
 
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
 // ═══ 1. CONFIG ═══
 const ADMIN_EMAIL = "emrahby@gmail.com";
@@ -1289,11 +1337,23 @@ var secilenOdemeTip2 = "";
 const TOTAL_SLIDES = 8;
 
 // ═══ 3. FIREBASE INIT ═══
-try {
-  firebase.initializeApp(FIREBASE_CONFIG);
-  db = firebase.firestore();
-  auth = firebase.auth();
-} catch(e) { console.error("Firebase init:", e); }
+function initFirebase() {
+  if(typeof firebase === "undefined") {
+    console.error("Firebase yüklenemedi, 500ms sonra tekrar deneniyor...");
+    setTimeout(initFirebase, 500);
+    return;
+  }
+  try {
+    if(!firebase.apps.length) {
+      firebase.initializeApp(FIREBASE_CONFIG);
+    }
+    db = firebase.firestore();
+    auth = firebase.auth();
+    // Auth listener Firebase hazır olduktan SONRA
+    auth.onAuthStateChanged(function(u){ if(u){ currentUser=u; onLogin(u); } });
+    console.log("Firebase hazır ✓");
+  } catch(e) { console.error("Firebase init hatası:", e); }
+}
 
 // ═══ 4. COUNTDOWN (fiyat kartı) ═══
 function updateCD() {
@@ -1323,7 +1383,8 @@ function updatePeriodCountdowns() {
     if(diff <= 0) { el.innerHTML = '<span style="color:#ef4444;font-size:10px;white-space:nowrap;">⛔ Dönem Kapandı</span>'; return; }
     if(p.start && now < p.start) {
       var sd = Math.floor((p.start - now)/86400000);
-      el.innerHTML = '<span style="font-size:10px;opacity:0.75;display:block;white-space:nowrap;">' + sd + ' gün sonra başlar</span>';
+      el.innerHTML = '<span style="font-size:10px;opacity:0.85;display:block;margin-bottom:2px;white-space:nowrap;">Kalan süre</span>' +
+        '<span style="font-size:12px;font-weight:800;letter-spacing:0.3px;white-space:nowrap;">' + sd + ' gün sonra başlar</span>';
       return;
     }
     var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
@@ -1581,12 +1642,25 @@ function getSliderW() {
   return wrap.parentElement.getBoundingClientRect().width || 0;
 }
 function applySlider() {
-  var w=getSliderW(); if(!w) return;
+  var wrapper = document.getElementById("sliderWrapper");
+  if(!wrapper) return;
+  var w = wrapper.getBoundingClientRect().width;
+  if(!w || w < 10) {
+    // Fallback: parent zincirinden genişlik al
+    var el = wrapper;
+    while(el && (!w || w < 10)) { el = el.parentElement; if(el) w = el.getBoundingClientRect().width; }
+  }
+  if(!w || w < 10) return;
   document.querySelectorAll("#yorumSlider .yorum-card").forEach(function(card){
-    card.style.minWidth=w+"px"; card.style.width=w+"px"; card.style.flexShrink="0";
+    card.style.minWidth = w + "px";
+    card.style.width = w + "px";
+    card.style.flexShrink = "0";
   });
-  var slider=document.getElementById("yorumSlider");
-  if(slider) slider.style.transform="translateX(-"+(sliderIdx*(w+24))+"px)";
+  var slider = document.getElementById("yorumSlider");
+  if(slider) {
+    slider.style.transition = "transform 0.5s ease";
+    slider.style.transform = "translateX(-" + (sliderIdx * w) + "px)";
+  }
 }
 function buildDots() {
   var dots=document.getElementById("sliderDots"); if(!dots) return;
@@ -1614,10 +1688,11 @@ function hideLoading() { var o=document.getElementById("loadingOverlay"); if(o) 
 function showToast(msg) { var t=document.getElementById("toast"); if(!t) return; t.textContent=msg; t.classList.add("show"); setTimeout(function(){ t.classList.remove("show"); },3000); }
 
 // ═══ 18. BAŞLATMA ═══
-// Auth - en sona, tüm fonksiyonlar tanımlandıktan sonra
-auth.onAuthStateChanged(function(u){ if(u){ currentUser=u; onLogin(u); } });
 
 window.addEventListener("load", function(){
+  // Firebase'i başlat
+  initFirebase();
+  // Slider'ı başlat
   reinitSlider();
   setTimeout(reinitSlider, 300);
   sliderAuto2 = setInterval(sliderNext, 10000);
