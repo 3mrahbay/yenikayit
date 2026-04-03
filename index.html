@@ -1061,15 +1061,8 @@ img, video, iframe {
         ⭐ <strong>30 Nisan'a kadar</strong> avantajlı ön kayıt fırsatı. Ücret bilgisi için randevu alın.
       </div>
     </div>
-    <div style="display:flex; flex-direction:column; gap:14px;">
-      <div onclick="goToScreen('screen-form')" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer; display:flex; align-items:center; gap:20px; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-        <div style="font-size:36px;">📋</div>
-        <div>
-          <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>
-          <div style="font-size:13px; color:var(--text-light);">Çocuğunuzun bilgilerini girin, ödeme planınızı görün.</div>
-        </div>
-        <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
-      </div>
+    <div id="portalKartlar" style="display:flex; flex-direction:column; gap:14px;">
+      <!-- JS ile doldurulacak -->
     </div>
   </div>
 </div>
@@ -1241,6 +1234,14 @@ img, video, iframe {
     </div>
 
     <!-- Kaydet -->
+    <!-- Geçerlilik & Diğer ödemeler notu -->
+    <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:14px; padding:18px 20px; margin-top:16px;">
+      <div id="gecerlilikYazisi" style="font-size:13px; color:var(--sage-dark); line-height:1.7; margin-bottom:12px;"></div>
+      <div style="font-size:13px; color:var(--text-mid); line-height:1.7; padding-top:12px; border-top:1px solid rgba(61,107,79,0.15);">
+        📅 <strong>Ek Ödemeler:</strong> Orman Okulu servis ücreti, kıyafet ve eğitim materyali ücretleri, ilgili ödeme tarihinden <strong>15 gün önce</strong> ayrıca tarafınıza bildirilecektir.
+      </div>
+    </div>
+
     <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:28px; margin-top:16px;">
       <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:8px;">Başvuruyu Tamamlayın</div>
       <div style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
@@ -1251,8 +1252,9 @@ img, video, iframe {
       </div>
     </div>
 
-    <div style="display:flex; gap:12px; margin-top:12px;">
+    <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
       <button onclick="goToScreen('screen-form')" style="background:transparent; border:1.5px solid var(--border); color:var(--text-mid); border-radius:50px; padding:13px 24px; font-size:14px; font-weight:500; cursor:pointer; font-family:'Outfit',sans-serif;">← Düzenle</button>
+      <button onclick="pdfIndir()" style="background:var(--cream-warm); border:1.5px solid var(--border); color:var(--text-mid); border-radius:50px; padding:13px 20px; font-size:14px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; display:flex; align-items:center; gap:8px;">📄 PDF İndir</button>
       <button onclick="kaydet2()" id="btnKaydet2" style="flex:1; background:var(--sage); color:white; border:none; border-radius:50px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">🌸 Başvuruyu Gönder</button>
     </div>
   </div>
@@ -1285,6 +1287,7 @@ img, video, iframe {
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ═══ 1. CONFIG ═══
 const ADMIN_EMAIL = "emrahby@gmail.com";
@@ -1449,12 +1452,72 @@ function onLogin(u) {
   var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
   getOrCreateRefKod2(u.uid, u.email);
   goToScreen("screen-portal");
-  // Giriş sonrası portal ekranının en üstüne scroll et
+  // Başvuru durumunu kontrol et ve portal kartlarını güncelle
+  checkBasvuruDurumu(u.uid);
+  // Giriş sonrası en üste scroll
   setTimeout(function(){
-    var portal = document.getElementById("screen-portal");
-    if(portal) portal.scrollIntoView({ behavior:"smooth", block:"start" });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, 150);
+}
+
+function checkBasvuruDurumu(uid) {
+  db.collection("yenikayit").doc(uid).get().then(function(snap) {
+    var kartlar = document.getElementById("portalKartlar");
+    if(!kartlar) return;
+    if(snap.exists) {
+      // Daha önce başvuru yapılmış
+      var d = snap.data();
+      var durumRenk = d.durum === "onaylandi" ? "var(--sage)" : d.durum === "reddedildi" ? "#dc2626" : "var(--gold)";
+      var durumYazi = d.durum === "onaylandi" ? "✅ Onaylandı" : d.durum === "reddedildi" ? "❌ Reddedildi" : "⏳ İnceleniyor";
+      var cocukAdi = (d.childAd || "") + " " + (d.childSoyad || "");
+      var program = d.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
+      kartlar.innerHTML = `
+        <div style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px;">
+          <div style="display:flex; align-items:flex-start; gap:16px; margin-bottom:20px;">
+            <div style="font-size:36px;">🌸</div>
+            <div style="flex:1;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Başvurunuz Alındı</div>
+              <div style="font-size:13px; color:var(--text-light);">Başvuru bilgileriniz aşağıda görünmektedir.</div>
+            </div>
+            <div style="background:var(--sage-pale); color:var(--sage-dark); padding:6px 14px; border-radius:50px; font-size:12px; font-weight:700;">${durumYazi}</div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:var(--cream); border-radius:12px; padding:16px;">
+            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Çocuk</div><div style="font-size:14px; font-weight:700; color:var(--text);">${cocukAdi}</div></div>
+            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Program</div><div style="font-size:14px; font-weight:700; color:var(--text);">${program}</div></div>
+            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Kayıt Türü</div><div style="font-size:14px; font-weight:700; color:var(--text);">${d.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : d.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt"}</div></div>
+            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Durum</div><div style="font-size:14px; font-weight:700;" style="color:${durumRenk};">${durumYazi}</div></div>
+          </div>
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button onclick="goToScreen('screen-form')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">✏️ Başvuruyu Güncelle</button>
+            <a href="https://wa.me/905551035457" target="_blank" style="background:var(--cream-warm); border:1px solid var(--border); color:var(--text-mid); border-radius:50px; padding:10px 20px; font-size:13px; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px;">💬 Okul ile İletişim</a>
+          </div>
+        </div>`;
+    } else {
+      // İlk kez başvuracak
+      kartlar.innerHTML = `
+        <div onclick="goToScreen('screen-form')" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer; display:flex; align-items:center; gap:20px; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:36px;">📋</div>
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>
+            <div style="font-size:13px; color:var(--text-light);">Çocuğunuzun bilgilerini girin, ödeme planınızı görün.</div>
+          </div>
+          <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
+        </div>`;
+    }
+  }).catch(function(e) {
+    console.error("Başvuru kontrol hatası:", e);
+    // Hata olursa varsayılan başvuru kartını göster
+    var kartlar = document.getElementById("portalKartlar");
+    if(kartlar) kartlar.innerHTML = `
+      <div onclick="goToScreen('screen-form')" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer; display:flex; align-items:center; gap:20px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+        <div style="font-size:36px;">📋</div>
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>
+          <div style="font-size:13px; color:var(--text-light);">Çocuğunuzun bilgilerini girin, ödeme planınızı görün.</div>
+        </div>
+        <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
+      </div>`;
+  });
 }
 
 // ═══ 8. FORM LOGIC ═══
@@ -1538,6 +1601,17 @@ function renderHesaplama2() {
     else { kd.textContent="5.500 TL"; kd.className="tutar-sage"; }
   }
   if(s("refKodDisplay")) s("refKodDisplay").textContent = appState2.refKod||"BCK-????";
+
+  // Geçerlilik yazısı
+  var gecerlilik = s("gecerlilikYazisi");
+  if(gecerlilik) {
+    var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayıs 2026", normal:"30 Eylül 2026"};
+    var turAd = {onkayit:"Avantajlı Ön Kayıt", erken:"Erken Kayıt", normal:"Normal Kayıt"};
+    var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
+    var ad = turAd[appState2.kayitTur] || "Avantajlı Ön Kayıt";
+    gecerlilik.innerHTML = "📋 Bu ödeme planı <strong>" + ad + "</strong> dönemi kapsamında hazırlanmıştır. " +
+      "<strong>" + son + "</strong> tarihine kadar geçerlidir. Bu tarihten sonra yapılan başvurularda güncel ücretler uygulanır.";
+  }
 }
 function showTab2(tab) {
   ["tab-egitim","tab-diger"].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=id===tab?"block":"none"; });
@@ -1729,6 +1803,97 @@ function goSlide(i) {
 function sliderNext() { goSlide(sliderIdx+1); }
 function sliderPrev() { goSlide(sliderIdx-1); }
 function reinitSlider() { applySlider(); buildDots(); }
+
+
+// ═══ PDF İNDİR ═══
+function pdfIndir() {
+  var h = appState2.hesap;
+  if(!h) return showToast("⚠️ Önce hesaplama yapın");
+  var childAd = ((document.getElementById("childAd")||{}).value||"").trim();
+  var childSoyad = ((document.getElementById("childSoyad")||{}).value||"").trim();
+  var veliAd = ((document.getElementById("veliAd")||{}).value||"").trim();
+  var veliSoyad = ((document.getElementById("veliSoyad")||{}).value||"").trim();
+  var prog = appState2.program === "tam" ? "Tam Gun (08:00-18:00)" : "Yarim Gun (08:00-13:00)";
+  var turLabel = {onkayit:"Avantajli On Kayit", erken:"Erken Kayit", normal:"Normal Kayit"};
+  var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayis 2026", normal:"30 Eylul 2026"};
+  var tur = turLabel[appState2.kayitTur] || "Avantajli On Kayit";
+  var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
+  try {
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({orientation:"portrait", unit:"mm", format:"a4"});
+    var W=210, mL=20, mR=190, y=20;
+    // Başlık
+    doc.setFillColor(42,77,56); doc.rect(0,0,W,38,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(16); doc.setFont("helvetica","bold");
+    doc.text("BIR CICEK KOLEJI ANAOKULU", mL, 15);
+    doc.setFontSize(10); doc.setFont("helvetica","normal");
+    doc.text("Montessori & Orman Okulu | Tuzla, Istanbul", mL, 23);
+    doc.text("eposta@bircicekkoleji.com  |  0216 393 54 57", mL, 30);
+    y = 48;
+    // Başlık 2
+    doc.setTextColor(42,77,56); doc.setFontSize(13); doc.setFont("helvetica","bold");
+    doc.text("ODEME PLANI", mL, y); y += 6;
+    doc.setDrawColor(42,77,56); doc.setLineWidth(0.5); doc.line(mL,y,mR,y); y += 8;
+    // Bilgiler
+    doc.setTextColor(60,60,60); doc.setFontSize(10); doc.setFont("helvetica","normal");
+    doc.text("Veli: " + veliAd + " " + veliSoyad, mL, y);
+    doc.text("Ogrenci: " + childAd + " " + childSoyad, mL+90, y); y += 7;
+    doc.text("Program: " + prog, mL, y);
+    doc.text("Kayit Turu: " + tur, mL+90, y); y += 7;
+    doc.text("Duzenleme: " + new Date().toLocaleDateString("tr-TR"), mL, y);
+    doc.text("Gecerlilik: " + son + " tarihine kadar", mL+90, y); y += 12;
+    // Özet
+    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,28,"F");
+    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,28); y += 7;
+    doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(42,77,56);
+    doc.text("Aylik Ucret:", mL+4, y); doc.text(fmt(h.aylik)+" TL", mR-4, y, {align:"right"}); y += 7;
+    doc.text("On Odeme (Kayit gununde):", mL+4, y); doc.text(fmt(h.onOdeme)+" TL", mR-4, y, {align:"right"}); y += 7;
+    doc.text("Yillik Toplam:", mL+4, y); doc.text(fmt(h.yillik)+" TL", mR-4, y, {align:"right"}); y += 12;
+    // I. Dönem
+    doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(11);
+    doc.text("I. Donem Odeme Takvimi (Eylul 2026 - Ocak 2027)", mL, y); y += 6;
+    doc.setFillColor(42,77,56); doc.rect(mL,y,mR-mL,7,"F");
+    doc.setTextColor(255,255,255); doc.setFontSize(9);
+    doc.text("Kalem", mL+3, y+5); doc.text("Odeme Tarihi", mL+80, y+5); doc.text("Tutar", mR-3, y+5, {align:"right"}); y += 7;
+    doc.setFillColor(251,246,233); doc.rect(mL,y,mR-mL,7,"F"); doc.rect(mL,y,mR-mL,7);
+    doc.setTextColor(60,60,60); doc.setFont("helvetica","bold"); doc.setFontSize(9);
+    doc.text("On Odeme", mL+3, y+5); doc.text("Kayit Gunu", mL+80, y+5); doc.text(fmt(h.onOdeme)+" TL", mR-3, y+5, {align:"right"}); y += 7;
+    ["Eylul 2026","Ekim 2026","Kasim 2026","Aralik 2026","Ocak 2027"].forEach(function(ay,i){
+      doc.setFillColor(i%2===0?248:255, i%2===0?252:255, i%2===0?249:255);
+      doc.rect(mL,y,mR-mL,7,"F"); doc.rect(mL,y,mR-mL,7);
+      doc.setFont("helvetica","normal"); doc.setTextColor(60,60,60);
+      doc.text(ay+" Taksiti", mL+3, y+5); doc.text("5 "+ay, mL+80, y+5); doc.text(fmt(h.iAylik)+" TL", mR-3, y+5, {align:"right"}); y += 7;
+    }); y += 6;
+    // II. Dönem
+    doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(11);
+    doc.text("II. Donem Odeme Takvimi (Subat 2027 - Haziran 2027)", mL, y); y += 6;
+    doc.setFillColor(42,77,56); doc.rect(mL,y,mR-mL,7,"F");
+    doc.setTextColor(255,255,255); doc.setFontSize(9);
+    doc.text("Kalem", mL+3, y+5); doc.text("Odeme Tarihi", mL+80, y+5); doc.text("Tutar", mR-3, y+5, {align:"right"}); y += 7;
+    var iiAylar = ["Subat 2027","Mart 2027","Nisan 2027","Mayis 2027","Haziran 2027"];
+    h.iiRows.forEach(function(r,i){
+      doc.setFillColor(i%2===0?248:255, i%2===0?252:255, i%2===0?249:255);
+      doc.rect(mL,y,mR-mL,7,"F"); doc.rect(mL,y,mR-mL,7);
+      doc.setFont("helvetica","normal"); doc.setTextColor(60,60,60);
+      doc.text(iiAylar[i]+" Taksiti", mL+3, y+5); doc.text("5 "+iiAylar[i], mL+80, y+5); doc.text(fmt(r.tutar)+" TL", mR-3, y+5, {align:"right"}); y += 7;
+    }); y += 8;
+    // Notlar
+    doc.setFillColor(248,252,249); doc.rect(mL,y,mR-mL,28,"F");
+    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,28);
+    doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(9);
+    doc.text("ONEMLI NOTLAR", mL+4, y+6); doc.setFont("helvetica","normal"); doc.setTextColor(80,80,80);
+    doc.text("* Bu plan " + tur + " donemi kapsaminda hazirlanmis olup " + son + " tarihine kadar gecerlidir.", mL+4, y+13);
+    doc.text("* Orman Okulu servis, kiyafet ve materyal ucretleri odeme tarihinden 15 gun once bildirilecektir.", mL+4, y+20);
+    doc.text("* Tum odemeler belirtilen tarihlerde Bir Cicek Koleji hesabina yapilmalidir.", mL+4, y+27); y += 34;
+    // Footer
+    doc.setFillColor(42,77,56); doc.rect(0,282,W,15,"F");
+    doc.setTextColor(255,255,255); doc.setFontSize(8);
+    doc.text("Bir Cicek Koleji Anaokulu | Aydinli Mah. Bahceler Sk. No:45 Tuzla/Istanbul | 0216 393 54 57", W/2, 291, {align:"center"});
+    doc.save("BirCicek_OdemePlani_" + childAd.replace(/ /g,"_") + ".pdf");
+    showToast("✅ PDF indirildi!");
+  } catch(e) { console.error("PDF:", e); showToast("PDF hatasi: " + e.message); }
+}
 
 // ═══ 17. YARDIMCI ═══
 function fmt(n) { return new Intl.NumberFormat("tr-TR").format(Math.round(n)); }
