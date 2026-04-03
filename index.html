@@ -72,9 +72,9 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
 #screen-hero { background:var(--cream); padding-top:80px; }
 
 .hero-section {
-  min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
-  align-items:center; max-width:1200px; margin:0 auto; padding:60px 40px;
-  gap:80px;
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; max-width:1200px; margin:0 auto; padding:40px 40px;
+  gap:60px;
 }
 .hero-left { display:flex; flex-direction:column; }
 .hero-eyebrow {
@@ -182,7 +182,7 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
 }
 
 /* SCROLL SECTIONS */
-.section { padding:100px 40px; }
+.section { padding:56px 40px; }
 .section-inner { max-width:1100px; margin:0 auto; }
 .section-tag {
   font-size:12px; text-transform:uppercase; letter-spacing:2px;
@@ -217,8 +217,7 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
 .stat-strip {
   background:var(--sage-dark); border-radius:24px; padding:48px 56px;
   display:grid; grid-template-columns:repeat(4,1fr); gap:32px; margin-top:64px;
-
-  display: none !important;}
+}
 .stat-item { text-align:center; }
 .stat-num {
   font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:700;
@@ -244,7 +243,7 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
 /* Orman section */
 .orman-section {
   background:linear-gradient(160deg, var(--sage-dark) 0%, #1E3D2A 100%);
-  border-radius:32px; padding:72px 64px;
+  border-radius:32px; padding:48px 48px;
   display:grid; grid-template-columns:1fr 1fr; gap:64px;
   align-items:center; margin:64px 0;
 }
@@ -270,7 +269,7 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
 
 /* Yorum */
 .yorum-section {
-  background:var(--cream-warm); border-radius:32px; padding:72px 64px; margin:0 0 64px;
+  background:var(--cream-warm); border-radius:32px; padding:48px 48px; margin:0 0 64px;
 }
 .yorum-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:48px; }
 .yorum-card {
@@ -292,7 +291,7 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
 
 /* Kayıt CTA */
 .kayit-cta {
-  background:var(--sage-dark); border-radius:32px; padding:72px 64px;
+  background:var(--sage-dark); border-radius:32px; padding:48px 48px;
   text-align:center; position:relative; overflow:hidden; margin-bottom:0;
 }
 .kayit-cta::before {
@@ -519,17 +518,49 @@ img, video, iframe {
 #yorumSlider {
   overflow: hidden;
 }
+
+.slider-card {
+  min-width: calc(50% - 12px);
+}
+@media (max-width: 767px) {
+  .slider-card {
+    min-width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .iletisim-grid { grid-template-columns: 1fr 1fr !important; gap:12px !important; }
+}
 /* Responsive */
 @media (max-width:768px) {
-  .hero-section { grid-template-columns:1fr; gap:40px; }
+  .hero-section { grid-template-columns:1fr; gap:32px; padding:28px 20px !important; }
   .hero-right { display:none; }
-  .philosophy-grid, .yorum-grid { grid-template-columns:1fr; }
-  .orman-section { grid-template-columns:1fr; padding:40px 28px; }
-  .stat-strip { grid-template-columns:1fr 1fr; padding:32px; }
+  .hero-title { font-size:36px !important; }
+  .philosophy-grid { grid-template-columns:1fr; gap:16px; }
+  .yorum-grid { grid-template-columns:1fr; }
+  .orman-section { grid-template-columns:1fr !important; padding:32px 24px !important; gap:28px !important; }
+  .stat-strip { grid-template-columns:1fr 1fr; padding:24px; gap:16px; }
   .field-row { grid-template-columns:1fr; }
-  .navbar { padding:14px 20px; }
-  .section { padding:60px 20px; }
-  .kayit-cta { padding:48px 28px; }
+  .navbar { padding:12px 16px; }
+  .nav-brand { font-size:14px; }
+  .section { padding:40px 16px !important; }
+  .section-inner { padding:0 !important; }
+  .kayit-cta { padding:36px 20px !important; }
+  .kayit-cta h2 { font-size:30px !important; }
+  .form-wrap { padding:32px 16px !important; }
+  .price-showcase { padding:24px 20px !important; }
+  .yorum-section { padding:36px 20px !important; }
+  .ref-box { padding:24px 20px !important; }
+  .orman-title { font-size:32px !important; }
+  .done-wrap { padding:48px 20px !important; }
+}
+@media (max-width:480px) {
+  .hero-title { font-size:30px !important; }
+  .section-title { font-size:26px !important; }
+  .orman-title { font-size:26px !important; }
+  .stat-strip { grid-template-columns:1fr; }
+  .price-cd-num { font-size:18px !important; }
+  .price-countdown { gap:6px !important; }
+  .price-cd-item { padding:6px 8px !important; }
 }
 </style>
 </head>
@@ -654,12 +685,12 @@ img, video, iframe {
             <div id="cd-erken" style="font-size:11px; color:var(--sage); font-weight:700; text-align:right;"></div>
           </div>
           <!-- Normal Kayıt -->
-          <div class="price-option">
+          <div class="price-option" style="border-color:rgba(255,255,255,0.15); background:rgba(255,255,255,0.04);">
             <div class="price-option-left">
-              <div class="price-option-tag" style="color:rgba(255,255,255,0.6);">Normal Kayıt</div>
-              <div class="price-option-name">01 Haziran – 30 Eylül 2026</div>
+              <div class="price-option-tag" style="color:rgba(255,255,255,0.5);">Normal Kayıt</div>
+              <div class="price-option-name" style="color:rgba(255,255,255,0.7);">01 Haziran – 30 Eylül 2026</div>
             </div>
-            <div id="cd-normal" style="font-size:11px; color:rgba(255,255,255,0.6); font-weight:700; text-align:right;"></div>
+            <div id="cd-normal" style="font-size:11px; color:rgba(255,255,255,0.55); font-weight:700; text-align:right;"></div>
           </div>
         </div>
         <!-- Referans ile ön kayıt -->
@@ -674,23 +705,22 @@ img, video, iframe {
           </div>
         </div>
 
-        <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:14px 16px; margin-bottom:16px;">
-          <div style="font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">📅 Ücret için randevu alın</div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="randevuBtnler">
-            <button onclick="randevuAc('online')" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:10px; padding:10px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
-              💻 Online Randevu<br><span style="font-weight:400; opacity:0.75;">45 dakika</span>
-            </button>
-            <button onclick="randevuAc('yuzyuze')" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:10px; padding:10px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
-              🤝 Yüz Yüze Randevu<br><span style="font-weight:400; opacity:0.75;">1 saat · Okulda</span>
-            </button>
-          </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px;">
+          <a href="https://calendar.app.google/t6kd22VPtPCHyG5o8" target="_blank" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:white; border-radius:10px; padding:10px 8px; font-size:12px; font-weight:600; text-decoration:none; text-align:center; display:block; transition:all 0.2s;">
+            💻 Online Randevu<br><span style="font-weight:400; opacity:0.7; font-size:11px;">45 dakika</span>
+          </a>
+          <a href="https://calendar.app.google/ocKandk7qZfSnYkPA" target="_blank" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:white; border-radius:10px; padding:10px 8px; font-size:12px; font-weight:600; text-decoration:none; text-align:center; display:block; transition:all 0.2s;">
+            🤝 Yüz Yüze<br><span style="font-weight:400; opacity:0.7; font-size:11px;">1 saat · Okulda</span>
+          </a>
         </div>
 
         <div class="price-includes">
-          <div class="price-include-item"><div class="price-include-dot"></div>Eğitim + Yemek dahil aylık ücret</div>
-          <div class="price-include-item"><div class="price-include-dot"></div>Montessori materyalleri sınıfta</div>
-          <div class="price-include-item"><div class="price-include-dot"></div>Haftada 1 gün Orman Okulu</div>
-          <div class="price-include-item"><div class="price-include-dot"></div>Native Speaker İngilizce eğitimi</div>
+          <div class="price-include-item"><div class="price-include-dot"></div>Montessori Eğitimi</div>
+          <div class="price-include-item"><div class="price-include-dot"></div>Haftada 1 gün Orman Okulu Eğitimi</div>
+          <div class="price-include-item"><div class="price-include-dot"></div>Native Speaker İngilizce Eğitimi</div>
+          <div class="price-include-item"><div class="price-include-dot"></div>Milli ve Manevi Değerler Eğitimi</div>
+          <div class="price-include-item"><div class="price-include-dot"></div>Ahşap Atölyesi Eğitimleri</div>
+          <div class="price-include-item"><div class="price-include-dot"></div>Çocuk Pilatesi Eğitimleri</div>
         </div>
       </div>
     </div>
@@ -705,7 +735,7 @@ img, video, iframe {
         Montessori yöntemi, çocuğun kendi hızında, merakıyla keşfederek öğrenmesini destekler. Her çocuk eşsizdir; eğitim ona uyum sağlar.
       </p>
 
-      <div class="philosophy-grid">
+      <div class="philosophy-grid" style="margin-top:32px;">
         <div class="phil-card">
           <div class="phil-icon">🌱</div>
           <div class="phil-title">Hazırlanmış Çevre</div>
@@ -730,18 +760,6 @@ img, video, iframe {
 
 
       </div>
-        <div class="stat-item">
-          <div class="stat-num">3</div>
-          <div class="stat-label">Sınıf — Geniş ve özel<br><span style="opacity:0.5; font-size:11px;">Papatyalar · Kardelenler · Nar Çiçekleri</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">15<span class="stat-unit" style="font-size:28px;">dö</span></div>
-          <div class="stat-label">Orman Alanı<br><span style="opacity:0.5; font-size:11px;">15 dk mesafede · Doğada eğitim</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">1</div>
-          <div class="stat-label">Gün — Mutlaka Ormanda<br><span style="opacity:0.5; font-size:11px;">Tüm hava koşullarında</span></div>
-        </div>
       </div>
     </div>
   </div>
@@ -749,7 +767,7 @@ img, video, iframe {
   <!-- ORMAN OKULU -->
   <div class="section">
     <div class="section-inner">
-      <div class="orman-section">
+      <div class="orman-section" style="margin:32px 0;">
         <div>
           <div style="font-size:12px; text-transform:uppercase; letter-spacing:2px; color:var(--gold-light); font-weight:700; margin-bottom:12px;">Orman Okulu</div>
           <h2 class="orman-title">Doğa en büyük<br><em>sınıftır</em></h2>
@@ -793,35 +811,35 @@ img, video, iframe {
   <!-- VELİ YORUMLARI -->
   <div class="section">
     <div class="section-inner">
-      <div class="yorum-section">
+      <div class="yorum-section" style="padding:48px 40px;">
         <div class="section-tag">Ailelerimiz Anlatıyor</div>
         <h2 class="section-title" style="color:var(--sage-dark);">Gerçek hikâyeler,<br>gerçek değişimler</h2>
         <a href="https://www.google.com/search?q=bir+%C3%A7i%C3%A7ek+koleji+yorum" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:50px; padding:8px 18px; font-size:13px; font-weight:600; color:var(--sage-dark); text-decoration:none; margin-bottom:32px;">⭐ 4.7 · Google Yorumları → Tüm yorumları gör</a>
 
         <!-- Slider -->
-        <div style="position:relative; overflow:hidden;">
-          <div id="yorumSlider" style="display:flex; gap:24px; transition:transform 0.5s ease;">
-            <div class="yorum-card" style="min-width:calc(50% - 12px); flex-shrink:0;">
+        <div style="position:relative; overflow:hidden; width:100%;">
+          <div id="yorumSlider" style="display:flex; gap:24px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); will-change:transform;">
+            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Burası sadece bir okul değil, burası gerçek bir aile ortamı, bir anne baba, bir abla abi kardeş, bir ana kucağı, bir güven kapısı, bir ezberbozan. Eşine benzerine nadir rastlanabilecek ender kurumlardan biri. Küçük kızıma okul ararken şükürler olsun ki Bir Çiçek Koleji'ni bulduk. Okula koşa koşa gidiyor vallahi!</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" style="min-width:calc(50% - 12px); flex-shrink:0;">
+            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Hem kızım hem de oğlum anaokulu sürecini burada tamamladılar. Nur ve Emrah hocam gibi kendilerini her daim geliştiren, yenileyen, özverili, samimi, sevgi dolu eğitimcilerin yanında emin ellerde olmaları bizim de ebeveynler olarak aklımızın rahat olmasını sağladı.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" style="min-width:calc(50% - 12px); flex-shrink:0;">
+            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Oğlumuz geçen seneden beri Bir Çiçek Koleji Anaokulunda öğrenim görüyor. Çocuklarınızın çiçeklerden farksız muamele gördüğünü sizlerde deneyimleyeceksinizdir. Gerek oryantasyon gerekse rutin döngüde okul yöneticilerimizin profesyonelliği ve öğretmenlerimizin ne kadar işini severek yaptığına şahit oldum. Özgüveni tam, vicdan merhamet duyguları gelişmiş bireyler yetişiyor.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" style="min-width:calc(50% - 12px); flex-shrink:0;">
+            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Daha oğlumuz doğmadan eşim okul araştırmaya başlamıştı. Pendik-Tuzla bölgesinde oğlumuzun gelişimine en uygun okulu Bir Çiçek olarak belirlemiştik. Gerek bizi kampa davet etmeleri gerekse orman okulu seanslarına misafir olarak katılımlarımız sonucu çok doğru karar verdiğimizi anladık.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" style="min-width:calc(50% - 12px); flex-shrink:0;">
+            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Kızımız 4.5 yaşında olmasına rağmen 4 basamaklı iki sayıyı toplayabildiğini gördük. Tuzla'daki bütün okulları gezmiş bir anne baba olarak doğru kararı verdiğimize eminiz. Nur Hanım ve Emrah Bey'in bilgi birikimi, biz velileri de bilgilendirip eğitim sürecine dahil etmeleri çok kıymetli.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" style="min-width:calc(50% - 12px); flex-shrink:0;">
+            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Montessori eğitimi, orman okulu her okulda kolaylıkla ulaşabileceğiniz eğitimler değiller. Bunu layığıyla en güzel şekilde gerçekleştiren bir kurum Bir Çiçek Koleji. Eğer bölgede anaokulu arayışı içindeyseniz kesinlikle tavsiye edeceğimiz bir okul.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
@@ -888,17 +906,64 @@ img, video, iframe {
     </div>
   </div>
 
+  <!-- İLETİŞİM / SORULAR -->
+  <div style="background:var(--sage-dark); padding:56px 40px;">
+    <div style="max-width:900px; margin:0 auto; text-align:center;">
+      <div style="font-size:12px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.5); margin-bottom:12px; font-weight:700;">İletişim</div>
+      <h2 style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:white; margin-bottom:8px;">Sorularınız mı var?</h2>
+      <p style="font-size:15px; color:rgba(255,255,255,0.65); margin-bottom:40px;">Randevu alın veya hemen ulaşın, sizi bilgilendirmekten memnuniyet duyarız.</p>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;" class="iletisim-grid">
+        <a href="https://calendar.app.google/uypoZQFeDDSN43mg7" target="_blank"
+          style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:28px 16px; text-decoration:none; color:white; transition:all 0.2s; display:flex; flex-direction:column; align-items:center; gap:12px;"
+          onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+          <div style="width:52px; height:52px; background:var(--sage-mid); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px;">💻</div>
+          <div>
+            <div style="font-size:14px; font-weight:700; margin-bottom:4px;">Online Görüşme</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.6); line-height:1.4;">Google Meet<br>Randevu al →</div>
+          </div>
+        </a>
+        <a href="https://calendar.app.google/o4WkaPvXZ5gXjEkr8" target="_blank"
+          style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:28px 16px; text-decoration:none; color:white; transition:all 0.2s; display:flex; flex-direction:column; align-items:center; gap:12px;"
+          onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+          <div style="width:52px; height:52px; background:var(--sage-mid); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px;">🤝</div>
+          <div>
+            <div style="font-size:14px; font-weight:700; margin-bottom:4px;">Yüz Yüze Görüşme</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.6); line-height:1.4;">Okulumuzda<br>Randevu al →</div>
+          </div>
+        </a>
+        <a href="tel:+902163935457"
+          style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:28px 16px; text-decoration:none; color:white; transition:all 0.2s; display:flex; flex-direction:column; align-items:center; gap:12px;"
+          onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+          <div style="width:52px; height:52px; background:var(--gold); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px;">📞</div>
+          <div>
+            <div style="font-size:14px; font-weight:700; margin-bottom:4px;">Telefon ile Arayın</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.6); line-height:1.4;">0216 393 54 57<br>Hemen ara →</div>
+          </div>
+        </a>
+        <a href="https://wa.me/905551035457?text=Merhaba, okul hakkında bilgi almak istiyorum." target="_blank"
+          style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:28px 16px; text-decoration:none; color:white; transition:all 0.2s; display:flex; flex-direction:column; align-items:center; gap:12px;"
+          onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+          <div style="width:52px; height:52px; background:#25D366; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px;">💬</div>
+          <div>
+            <div style="font-size:14px; font-weight:700; margin-bottom:4px;">WhatsApp</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.6); line-height:1.4;">0555 103 54 57<br>Mesaj gönder →</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- HARİTA -->
   <div style="background:var(--white);">
-    <div style="max-width:1100px; margin:0 auto; padding:64px 40px 0;">
+    <div style="max-width:1100px; margin:0 auto; padding:48px 40px 24px;">
       <div class="section-tag">Bize Ulaşın</div>
       <h2 class="section-title">Bizi Ziyaret Edin</h2>
-      <p style="font-size:16px; color:var(--text-mid); margin-bottom:32px;">Aydınlı Mahallesi Bahçeler Sk. No: 45, 34953 Tuzla/İstanbul</p>
+      <p style="font-size:16px; color:var(--text-mid); margin-bottom:24px;">Aydınlı Mahallesi Bahçeler Sk. No: 45, 34953 Tuzla/İstanbul</p>
     </div>
-    <div style="width:100%; height:400px; position:relative;">
+    <div style="width:100%; height:450px; position:relative; overflow:hidden;">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3013.4!2d29.3!3d40.86!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac0bfb0000001%3A0x1!2zQXlkxLFubMSxIE1haGFsbGVzaSBCYWjDp2VsZXIgU2suIE5vOiA0NSBUdXpsYQ!5e0!3m2!1str!2str!4v1680000000000!5m2!1str!2str&q=Bir+Çiçek+Koleji+Anaokulu+Tuzla"
-        width="100%" height="400" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d755.0629!2d29.33185!3d40.86247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac7d0a8f7c7c7%3A0x1!2sBir+%C3%87i%C3%A7ek+Koleji+Anaokulu!5e0!3m2!1str!2str!4v1712000000000!5m2!1str!2str"
+        width="100%" height="450" style="border:0; display:block;" allowfullscreen="" loading="lazy"
         referrerpolicy="no-referrer-when-downgrade">
       </iframe>
       <a href="https://maps.google.com/?q=Bir+Çiçek+Koleji+Anaokulu+Tuzla+Aydınlı" target="_blank"
@@ -909,7 +974,7 @@ img, video, iframe {
   </div>
 
   <!-- FOOTER -->
-  <div style="background:var(--sage-dark); padding:56px 40px 40px; text-align:center;">
+  <div style="background:var(--sage-dark); padding:40px 40px 32px; text-align:center;">
     <div style="font-family:'Cormorant Garamond',serif; font-size:13px; font-style:italic; color:rgba(255,255,255,0.55); margin-bottom:20px; letter-spacing:0.3px;">
       "Her Çocuk Bir Çiçek — Nasıl Açacağını Seçmek Ona Ait."
     </div>
@@ -1549,58 +1614,71 @@ eposta@bircicekkoleji.com`
 let sliderIdx = 0;
 const TOTAL_SLIDES = 6;
 
-function getVisible() { return window.innerWidth >= 768 ? 2 : 1; }
+function getVisible() {
+  return window.innerWidth >= 768 ? 2 : 1;
+}
 
-function initSlider() {
+function setupSliderCards() {
+  const slider = document.getElementById("yorumSlider");
+  if (!slider) return;
+  const vis = getVisible();
+  const gap = 24;
+  const containerW = slider.parentElement.offsetWidth;
+  const cardW = vis === 1 ? containerW : (containerW - gap) / 2;
+  slider.querySelectorAll(".yorum-card, .slider-card").forEach(card => {
+    card.style.width = cardW + "px";
+    card.style.minWidth = cardW + "px";
+    card.style.flexShrink = "0";
+  });
+  return cardW;
+}
+
+function initDots() {
   const dots = document.getElementById("sliderDots");
-  if(!dots) return;
+  if (!dots) return;
   dots.innerHTML = "";
-  const total = TOTAL_SLIDES - getVisible() + 1;
-  for(let i=0; i<total; i++) {
+  const vis = getVisible();
+  const total = Math.max(0, TOTAL_SLIDES - vis + 1);
+  for (let i = 0; i < total; i++) {
     const d = document.createElement("div");
-    d.style.cssText = `width:8px; height:8px; border-radius:50%; background:${i===0?"var(--sage)":"rgba(61,107,79,0.25)"}; cursor:pointer; transition:all 0.2s;`;
+    d.style.cssText = `width:8px;height:8px;border-radius:50%;background:${i===0?"var(--sage)":"rgba(61,107,79,0.25)"};cursor:pointer;transition:all 0.2s;flex-shrink:0;`;
     d.onclick = () => goSlide(i);
     dots.appendChild(d);
-  }
-  // Slider kartlarını ayarla
-  const slider = document.getElementById("yorumSlider");
-  if(slider) {
-    const vis = getVisible();
-    slider.querySelectorAll(".yorum-card").forEach(card => {
-      card.style.minWidth = `calc(${100/vis}% - ${vis>1?12:0}px)`;
-      card.style.flexShrink = "0";
-    });
   }
 }
 
 function goSlide(i) {
   const vis = getVisible();
-  const maxIdx = TOTAL_SLIDES - vis;
+  const maxIdx = Math.max(0, TOTAL_SLIDES - vis);
   sliderIdx = Math.max(0, Math.min(i, maxIdx));
+  const cardW = setupSliderCards();
   const slider = document.getElementById("yorumSlider");
-  if(slider) {
-    const cards = slider.querySelectorAll(".yorum-card");
-    if(cards.length === 0) return;
-    const cardW = cards[0].offsetWidth + 24;
-    slider.style.transform = `translateX(-${sliderIdx * cardW}px)`;
+  if (slider && cardW) {
+    slider.style.transform = `translateX(-${sliderIdx * (cardW + 24)}px)`;
   }
-  document.querySelectorAll("#sliderDots div").forEach((d,j) => {
+  document.querySelectorAll("#sliderDots div").forEach((d, j) => {
     d.style.background = j === sliderIdx ? "var(--sage)" : "rgba(61,107,79,0.25)";
   });
-  initSlider();
 }
 
-function sliderNext() { goSlide(sliderIdx + 1); }
+function sliderNext() {
+  const vis = getVisible();
+  if (sliderIdx >= TOTAL_SLIDES - vis) sliderIdx = -1;
+  goSlide(sliderIdx + 1);
+}
 function sliderPrev() { goSlide(sliderIdx - 1); }
 
-let sliderTimer = setInterval(() => {
-  const vis = getVisible();
-  if(sliderIdx >= TOTAL_SLIDES - vis) sliderIdx = -1;
-  goSlide(sliderIdx + 1);
-}, 5000);
+let sliderAuto = setInterval(sliderNext, 5000);
 
-window.addEventListener("load", () => { initSlider(); goSlide(0); });
-window.addEventListener("resize", () => { initSlider(); goSlide(0); });
+function reinitSlider() {
+  sliderIdx = 0;
+  setupSliderCards();
+  initDots();
+  goSlide(0);
+}
+
+window.addEventListener("load", reinitSlider);
+window.addEventListener("resize", reinitSlider);
 
 
 // ═══ RANDEVU ═══
@@ -1678,24 +1756,31 @@ function refKodileBasla() {
 const PERIODS = [
   { id: "cd-onkayit",  end: new Date("2026-04-30T23:59:59"), label: "Avantajlı Ön Kayıt" },
   { id: "cd-erken",    end: new Date("2026-05-30T23:59:59"), label: "Erken Kayıt" },
-  { id: "cd-normal",   end: new Date("2026-09-30T23:59:59"), label: "Normal Kayıt" }
+  { id: "cd-normal",   end: new Date("2026-09-30T23:59:59"), label: "Normal Kayıt", start: new Date("2026-06-01") }
 ];
 
 function updatePeriodCountdowns() {
   const now = new Date();
   PERIODS.forEach(p => {
     const el = document.getElementById(p.id);
-    if(!el) return;
+    if (!el) return;
     const diff = p.end - now;
-    if(diff <= 0) {
-      el.innerHTML = '<span style="color:#ef4444; font-size:10px;">⛔ Kayıt Tarihi Kapandı</span>';
+    if (diff <= 0) {
+      el.innerHTML = '<span style="color:#ef4444; font-size:10px; white-space:nowrap;">⛔ Dönem Kapandı</span>';
+      return;
+    }
+    // Henüz başlamamışsa
+    if (p.start && now < p.start) {
+      const startDiff = p.start - now;
+      const sd = Math.floor(startDiff/86400000);
+      el.innerHTML = `<span style="font-size:10px; opacity:0.6; display:block; white-space:nowrap;">${sd} gün sonra başlar</span>`;
       return;
     }
     const d = Math.floor(diff/86400000);
     const h = Math.floor((diff%86400000)/3600000);
     const m = Math.floor((diff%3600000)/60000);
     const s = Math.floor((diff%60000)/1000);
-    el.innerHTML = `<span style="font-size:10px; opacity:0.8; display:block; margin-bottom:2px;">Kalan süre</span><span style="font-size:13px; font-weight:800; letter-spacing:0.5px;">${d}g ${String(h).padStart(2,"0")}s ${String(m).padStart(2,"0")}d ${String(s).padStart(2,"0")}sn</span>`;
+    el.innerHTML = `<span style="font-size:10px; opacity:0.8; display:block; margin-bottom:2px; white-space:nowrap;">Kalan süre</span><span style="font-size:12px; font-weight:800; letter-spacing:0.3px; white-space:nowrap;">${d}g ${String(h).padStart(2,"0")}s ${String(m).padStart(2,"0")}d ${String(s).padStart(2,"0")}sn</span>`;
   });
 }
 setInterval(updatePeriodCountdowns, 1000);
