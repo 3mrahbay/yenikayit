@@ -520,12 +520,7 @@ img, video, iframe {
 }
 
 .slider-card {
-  min-width: calc(50% - 12px);
-}
-@media (max-width: 767px) {
-  .slider-card {
-    min-width: 100%;
-  }
+  min-width: 100%;
 }
 @media (max-width: 768px) {
   .iletisim-grid { grid-template-columns: 1fr 1fr !important; gap:12px !important; }
@@ -706,15 +701,6 @@ img, video, iframe {
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px;">
-          <a href="https://calendar.app.google/t6kd22VPtPCHyG5o8" target="_blank" style="background:linear-gradient(135deg,#3D8B6E,#2A6B52); border:none; color:white; border-radius:10px; padding:11px 8px; font-size:12px; font-weight:700; text-decoration:none; text-align:center; display:block; transition:all 0.2s; box-shadow:0 3px 10px rgba(61,107,79,0.4);">
-            💻 Online Randevu<br><span style="font-weight:400; opacity:0.85; font-size:11px;">45 dakika</span>
-          </a>
-          <a href="https://calendar.app.google/ocKandk7qZfSnYkPA" target="_blank" style="background:linear-gradient(135deg,#B8962E,#9A7A22); border:none; color:white; border-radius:10px; padding:11px 8px; font-size:12px; font-weight:700; text-decoration:none; text-align:center; display:block; transition:all 0.2s; box-shadow:0 3px 10px rgba(184,150,46,0.4);">
-            🤝 Yüz Yüze<br><span style="font-weight:400; opacity:0.85; font-size:11px;">1 saat · Okulda</span>
-          </a>
-        </div>
-
         <div class="price-includes">
           <div class="price-include-item"><div class="price-include-dot"></div>Montessori Eğitimi</div>
           <div class="price-include-item"><div class="price-include-dot"></div>Haftada 1 gün Orman Okulu Eğitimi</div>
@@ -817,34 +803,48 @@ img, video, iframe {
         <h2 class="section-title" style="color:var(--sage-dark);">Gerçek hikâyeler,<br>gerçek değişimler</h2>
         <a href="https://www.google.com/search?q=bir+%C3%A7i%C3%A7ek+koleji+yorum" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:50px; padding:8px 18px; font-size:13px; font-weight:600; color:var(--sage-dark); text-decoration:none; margin-bottom:32px;">⭐ 4.7 · Google Yorumları → Tüm yorumları gör</a>
 
-        <!-- Slider -->
+                <!-- Slider -->
         <div style="position:relative; overflow:hidden; width:100%;">
           <div id="yorumSlider" style="display:flex; gap:24px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); will-change:transform;">
-            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
+              <div class="yorum-text">İki yıldır Birçiçek ailesinin üyesiyiz, üyesiyiz diyorum çünkü sadece kızımız değil biz ebeveynlerde her türlü eğitimin, seminerin, eğlencenin içine dahil edildik. Çok sevgili Nur hanım ve eşleri Emrah bey'in çocuklara ve işlerine olan aşkı tüm ekip arkadaşlarına da sirayet etmiş. Değerler eğitiminden, dil eğitimine, orman okulundan tüm rehberlerimizin özveri ve çocuklarımızla uyumuna söyleyebilecek tek şey iyi ki varsınız, iyi ki yollarımız sizlerle keşti. 💖</div>
+              <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
+              <div class="yorum-text">Neredeyse bir yıldır kızımızın severek devam ettiği Birçiçek Koleji anaokulunda her bir öğrencinin gördüğü ilgi ve sevgiyi, tüm öğretmenlerin emeğini her geçen gün daha çok fark ediyor, kendimizi bu okulun yakınlarında olduğumuz için şanslı sayıyoruz. Birçiçek ailesine teşekkürler.</div>
+              <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
+              <div class="yorum-text">Bir okula güvenmek, evladımızı emanet etmek konusunda bizim de her anne baba gibi soru işaretlerimiz, kaygılarımız vardı. Fakat Bir Çiçek o kaygıları öyle güzel bertaraf etti ki.. Oryantasyon süreci 1 ay süren başka bir okul duymadım, Orman Okulu gibi harika bir projenin bu kadar tatlı tatlı üstesinden gelen başka bir okul görmedim. Bu ailenin bir parçası olmaktan çok mutluyuz. Yavrumuzun yüzündeki her bir tebessüm için teşekkür ederiz.</div>
+              <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
+              <div class="yorum-text">Okul arayışında olan tüm ebeveynlere tereddütsüz önereceğim bir okul. Gönlüm rahat gözüm arkada kalmadan emanet ettim. Hem okul yöneticilerimiz Nur Hanım ve Emrah Bey'in profesyonelliği gerekse öğretmenlerimizin işini gerçekten severek yaptığına şahit oldum. Özgüveni tam, vicdan merhamet duyguları gelişmiş, sorumluluk alabilen bireyler yetişiyor. Çocuğunuzdaki mükemmel gelişimi gördükçe iyiki diyeceksiniz.</div>
+              <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Burası sadece bir okul değil, burası gerçek bir aile ortamı, bir anne baba, bir abla abi kardeş, bir ana kucağı, bir güven kapısı, bir ezberbozan. Eşine benzerine nadir rastlanabilecek ender kurumlardan biri. Küçük kızıma okul ararken şükürler olsun ki Bir Çiçek Koleji'ni bulduk. Okula koşa koşa gidiyor vallahi!</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Hem kızım hem de oğlum anaokulu sürecini burada tamamladılar. Nur ve Emrah hocam gibi kendilerini her daim geliştiren, yenileyen, özverili, samimi, sevgi dolu eğitimcilerin yanında emin ellerde olmaları bizim de ebeveynler olarak aklımızın rahat olmasını sağladı.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
-              <div class="yorum-text">Oğlumuz geçen seneden beri Bir Çiçek Koleji Anaokulunda öğrenim görüyor. Çocuklarınızın çiçeklerden farksız muamele gördüğünü sizlerde deneyimleyeceksinizdir. Gerek oryantasyon gerekse rutin döngüde okul yöneticilerimizin profesyonelliği ve öğretmenlerimizin ne kadar işini severek yaptığına şahit oldum. Özgüveni tam, vicdan merhamet duyguları gelişmiş bireyler yetişiyor.</div>
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
+              <div class="yorum-text">Daha oğlumuz doğmadan eşim okul araştırmaya başlamıştı. Pendik-Tuzla bölgesinde oğlumuzun gelişimine en uygun okulu Bir Çiçek olarak belirlemiştik. Gerek bizi kampa davet etmeleri gerekse orman okulu seanslarına misafir olarak katılımlarımız sonucu çok doğru karar verdiğimizi anladık. Şuan oğlumuz mutlu biz mutlu.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
-              <div class="yorum-text">Daha oğlumuz doğmadan eşim okul araştırmaya başlamıştı. Pendik-Tuzla bölgesinde oğlumuzun gelişimine en uygun okulu Bir Çiçek olarak belirlemiştik. Gerek bizi kampa davet etmeleri gerekse orman okulu seanslarına misafir olarak katılımlarımız sonucu çok doğru karar verdiğimizi anladık.</div>
-              <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
-            </div>
-            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
+            <div class="yorum-card slider-card" style="flex-shrink:0;">
               <div class="yorum-text">Kızımız 4.5 yaşında olmasına rağmen 4 basamaklı iki sayıyı toplayabildiğini gördük. Tuzla'daki bütün okulları gezmiş bir anne baba olarak doğru kararı verdiğimize eminiz. Nur Hanım ve Emrah Bey'in bilgi birikimi, biz velileri de bilgilendirip eğitim sürecine dahil etmeleri çok kıymetli.</div>
               <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
             </div>
-            <div class="yorum-card" class="slider-card" style="flex-shrink:0;">
-              <div class="yorum-text">Montessori eğitimi, orman okulu her okulda kolaylıkla ulaşabileceğiniz eğitimler değiller. Bunu layığıyla en güzel şekilde gerçekleştiren bir kurum Bir Çiçek Koleji. Eğer bölgede anaokulu arayışı içindeyseniz kesinlikle tavsiye edeceğimiz bir okul.</div>
-              <div class="yorum-author">— <strong>Bir Çiçek Koleji Velisi</strong> · Google Yorumu ⭐⭐⭐⭐⭐</div>
-            </div>
           </div>
+          <div style="display:flex; justify-content:center; gap:12px; margin-top:24px; align-items:center;">
+            <button onclick="sliderPrev()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">‹</button>
+            <div id="sliderDots" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;"></div>
+            <button onclick="sliderNext()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">›</button>
+          </div>
+        </div>
           <div style="display:flex; justify-content:center; gap:12px; margin-top:24px; align-items:center;">
             <button onclick="sliderPrev()" style="background:var(--sage); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">‹</button>
             <div id="sliderDots" style="display:flex; gap:8px;"></div>
@@ -1621,69 +1621,55 @@ eposta@bircicekkoleji.com`
 
 // ═══ SLIDER ═══
 let sliderIdx = 0;
-const TOTAL_SLIDES = 6;
+const TOTAL_SLIDES = 8;
 
-function getVisible() {
-  return window.innerWidth >= 768 ? 2 : 1;
+function getSliderCardW() {
+  const slider = document.getElementById("yorumSlider");
+  if (!slider) return 0;
+  return slider.parentElement.offsetWidth;
 }
 
 function setupSliderCards() {
-  const slider = document.getElementById("yorumSlider");
-  if (!slider) return;
-  const vis = getVisible();
-  const gap = 24;
-  const containerW = slider.parentElement.offsetWidth;
-  const cardW = vis === 1 ? containerW : (containerW - gap) / 2;
-  slider.querySelectorAll(".yorum-card, .slider-card").forEach(card => {
-    card.style.width = cardW + "px";
-    card.style.minWidth = cardW + "px";
-    card.style.flexShrink = "0";
+  const w = getSliderCardW();
+  if (!w) return w;
+  document.querySelectorAll("#yorumSlider .slider-card, #yorumSlider .yorum-card").forEach(card => {
+    card.style.minWidth = w + "px";
+    card.style.width = w + "px";
   });
-  return cardW;
+  return w;
 }
 
 function initDots() {
   const dots = document.getElementById("sliderDots");
   if (!dots) return;
   dots.innerHTML = "";
-  const vis = getVisible();
-  const total = Math.max(0, TOTAL_SLIDES - vis + 1);
-  for (let i = 0; i < total; i++) {
+  for (let i = 0; i < TOTAL_SLIDES; i++) {
     const d = document.createElement("div");
-    d.style.cssText = `width:8px;height:8px;border-radius:50%;background:${i===0?"var(--sage)":"rgba(61,107,79,0.25)"};cursor:pointer;transition:all 0.2s;flex-shrink:0;`;
+    d.style.cssText = `width:${i===sliderIdx?20:8}px;height:8px;border-radius:50px;background:${i===sliderIdx?"var(--sage)":"rgba(61,107,79,0.25)"};cursor:pointer;transition:all 0.3s;flex-shrink:0;`;
     d.onclick = () => goSlide(i);
     dots.appendChild(d);
   }
 }
 
 function goSlide(i) {
-  const vis = getVisible();
-  const maxIdx = Math.max(0, TOTAL_SLIDES - vis);
-  sliderIdx = Math.max(0, Math.min(i, maxIdx));
+  sliderIdx = ((i % TOTAL_SLIDES) + TOTAL_SLIDES) % TOTAL_SLIDES;
   const cardW = setupSliderCards();
   const slider = document.getElementById("yorumSlider");
   if (slider && cardW) {
     slider.style.transform = `translateX(-${sliderIdx * (cardW + 24)}px)`;
   }
-  document.querySelectorAll("#sliderDots div").forEach((d, j) => {
-    d.style.background = j === sliderIdx ? "var(--sage)" : "rgba(61,107,79,0.25)";
-  });
+  initDots();
 }
 
-function sliderNext() {
-  const vis = getVisible();
-  if (sliderIdx >= TOTAL_SLIDES - vis) sliderIdx = -1;
-  goSlide(sliderIdx + 1);
-}
+function sliderNext() { goSlide(sliderIdx + 1); }
 function sliderPrev() { goSlide(sliderIdx - 1); }
 
 let sliderAuto = setInterval(sliderNext, 5000);
 
 function reinitSlider() {
-  sliderIdx = 0;
   setupSliderCards();
   initDots();
-  goSlide(0);
+  goSlide(sliderIdx);
 }
 
 window.addEventListener("load", reinitSlider);
