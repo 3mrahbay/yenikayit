@@ -1449,6 +1449,12 @@ function onLogin(u) {
   var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
   getOrCreateRefKod2(u.uid, u.email);
   goToScreen("screen-portal");
+  // Giriş sonrası portal ekranının en üstüne scroll et
+  setTimeout(function(){
+    var portal = document.getElementById("screen-portal");
+    if(portal) portal.scrollIntoView({ behavior:"smooth", block:"start" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 150);
 }
 
 // ═══ 8. FORM LOGIC ═══
