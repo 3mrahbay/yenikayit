@@ -1198,39 +1198,15 @@ img, video, iframe {
     </div>
 
     <div id="tab-diger" style="display:none;">
-      <div class="odeme-tablo">
-        <div style="background:var(--cream-warm); padding:14px 20px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--earth); font-weight:700; border-bottom:1px solid var(--border);">Ek Ödemeler</div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Eğitim Materyalleri</div><div style="font-size:12px; color:var(--text-light);">5 Temmuz 2026</div></div><div></div><div style="text-align:right;" class="tutar-sage">35.000 TL</div></div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu I. Dönem Servis</div><div style="font-size:12px; color:var(--text-light);">5 Eylül 2026</div></div><div></div><div style="text-align:right;" class="tutar-sage">9.000 TL</div></div>
-        <div class="odeme-row" id="kiyafetRow"><div><div style="font-weight:600;">Orman Okulu Kıyafeti</div><div style="font-size:12px; color:var(--text-light);">5 Eylül 2026</div></div><div></div><div style="text-align:right;" id="kiyafetDisplay" class="tutar-sage">5.500 TL</div></div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu II. Dönem Servis</div><div style="font-size:12px; color:var(--text-light);">5 Şubat 2027</div></div><div></div><div style="text-align:right;" class="tutar-sage">10.000 TL</div></div>
-      </div>
-      <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:var(--sage-dark); line-height:1.6; margin-top:12px;">
-        ℹ️ Ek ödemeler eğitim ücretinden bağımsız olup belirtilen tarihlerde ayrıca ödenir.
-      </div>
-      <div style="background:linear-gradient(135deg,#FF6B35,#E8521A); border-radius:12px; padding:14px 18px; font-size:13px; color:white; line-height:1.7; margin-top:10px;">
-        🎁 <strong>Referans Avantajlarınız:</strong><br>
-        <span style="opacity:0.92;">
-        1. Kayıt → I. Dönem Orman Okulu Servis ücreti alınmaz<br>
-        2. Kayıt → II. Dönem Orman Okulu Servis ücreti alınmaz<br>
-        3. Kayıt → Eğitim Materyallerinin %50'si alınmaz
-        </span>
-      </div>
-    </div>
-
-    <!-- Referans kutusu -->
-    <div class="ref-box" style="margin-top:20px;" id="refKutusu">
-      <div class="ref-box-title">🎁 Referans Kodunuz</div>
-      <div class="ref-kod" id="refKodDisplay">BCK-????</div>
-      <div class="ref-desc">Bu kodu arkadaşlarınızla paylaşın. Her kayıt eden aile için sürpriz avantajlar kazanın!</div>
-      <button class="btn-copy" onclick="copyRefKod()">📋 Kopyala</button>
-      <div class="ref-steps">
-        <div class="ref-step"><div class="ref-step-num">1</div><div class="ref-step-text"><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — alınmaz!</div></div>
-        <div class="ref-step"><div class="ref-step-num">2</div><div class="ref-step-text"><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — alınmaz!</div></div>
-        <div class="ref-step"><div class="ref-step-num">3</div><div class="ref-step-text"><strong>3. Kayıt:</strong> Eğitim Materyallerinin %50'si — alınmaz!</div></div>
-      </div>
-      <div style="margin-top:14px; background:rgba(0,0,0,0.15); border-radius:10px; padding:12px; font-size:11px; color:rgba(255,255,255,0.7); line-height:1.6; font-style:italic;">
-        Ekim ayına kadar referanslı gelen kayıtlarda indirim kabul edilir. İndirim yapılan ödemeler tahsil edildiyse son iki aydaki ödemelerden mahsuplaşılır.
+      <div style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:28px; text-align:center;">
+        <div style="font-size:36px; margin-bottom:16px;">📅</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:10px;">Ek Ödemeler Hakkında</div>
+        <div style="font-size:15px; color:var(--text-mid); line-height:1.75; max-width:480px; margin:0 auto;">
+          Eğitim materyalleri, orman okulu servisi ve kıyafet gibi ek kalemler, <strong>ödeme tarihinden 15 gün önce</strong> size ayrıca bildirilecektir.
+        </div>
+        <div style="margin-top:20px; background:var(--sage-pale); border-radius:12px; padding:14px 20px; font-size:13px; color:var(--sage-dark); line-height:1.65; display:inline-block;">
+          ℹ️ Detaylı bilgi için okul yönetimi ile iletişime geçebilirsiniz.
+        </div>
       </div>
     </div>
 
@@ -1489,15 +1465,23 @@ function setProgram(tip) {
 
 // ═══ 9. HESAPLAMA ═══
 function hesaplaYeni(kayitTur, program) {
-  var bazlar = { onkayit:37000, erken:38500, normal:40000 };
-  var aylik = bazlar[kayitTur] || 37000;
-  if(program==="yarim") aylik = Math.round(aylik * 0.8);
+  // Tam gün aylık ücretler
+  var tamGun = { onkayit:37000, erken:38500, normal:40000 };
+  // Yarım gün aylık ücretler (geçen yıl bazı üzerinden %28 artış ile belirlendi)
+  // Avantajlı ön kayıt: 26.000 * 1.28 = 33.280 TL
+  // Erken kayıt ve Normal için aynı fark oranı uygulandı
+  var yarimGun = { onkayit:33280, erken:34640, normal:36000 };
+  
+  var aylik = program === "yarim" 
+    ? (yarimGun[kayitTur] || 33280)
+    : (tamGun[kayitTur] || 37000);
+
   var egitim = Math.round(aylik * 0.60);
   var yemek = aylik - egitim;
-  var onOdeme = aylik;
-  var kalan = aylik * 9;
-  var iAylik = Math.round((kalan * 0.488) / 5 / 100) * 100;
-  var iiAylik = Math.round((kalan - iAylik*5) / 5);
+  var onOdeme = aylik;         // 1. taksit = ön ödeme
+  var kalan = aylik * 9;       // kalan 9 taksit
+  var iAylik = Math.round((kalan * 0.488) / 5 / 100) * 100;  // I.Dönem 5 ay
+  var iiAylik = Math.round((kalan - iAylik*5) / 5);            // II.Dönem 5 ay
   var yillik = onOdeme + iAylik*5 + iiAylik*5;
   var I_AYLAR = ["Eylül 2026","Ekim 2026","Kasım 2026","Aralık 2026","Ocak 2027"];
   var II_AYLAR = ["Şubat 2027","Mart 2027","Nisan 2027","Mayıs 2027","Haziran 2027"];
