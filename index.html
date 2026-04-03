@@ -1365,21 +1365,26 @@ function initFirebase() {
       }
     }).catch(function(e){ console.log("Redirect result:", e.message); });
 
+    var authHandled = false;
     auth.onAuthStateChanged(function(u){
-      if(u){
-        currentUser=u;
-        onLogin(u);
-        // Bekleyen referans kodu varsa form'a doldur
+      if(u && !authHandled) {
+        authHandled = true;
+        currentUser = u;
+        hideLoading();
         try {
-          var pendingKod = appState2._pendingRefKod || localStorage.getItem("pendingRefKod");
-          if(pendingKod) {
-            localStorage.removeItem("pendingRefKod");
-            setTimeout(function(){
-              var el=document.getElementById("refKodGiris"); if(el) el.value=pendingKod;
-              goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
-            }, 600);
-          }
-        } catch(e){}
+          var pendingKod = localStorage.getItem("pendingRefKod");
+          if(pendingKod) { localStorage.removeItem("pendingRefKod"); appState2._pendingRefKod = pendingKod; }
+        } catch(ex){}
+        onLogin(u);
+        if(appState2._pendingRefKod) {
+          setTimeout(function(){
+            var el = document.getElementById("refKodGiris");
+            if(el) el.value = appState2._pendingRefKod;
+            appState2._pendingRefKod = null;
+            goToScreen("screen-form");
+            showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
+          }, 800);
+        }
       }
     });
     console.log("Firebase hazır ✓");
@@ -1437,11 +1442,10 @@ function scrollTo(id) { document.getElementById(id) && document.getElementById(i
 // ═══ 7. AUTH ═══
 function signInWithGoogle() {
   var p = new firebase.auth.GoogleAuthProvider();
-  showLoading("Giriş yapılıyor...");
-  // iOS Safari ve bazı tarayıcılarda popup çalışmaz, redirect kullan
+  p.setCustomParameters({ prompt: "select_account" });
+  showLoading("Yönlendiriliyor...");
   auth.signInWithRedirect(p).catch(function(e){
-    hideLoading();
-    // Redirect çalışmazsa popup dene
+    // Redirect çalışmazsa (bazı eski tarayıcılar) popup dene
     auth.signInWithPopup(p)
       .then(function(r){ hideLoading(); onLogin(r.user); })
       .catch(function(e2){ hideLoading(); showToast("Giriş hatası: "+e2.message); });
@@ -1658,11 +1662,19 @@ function refKodileBasla() {
     var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
     goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı!");
   } else {
-    var p=new firebase.auth.GoogleAuthProvider();
-    // Referans kodunu localStorage'a kaydet, redirect sonrası okuyacağız
+    var p = new firebase.auth.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
     try { localStorage.setItem("pendingRefKod", kod); } catch(e){}
-    showLoading("Giriş yapılıyor...");
-    auth.signInWithRedirect(p);
+    showLoading("Yönlendiriliyor...");
+    auth.signInWithRedirect(p).catch(function(e){
+      auth.signInWithPopup(p).then(function(r){
+        hideLoading(); onLogin(r.user);
+        setTimeout(function(){
+          var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
+          goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı!");
+        }, 600);
+      }).catch(function(e2){ hideLoading(); showToast("Giriş hatası: "+e2.message); });
+    });
   }
 }
 
