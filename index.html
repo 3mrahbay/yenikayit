@@ -656,7 +656,7 @@ img, video, iframe {
 
     <div class="hero-right">
       <div class="price-showcase">
-        <div class="price-badge">🏷️ 2026-2027 Kayıt Ücretleri</div>
+        <div class="price-badge">📅 2026-2027 Kayıt Tarihleri</div>
         
         <div class="price-deadline">
           <div>
@@ -1443,13 +1443,21 @@ function scrollTo(id) { document.getElementById(id) && document.getElementById(i
 function signInWithGoogle() {
   var p = new firebase.auth.GoogleAuthProvider();
   p.setCustomParameters({ prompt: "select_account" });
-  showLoading("Yönlendiriliyor...");
-  auth.signInWithRedirect(p).catch(function(e){
-    // Redirect çalışmazsa (bazı eski tarayıcılar) popup dene
-    auth.signInWithPopup(p)
-      .then(function(r){ hideLoading(); onLogin(r.user); })
-      .catch(function(e2){ hideLoading(); showToast("Giriş hatası: "+e2.message); });
-  });
+  showLoading("Giriş yapılıyor...");
+  // Popup dene, iOS/bazı tarayıcılarda hata verirse redirect'e geç
+  auth.signInWithPopup(p)
+    .then(function(r){ hideLoading(); onLogin(r.user); })
+    .catch(function(e){
+      hideLoading();
+      if(e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment" || e.code === "auth/cancelled-popup-request") {
+        // Popup çalışmadı, redirect dene
+        showLoading("Yönlendiriliyor...");
+        try { localStorage.setItem("pendingLogin","1"); } catch(ex){}
+        auth.signInWithRedirect(p);
+      } else {
+        showToast("Giriş hatası: " + e.message);
+      }
+    });
 }
 function signOut() {
   auth.signOut().then(function(){ currentUser=null; goToScreen("screen-hero"); });
@@ -1664,17 +1672,25 @@ function refKodileBasla() {
   } else {
     var p = new firebase.auth.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
-    try { localStorage.setItem("pendingRefKod", kod); } catch(e){}
-    showLoading("Yönlendiriliyor...");
-    auth.signInWithRedirect(p).catch(function(e){
-      auth.signInWithPopup(p).then(function(r){
+    showLoading("Giriş yapılıyor...");
+    auth.signInWithPopup(p)
+      .then(function(r){
         hideLoading(); onLogin(r.user);
         setTimeout(function(){
           var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
-          goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı!");
+          goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
         }, 600);
-      }).catch(function(e2){ hideLoading(); showToast("Giriş hatası: "+e2.message); });
-    });
+      })
+      .catch(function(e){
+        hideLoading();
+        if(e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
+          try { localStorage.setItem("pendingRefKod", kod); localStorage.setItem("pendingLogin","1"); } catch(ex){}
+          showLoading("Yönlendiriliyor...");
+          auth.signInWithRedirect(p);
+        } else {
+          showToast("Giriş hatası: " + e.message);
+        }
+      });
   }
 }
 
