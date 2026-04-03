@@ -514,6 +514,34 @@ textarea { resize:vertical; min-height:80px; }
 </head>
 <body>
 
+<!-- RANDEVU MODAL -->
+<div id="randevuModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; padding:20px;" onclick="closeRandevuModal()">
+  <div style="background:white; border-radius:24px; padding:40px; max-width:420px; width:100%; position:relative;" onclick="event.stopPropagation()">
+    <button onclick="closeRandevuModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:20px; cursor:pointer; color:#888;">✕</button>
+    <div style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--sage-dark); margin-bottom:8px;" id="randevuModalTitle">Randevu Al</div>
+    <div style="font-size:14px; color:var(--text-light); margin-bottom:28px;" id="randevuModalDesc"></div>
+    <div style="background:var(--sage-pale); border-radius:14px; padding:20px; margin-bottom:24px;">
+      <div style="font-size:13px; color:var(--sage-dark); line-height:1.7;">
+        Randevu almak için aşağıdaki iletişim kanallarından bize ulaşabilirsiniz. Online takvim sistemimiz yakında aktif olacak.
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <a href="https://wa.me/905551035457?text=Merhaba, okul hakkında bilgi almak ve randevu ayarlamak istiyorum." target="_blank"
+        style="background:var(--sage); color:white; border-radius:12px; padding:14px 20px; text-decoration:none; font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px;">
+        📱 WhatsApp ile Randevu — 0555 103 54 57
+      </a>
+      <a href="tel:+902163935457"
+        style="background:var(--cream-warm); color:var(--sage-dark); border:1px solid var(--border); border-radius:12px; padding:14px 20px; text-decoration:none; font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px;">
+        📞 Ara — 0216 393 54 57
+      </a>
+      <a href="https://onkayit.bircicekkoleji.com" target="_blank"
+        style="background:var(--cream-warm); color:var(--sage-dark); border:1px solid var(--border); border-radius:12px; padding:14px 20px; text-decoration:none; font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px;">
+        🌐 onkayit.bircicekkoleji.com
+      </a>
+    </div>
+  </div>
+</div>
+
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <div style="font-size:15px; color:var(--text-mid); font-weight:500;" id="loadingText">Lütfen bekleyin...</div>
@@ -592,27 +620,43 @@ textarea { resize:vertical; min-height:80px; }
         <div class="price-options">
           <div class="price-option gold-card" style="background:var(--gold-pale); border-color:rgba(184,150,46,0.4);">
             <div class="price-option-left">
-              <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
+                <div style="background:var(--gold); color:white; font-size:10px; font-weight:800; padding:2px 8px; border-radius:50px; letter-spacing:0.3px;">%7,5 İNDİRİM</div>
+              </div>
               <div class="price-option-name">30 Nisan'a kadar</div>
-              <div class="price-option-date">Özel erken başvuru fırsatı</div>
+              <div class="price-option-date">Normal kayıta göre 3.000 TL tasarruf</div>
             </div>
-            <div class="price-option-val gold">37.000 TL</div>
+            <div style="text-align:right;">
+              <div style="text-decoration:line-through; font-size:12px; color:var(--text-light); margin-bottom:2px;">40.000 TL</div>
+              <div class="price-option-val gold">37.000 TL</div>
+            </div>
           </div>
           <div class="price-option featured">
             <div class="price-option-left">
-              <div class="price-option-tag">Erken Kayıt</div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                <div class="price-option-tag">Erken Kayıt</div>
+                <div style="background:var(--sage); color:white; font-size:10px; font-weight:800; padding:2px 8px; border-radius:50px; letter-spacing:0.3px;">%3,75 İNDİRİM</div>
+              </div>
               <div class="price-option-name">01 Mayıs – 30 Mayıs</div>
-              <div class="price-option-date">Erken kayıt dönemi</div>
+              <div class="price-option-date">Normal kayıta göre 1.500 TL tasarruf</div>
             </div>
-            <div class="price-option-val">38.500 TL</div>
+            <div style="text-align:right;">
+              <div style="text-decoration:line-through; font-size:12px; color:var(--text-light); margin-bottom:2px;">40.000 TL</div>
+              <div class="price-option-val">38.500 TL</div>
+            </div>
           </div>
-          <div class="price-option">
-            <div class="price-option-left">
-              <div class="price-option-tag" style="color:var(--text-light);">Normal Kayıt</div>
-              <div class="price-option-name">1 Haziran ve sonrası</div>
-              <div class="price-option-date">Kontenjan durumuna göre</div>
-            </div>
-            <div class="price-option-val" style="color:var(--text-mid);">40.000 TL</div>
+
+        </div>
+        <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:14px 16px; margin-bottom:16px;">
+          <div style="font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">📅 Ücret için randevu alın</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="randevuBtnler">
+            <button onclick="randevuAc('online')" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:10px; padding:10px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+              💻 Online Randevu<br><span style="font-weight:400; opacity:0.75;">45 dakika</span>
+            </button>
+            <button onclick="randevuAc('yuzyuze')" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:10px; padding:10px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+              🤝 Yüz Yüze Randevu<br><span style="font-weight:400; opacity:0.75;">1 saat · Okulda</span>
+            </button>
           </div>
         </div>
 
@@ -929,13 +973,7 @@ textarea { resize:vertical; min-height:80px; }
           </div>
           <div class="kayit-price">38.500 TL</div>
         </div>
-        <div class="kayit-type-card" onclick="selectKayitType('normal', this)">
-          <div class="kayit-type-left">
-            <div class="kayit-label">Normal Kayıt</div>
-            <div class="kayit-desc">1 Haziran ve sonrası</div>
-          </div>
-          <div class="kayit-price" style="color:var(--text-mid);">40.000 TL</div>
-        </div>
+
       </div>
     </div>
 
@@ -1518,6 +1556,44 @@ setInterval(() => {
 }, 5000);
 
 window.addEventListener("load", initSlider);
+
+
+// ═══ RANDEVU ═══
+// Linkleri buraya girin:
+const RANDEVU_LINKS = {
+  online:   "https://calendar.app.google/t6kd22VPtPCHyG5o8",   // Google Calendar online randevu linki
+  yuzyuze:  "https://calendar.app.google/ocKandk7qZfSnYkPA"   // Google Calendar yüz yüze randevu linki
+};
+
+function randevuAc(tip) {
+  const link = RANDEVU_LINKS[tip];
+  if (!link || link.includes("BURAYA")) {
+    // Modal göster - link henüz girilmemiş
+    showRandevuModal(tip);
+    return;
+  }
+  window.open(link, "_blank");
+}
+
+function showRandevuModal(tip) {
+  const modal = document.getElementById("randevuModal");
+  const title = document.getElementById("randevuModalTitle");
+  const desc = document.getElementById("randevuModalDesc");
+  if(!modal) return;
+  if(tip === "online") {
+    title.textContent = "💻 Online Randevu";
+    desc.textContent = "45 dakika · Google Meet veya benzeri platformda";
+  } else {
+    title.textContent = "🤝 Yüz Yüze Randevu";
+    desc.textContent = "1 saat · Bir Çiçek Koleji Anaokulu, Tuzla Aydınlı";
+  }
+  modal.style.display = "flex";
+}
+
+function closeRandevuModal() {
+  const modal = document.getElementById("randevuModal");
+  if(modal) modal.style.display = "none";
+}
 
 // ═══ YARDIMCI ═══
 function fmt(n) { return new Intl.NumberFormat("tr-TR").format(Math.round(n)); }
