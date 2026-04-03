@@ -1262,7 +1262,8 @@ img, video, iframe {
 </div>
 
 <script>
-// ═══ CONFIG ═══
+// ═══ 1. CONFIG ═══
+const ADMIN_EMAIL = "emrahby@gmail.com";
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyARlqAoh-HRBC9xPwj7qRgG-IuZFSH39Uc",
   authDomain: "bcka-site.firebaseapp.com",
@@ -1274,530 +1275,354 @@ const FIREBASE_CONFIG = {
 const EMAILJS_CONFIG = { serviceId:"BirCicek_Mail", templateId:"template_7bi65w8", publicKey:"_VnABdAj03KuoOHYM" };
 const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
 const DEADLINE = new Date("2026-04-30T23:59:59");
+const RANDEVU_LINKS = {
+  online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
+  yuzyuze: "https://calendar.app.google/ocKandk7qZfSnYkPA"
+};
 
-// ═══ STATE ═══
-let db, auth, currentUser;
-let appState2 = { program:"tam", kayitTur:"onkayit", refKod:null, hesap:null, odemeTip:"", refliGeliyor:false };
+// ═══ 2. STATE ═══
+var db, auth, currentUser;
+var appState2 = { program:"tam", kayitTur:"onkayit", refKod:null, hesap:null, odemeTip:"", refliGeliyor:false };
+var sliderIdx = 0;
+var sliderAuto = null;
+var secilenOdemeTip2 = "";
+const TOTAL_SLIDES = 8;
 
-// ═══ INIT ═══
+// ═══ 3. FIREBASE INIT ═══
 try {
   firebase.initializeApp(FIREBASE_CONFIG);
   db = firebase.firestore();
   auth = firebase.auth();
-} catch(e) { console.error(e); }
+} catch(e) { console.error("Firebase init:", e); }
 
-auth.onAuthStateChanged(u => { if(u) { currentUser=u; onLogin(u); } });
-
-// ═══ COUNTDOWN ═══
+// ═══ 4. COUNTDOWN (fiyat kartı) ═══
 function updateCD() {
-  const diff = DEADLINE - new Date();
+  var diff = DEADLINE - new Date();
   if(diff<=0) return;
-  const d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000);
-  const fmt=n=>String(n).padStart(2,"0");
-  const s=id=>document.getElementById(id);
+  var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000);
+  var fmt=function(n){return String(n).padStart(2,"0");};
+  var s=function(id){return document.getElementById(id);};
   if(s("cd2Days")) s("cd2Days").textContent=fmt(d);
   if(s("cd2Hours")) s("cd2Hours").textContent=fmt(h);
   if(s("cd2Mins")) s("cd2Mins").textContent=fmt(m);
 }
-setInterval(updateCD,1000); updateCD();
+setInterval(updateCD, 1000); updateCD();
 
-// ═══ AUTH ═══
+// ═══ 5. DÖNEM SAYAÇLARI ═══
+var PERIODS = [
+  { id:"cd-onkayit", end:new Date("2026-04-30T23:59:59") },
+  { id:"cd-erken",   end:new Date("2026-05-30T23:59:59"), start:new Date("2026-05-01") },
+  { id:"cd-normal",  end:new Date("2026-09-30T23:59:59"), start:new Date("2026-06-01") }
+];
+function updatePeriodCountdowns() {
+  var now = new Date();
+  PERIODS.forEach(function(p) {
+    var el = document.getElementById(p.id);
+    if(!el) return;
+    var diff = p.end - now;
+    if(diff <= 0) { el.innerHTML = '<span style="color:#ef4444;font-size:10px;white-space:nowrap;">⛔ Dönem Kapandı</span>'; return; }
+    if(p.start && now < p.start) {
+      var sd = Math.floor((p.start - now)/86400000);
+      el.innerHTML = '<span style="font-size:10px;opacity:0.75;display:block;white-space:nowrap;">' + sd + ' gün sonra başlar</span>';
+      return;
+    }
+    var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+    el.innerHTML = '<span style="font-size:10px;opacity:0.8;display:block;margin-bottom:2px;white-space:nowrap;">Kalan süre</span>' +
+      '<span style="font-size:12px;font-weight:800;letter-spacing:0.3px;white-space:nowrap;">' + d + 'g ' + String(h).padStart(2,"0") + 's ' + String(m).padStart(2,"0") + 'd ' + String(s).padStart(2,"0") + 'sn</span>';
+  });
+}
+setInterval(updatePeriodCountdowns, 1000);
+updatePeriodCountdowns();
+
+// ═══ 6. SCREEN NAV ═══
+function goToScreen(id) {
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  var el = document.getElementById(id);
+  if(el) { el.classList.add("active"); window.scrollTo(0,0); }
+}
+function scrollTo(id) { document.getElementById(id) && document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
+
+// ═══ 7. AUTH ═══
 function signInWithGoogle() {
-  const p = new firebase.auth.GoogleAuthProvider();
+  var p = new firebase.auth.GoogleAuthProvider();
   showLoading("Giriş yapılıyor...");
   auth.signInWithPopup(p)
-    .then(r=>{ hideLoading(); onLogin(r.user); })
-    .catch(e=>{ hideLoading(); showToast("Giriş hatası: "+e.message); });
+    .then(function(r){ hideLoading(); onLogin(r.user); })
+    .catch(function(e){ hideLoading(); showToast("Giriş hatası: "+e.message); });
 }
-
 function signOut() {
-  auth.signOut().then(()=>{ currentUser=null; goToScreen("screen-hero"); });
+  auth.signOut().then(function(){ currentUser=null; goToScreen("screen-hero"); });
 }
-
 function onLogin(u) {
   currentUser = u;
   logGiris2(u);
-  const parts=(u.displayName||"").split(" ");
-  const ini=parts[0]?.[0]?.toUpperCase()||"?";
-  ["userInitial","userInitial2","userInitial3"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ini;});
-  ["userName","userName2","userName3"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=parts[0]||"Veli";});
-  const pe=document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
+  var parts = (u.displayName||"").split(" ");
+  var ini = (parts[0]||"?")[0].toUpperCase();
+  ["userInitial","userInitial2","userInitial3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=ini; });
+  ["userName","userName2","userName3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
+  var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
   getOrCreateRefKod2(u.uid, u.email);
   goToScreen("screen-portal");
 }
 
-// ═══ SCREEN NAV ═══
-function goToScreen(id) {
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  const el=document.getElementById(id);
-  if(el) { el.classList.add("active"); window.scrollTo(0,0); }
-}
-
-function scrollTo(id) {
-  document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
-}
-
-// ═══ FORM LOGIC ═══
+// ═══ 8. FORM LOGIC ═══
 function selectKayitType(tip, el) {
   appState2.kayitTur = tip;
-  document.querySelectorAll(".kayit-type-card").forEach(c=>c.classList.remove("selected"));
+  document.querySelectorAll(".kayit-type-card").forEach(function(c){ c.classList.remove("selected"); });
   el.classList.add("selected");
 }
-
 function setProgram(tip) {
   appState2.program = tip;
   document.getElementById("btnTam").classList.toggle("active", tip==="tam");
   document.getElementById("btnYarim").classList.toggle("active", tip==="yarim");
 }
 
-// ═══ HESAPLAMA ═══
+// ═══ 9. HESAPLAMA ═══
 function hesaplaYeni(kayitTur, program) {
-  const bazlar = { onkayit:37000, erken:38000, normal:40000 };
-  let aylik = bazlar[kayitTur] || 37000;
-  if(program === "yarim") aylik = Math.round(aylik * 0.8);
-  const egitim = Math.round(aylik * 0.60);
-  const yemek = aylik - egitim;
-  const onOdeme = aylik;
-  const kalan = aylik * 9;
-  const iAylik = Math.round((kalan * 0.488) / 5 / 100) * 100;
-  const iiAylik = Math.round((kalan - iAylik * 5) / 5);
-  const yillik = onOdeme + iAylik*5 + iiAylik*5;
-  const I_AYLAR = ["Eylül 2026","Ekim 2026","Kasım 2026","Aralık 2026","Ocak 2027"];
-  const II_AYLAR = ["Şubat 2027","Mart 2027","Nisan 2027","Mayıs 2027","Haziran 2027"];
-  return { aylik, egitim, yemek, onOdeme, kalan, iAylik, iiAylik, yillik,
-    iRows: I_AYLAR.map(ay=>({}, {ay, tutar:iAylik})),
-    iiRows: II_AYLAR.map((ay,i)=>({}, {ay, tutar: i===4 ? (kalan-iAylik*5-iiAylik*4) : iiAylik})) };
+  var bazlar = { onkayit:37000, erken:38500, normal:40000 };
+  var aylik = bazlar[kayitTur] || 37000;
+  if(program==="yarim") aylik = Math.round(aylik * 0.8);
+  var egitim = Math.round(aylik * 0.60);
+  var yemek = aylik - egitim;
+  var onOdeme = aylik;
+  var kalan = aylik * 9;
+  var iAylik = Math.round((kalan * 0.488) / 5 / 100) * 100;
+  var iiAylik = Math.round((kalan - iAylik*5) / 5);
+  var yillik = onOdeme + iAylik*5 + iiAylik*5;
+  var I_AYLAR = ["Eylül 2026","Ekim 2026","Kasım 2026","Aralık 2026","Ocak 2027"];
+  var II_AYLAR = ["Şubat 2027","Mart 2027","Nisan 2027","Mayıs 2027","Haziran 2027"];
+  return {
+    aylik:aylik, egitim:egitim, yemek:yemek, onOdeme:onOdeme,
+    kalan:kalan, iAylik:iAylik, iiAylik:iiAylik, yillik:yillik,
+    iRows: I_AYLAR.map(function(ay){ return {ay:ay, tutar:iAylik}; }),
+    iiRows: II_AYLAR.map(function(ay,i){ return {ay:ay, tutar: i===4?(kalan-iAylik*5-iiAylik*4):iiAylik}; })
+  };
 }
-
 function goToHesaplama() {
-  const childAd = document.getElementById("childAd")?.value?.trim();
-  const childSoyad = document.getElementById("childSoyad")?.value?.trim();
-  const veliTel = document.getElementById("veliTel")?.value?.trim();
+  var childAd = (document.getElementById("childAd")||{}).value||"";
+  var childSoyad = (document.getElementById("childSoyad")||{}).value||"";
+  var veliTel = (document.getElementById("veliTel")||{}).value||"";
+  childAd = childAd.trim(); childSoyad = childSoyad.trim(); veliTel = veliTel.trim();
   if(!childAd||!childSoyad) return showToast("⚠️ Çocuğun adını ve soyadını giriniz");
   if(!veliTel) return showToast("⚠️ Telefon numarası giriniz");
-
-  const refGiris = document.getElementById("refKodGiris")?.value?.trim().toUpperCase();
+  var refGiris = ((document.getElementById("refKodGiris")||{}).value||"").trim().toUpperCase();
   appState2.refliGeliyor = !!(refGiris && refGiris.startsWith("BCK-") && refGiris.length>=7);
   appState2.hesap = hesaplaYeni(appState2.kayitTur, appState2.program);
   renderHesaplama2();
   goToScreen("screen-hesaplama");
 }
-
 function renderHesaplama2() {
-  const h = appState2.hesap;
-  if(!h) return;
-  const s=id=>document.getElementById(id);
-  const childAd = document.getElementById("childAd")?.value?.trim() || "";
-  const childSoyad = document.getElementById("childSoyad")?.value?.trim() || "";
+  var h = appState2.hesap; if(!h) return;
+  var s=function(id){return document.getElementById(id);};
+  var childAd = ((document.getElementById("childAd")||{}).value||"").trim();
+  var childSoyad = ((document.getElementById("childSoyad")||{}).value||"").trim();
   if(s("childAdDisplay")) s("childAdDisplay").textContent = childAd+" "+childSoyad;
-
-  const turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
+  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
   if(s("kayitTurDisplay")) s("kayitTurDisplay").textContent = turLabel[appState2.kayitTur]||"–";
   if(s("aylikDisplay")) s("aylikDisplay").textContent = fmt(h.aylik)+" TL";
   if(s("egitimDisplay")) s("egitimDisplay").textContent = fmt(h.egitim)+" TL";
   if(s("yemekDisplay")) s("yemekDisplay").textContent = fmt(h.yemek)+" TL";
   if(s("yillikDisplay")) s("yillikDisplay").textContent = fmt(h.yillik)+" TL";
-  if(s("onOdemeDisplay")) s("onOdemeDisplay").innerHTML = `<span class="tutar-gold">${fmt(h.onOdeme)} TL</span>`;
-
-  const renderRows = (containerId, rows) => {
-    const cont = s(containerId); if(!cont) return;
-    cont.innerHTML = rows.map(r=>`
-      <div class="odeme-row">
-        <div>${r.ay} taksiti</div>
-        <div style="text-align:right;"><span class="tarih-chip">📅 5 ${r.ay}</span></div>
-        <div style="text-align:right;" class="tutar-sage">${fmt(r.tutar)} TL</div>
-      </div>`).join("");
-  };
+  if(s("onOdemeDisplay")) s("onOdemeDisplay").innerHTML = '<span class="tutar-gold">'+fmt(h.onOdeme)+' TL</span>';
+  function renderRows(containerId, rows) {
+    var cont = s(containerId); if(!cont) return;
+    cont.innerHTML = rows.map(function(r){
+      return '<div class="odeme-row"><div>'+r.ay+' taksiti</div><div style="text-align:right;"><span class="tarih-chip">📅 5 '+r.ay+'</span></div><div style="text-align:right;" class="tutar-sage">'+fmt(r.tutar)+' TL</div></div>';
+    }).join("");
+  }
   renderRows("iDonemRows", h.iRows);
   renderRows("iiDonemRows", h.iiRows);
-
-  // Kıyafet referanslı mı
-  const kd = s("kiyafetDisplay");
+  var kd = s("kiyafetDisplay");
   if(kd) {
-    if(appState2.refliGeliyor) {
-      kd.innerHTML = '<span style="background:var(--sage-pale); color:var(--sage); font-size:11px; font-weight:700; padding:3px 10px; border-radius:50px;">✓ ÜCRETSİZ</span>';
-    } else {
-      kd.textContent = "5.500 TL";
-      kd.className = "tutar-sage";
-    }
+    if(appState2.refliGeliyor) kd.innerHTML = '<span style="background:var(--sage-pale);color:var(--sage);font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;">✓ ÜCRETSİZ</span>';
+    else { kd.textContent="5.500 TL"; kd.className="tutar-sage"; }
   }
-
-  if(s("refKodDisplay")) s("refKodDisplay").textContent = appState2.refKod || "BCK-????";
-  ["userInitial3","userName3"].forEach(id=>{
-    const el=s(id); if(el) el.textContent = document.getElementById(id.replace("3",""))?.textContent || "?";
-  });
+  if(s("refKodDisplay")) s("refKodDisplay").textContent = appState2.refKod||"BCK-????";
 }
-
 function showTab2(tab) {
-  ["tab-egitim","tab-diger"].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.style.display=id===tab?"block":"none";
-  });
-  const t=id=>document.getElementById(id);
-  if(t("t2-egitim")) t("t2-egitim").style.background = tab==="tab-egitim"?"var(--sage)":"var(--white)";
-  if(t("t2-egitim")) t("t2-egitim").style.color = tab==="tab-egitim"?"white":"var(--text-mid)";
-  if(t("t2-diger")) t("t2-diger").style.background = tab==="tab-diger"?"var(--sage)":"var(--white)";
-  if(t("t2-diger")) t("t2-diger").style.color = tab==="tab-diger"?"white":"var(--text-mid)";
+  ["tab-egitim","tab-diger"].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=id===tab?"block":"none"; });
+  var t=function(id){return document.getElementById(id);};
+  if(t("t2-egitim")) { t("t2-egitim").style.background=tab==="tab-egitim"?"var(--sage)":"var(--white)"; t("t2-egitim").style.color=tab==="tab-egitim"?"white":"var(--text-mid)"; }
+  if(t("t2-diger")) { t("t2-diger").style.background=tab==="tab-diger"?"var(--sage)":"var(--white)"; t("t2-diger").style.color=tab==="tab-diger"?"white":"var(--text-mid)"; }
 }
 
-let secilenOdemeTip2 = "";
+// ═══ 10. ÖDEME TİPİ ═══
 function setOdemeTip2(tip) {
   secilenOdemeTip2 = tip;
-  ["havale","kredi","vinov"].forEach(t=>{
-    const card=document.getElementById("ot-"+t);
-    const radio=document.getElementById("or-"+t);
+  ["havale","kredi","vinov"].forEach(function(t){
+    var card=document.getElementById("ot-"+t);
+    var radio=document.getElementById("or-"+t);
     if(!card||!radio) return;
     if(t===tip) {
-      card.style.background="rgba(255,255,255,0.22)";
-      card.style.borderColor="white";
-      card.style.boxShadow="0 0 0 2px rgba(255,255,255,0.3)";
-      radio.style.background="white";
-      radio.style.borderColor="white";
-      radio.querySelector(".ot-dot").style.background="var(--sage-dark)";
+      card.style.background="rgba(255,255,255,0.22)"; card.style.borderColor="white"; card.style.boxShadow="0 0 0 2px rgba(255,255,255,0.3)";
+      radio.style.background="white"; radio.style.borderColor="white";
+      var dot=radio.querySelector(".ot-dot"); if(dot) dot.style.background="var(--sage-dark)";
     } else {
-      card.style.background="";
-      card.style.borderColor="";
-      card.style.boxShadow="";
-      radio.style.background="";
-      radio.style.borderColor="";
-      radio.querySelector(".ot-dot").style.background="transparent";
+      card.style.background=""; card.style.borderColor=""; card.style.boxShadow="";
+      radio.style.background=""; radio.style.borderColor="";
+      var dot=radio.querySelector(".ot-dot"); if(dot) dot.style.background="transparent";
     }
   });
 }
 
-// ═══ REFERANS KOD ═══
+// ═══ 11. REFERANS KOD ═══
 async function getOrCreateRefKod2(uid, email) {
   try {
-    const ref = db.collection("referanslar").doc(uid);
-    const snap = await ref.get();
-    if(snap.exists) {
-      appState2.refKod = snap.data().kod;
-    } else {
-      const kod = "BCK-" + Math.random().toString(36).substring(2,6).toUpperCase();
+    var ref = db.collection("referanslar").doc(uid);
+    var snap = await ref.get();
+    if(snap.exists) { appState2.refKod = snap.data().kod; }
+    else {
+      var kod = "BCK-" + Math.random().toString(36).substring(2,6).toUpperCase();
       appState2.refKod = kod;
-      await ref.set({ kod, uid, email, kayitSayisi:0, aktif:true, tip:"yeni", olusturma:new Date().toISOString() });
+      await ref.set({ kod:kod, uid:uid, email:email, kayitSayisi:0, aktif:true, tip:"yeni", olusturma:new Date().toISOString() });
     }
-    const el=document.getElementById("refKodDisplay"); if(el) el.textContent=appState2.refKod;
+    var el=document.getElementById("refKodDisplay"); if(el) el.textContent=appState2.refKod;
   } catch(e) { console.error(e); }
 }
-
 function copyRefKod() {
   if(!appState2.refKod) return;
-  navigator.clipboard.writeText(appState2.refKod).then(()=>showToast("✅ Referans kodu kopyalandı!"));
+  navigator.clipboard.writeText(appState2.refKod).then(function(){ showToast("✅ Referans kodu kopyalandı!"); });
 }
 
-// ═══ GİRİŞ TAKİBİ ═══
+// ═══ 12. GİRİŞ TAKİBİ ═══
 async function logGiris2(u) {
   try {
     await db.collection("girisler").add({ email:u.email, displayName:u.displayName||"", girisZamani:new Date().toISOString(), uid:u.uid, sistem:"yenikayit" });
     emailjs.init(EMAILJS_CONFIG.publicKey);
     await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-      to_email: SCHOOL_EMAIL,
-      cocuk_adi: "Yeni Kayıt Sistem Girişi",
-      mesaj: `YENİ KAYIT SİSTEM GİRİŞİ
-Mail: ${u.email}
-Ad: ${u.displayName||"–"}
-Zaman: ${new Date().toLocaleString("tr-TR")}`
+      to_email: SCHOOL_EMAIL, cocuk_adi: "Yeni Kayıt Sistem Girişi",
+      mesaj: "YENİ KAYIT SİSTEM GİRİŞİ\nMail: "+u.email+"\nAd: "+(u.displayName||"–")+"\nZaman: "+new Date().toLocaleString("tr-TR")
     });
   } catch(e) { console.log(e); }
 }
 
-// ═══ KAYDET ═══
+// ═══ 13. KAYDET ═══
 async function kaydet2() {
-  if(!currentUser || !appState2.hesap) return;
-  const btn = document.getElementById("btnKaydet2");
+  if(!currentUser||!appState2.hesap) return;
+  var btn=document.getElementById("btnKaydet2");
   if(btn) { btn.disabled=true; btn.textContent="⏳ Gönderiliyor..."; }
   showLoading("Başvuru gönderiliyor...");
   try {
-    const h = appState2.hesap;
-    const data = {
-      uid: currentUser.uid, email: currentUser.email,
-      displayName: currentUser.displayName||"",
-      veliAd: document.getElementById("veliAd")?.value?.trim()||"",
-      veliSoyad: document.getElementById("veliSoyad")?.value?.trim()||"",
-      phone: document.getElementById("veliTel")?.value?.trim()||"",
-      childAd: document.getElementById("childAd")?.value?.trim()||"",
-      childSoyad: document.getElementById("childSoyad")?.value?.trim()||"",
-      childDogum: document.getElementById("childDogum")?.value||"",
-      childCinsiyet: document.getElementById("childCinsiyet")?.value||"",
-      program: appState2.program,
-      kayitTur: appState2.kayitTur,
-      aylikUcret: h.aylik, egitim: h.egitim, yemek: h.yemek,
-      onOdeme: h.onOdeme, iAylik: h.iAylik, iiAylik: h.iiAylik, yillik: h.yillik,
-      refKodu: appState2.refKod||"",
-      refKoduKullanildi: document.getElementById("refKodGiris")?.value?.trim()||"",
-      refliGeliyor: appState2.refliGeliyor,
-      kiyafetUcretsiz: appState2.refliGeliyor,
-      odemeTercihi: secilenOdemeTip2||"belirtilmedi",
-      faturaIstegi: document.getElementById("faturaCheck2")?.checked||false,
-      kayitTarihi: new Date().toISOString(),
-      durum: "beklemede", sistem: "yenikayit"
+    var h=appState2.hesap;
+    var g=function(id){ return ((document.getElementById(id)||{}).value||"").trim(); };
+    var data = {
+      uid:currentUser.uid, email:currentUser.email, displayName:currentUser.displayName||"",
+      veliAd:g("veliAd"), veliSoyad:g("veliSoyad"), phone:g("veliTel"),
+      childAd:g("childAd"), childSoyad:g("childSoyad"), childDogum:g("childDogum"),
+      childCinsiyet:g("childCinsiyet"), program:appState2.program, kayitTur:appState2.kayitTur,
+      aylikUcret:h.aylik, egitim:h.egitim, yemek:h.yemek, onOdeme:h.onOdeme,
+      iAylik:h.iAylik, iiAylik:h.iiAylik, yillik:h.yillik,
+      refKodu:appState2.refKod||"", refKoduKullanildi:g("refKodGiris"),
+      refliGeliyor:appState2.refliGeliyor, kiyafetUcretsiz:appState2.refliGeliyor,
+      odemeTercihi:secilenOdemeTip2||"belirtilmedi",
+      faturaIstegi:(document.getElementById("faturaCheck2")||{}).checked||false,
+      kayitTarihi:new Date().toISOString(), durum:"beklemede", sistem:"yenikayit"
     };
-
     await db.collection("yenikayit").doc(currentUser.uid).set(data);
-
-    // Referans kodu kullanıldıysa say
-    const refGiris = data.refKoduKullanildi;
-    if(refGiris && refGiris.startsWith("BCK-")) {
-      const q = await db.collection("referanslar").where("kod","==",refGiris).get();
-      if(!q.empty) {
-        const rd = q.docs[0];
-        await rd.ref.update({ kayitSayisi:(rd.data().kayitSayisi||0)+1 });
-      }
+    var refGiris=data.refKoduKullanildi;
+    if(refGiris&&refGiris.startsWith("BCK-")) {
+      var q=await db.collection("referanslar").where("kod","==",refGiris).get();
+      if(!q.empty) await q.docs[0].ref.update({ kayitSayisi:(q.docs[0].data().kayitSayisi||0)+1 });
     }
-
     await sendEmail2(data);
-    hideLoading();
-    goToScreen("screen-done");
+    hideLoading(); goToScreen("screen-done");
   } catch(e) {
-    hideLoading();
-    showToast("⚠️ Hata: "+e.message);
+    hideLoading(); showToast("⚠️ Hata: "+e.message);
     if(btn) { btn.disabled=false; btn.textContent="🌸 Başvuruyu Gönder"; }
   }
 }
-
 async function sendEmail2(data) {
   emailjs.init(EMAILJS_CONFIG.publicKey);
-  const h = appState2.hesap;
-  const turLabel = {onkayit:"Avantajlı Ön Kayıt", erken:"Erken Kayıt", normal:"Normal Kayıt"};
-  const progLabel = data.program==="tam"?"Tam Gün":"Yarım Gün";
-
-  const tablo = `ÖDEME TABLOSU - ${data.childAd} ${data.childSoyad}
-=================================================
-Kayıt Türü: ${turLabel[data.kayitTur]||""}
-Aylık Ücret: ${fmt(data.aylikUcret)} TL (${progLabel})
-Ön Ödeme: ${fmt(data.onOdeme)} TL (Kayıt günü)
-I. Dönem (Eyl-Oca): ${fmt(data.iAylik)} TL/ay
-II. Dönem (Şub-Haz): ${fmt(data.iiAylik)} TL/ay
-Yıllık Toplam: ${fmt(data.yillik)} TL
-Ödeme Tercihi: ${data.odemeTercihi}
-Fatura İsteği: ${data.faturaIstegi?"Evet":"Hayır"}`;
-
-  // Okul maili
+  var h=appState2.hesap;
+  var progLabel=data.program==="tam"?"Tam Gün":"Yarım Gün";
+  var tablo="ÖDEME TABLOSU - "+data.childAd+" "+data.childSoyad+"\n"+"=".repeat(40)+"\nKayıt Türü: "+(data.kayitTur==="onkayit"?"Avantajlı Ön Kayıt":data.kayitTur==="erken"?"Erken Kayıt":"Normal Kayıt")+"\nAylık Ücret: "+fmt(data.aylikUcret)+" TL ("+progLabel+")\nÖn Ödeme: "+fmt(data.onOdeme)+" TL\nI. Dönem: "+fmt(data.iAylik)+" TL/ay\nII. Dönem: "+fmt(data.iiAylik)+" TL/ay\nYıllık Toplam: "+fmt(data.yillik)+" TL\nÖdeme Tercihi: "+data.odemeTercihi+"\nFatura: "+(data.faturaIstegi?"Evet":"Hayır");
   await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email: SCHOOL_EMAIL,
-    cocuk_adi: `${data.childAd} — YENİ KAYIT BAŞVURUSU`,
-    mesaj: `🌸 YENİ KAYIT BAŞVURUSU!
-
-Veli: ${data.veliAd} ${data.veliSoyad}
-Email: ${data.email}
-Tel: ${data.phone}
-
-Çocuk: ${data.childAd} ${data.childSoyad}
-Doğum: ${data.childDogum} | Cinsiyet: ${data.childCinsiyet}
-
-${tablo}
-
-Ref Kodu: ${data.refKodu}
-Ref Kullanıldı: ${data.refKoduKullanildi||"Yok"}
-Tarih: ${new Date().toLocaleString("tr-TR")}`
+    to_email:SCHOOL_EMAIL, cocuk_adi:data.childAd+" — YENİ KAYIT BAŞVURUSU",
+    mesaj:"🌸 YENİ KAYIT BAŞVURUSU!\n\nVeli: "+data.veliAd+" "+data.veliSoyad+"\nEmail: "+data.email+"\nTel: "+data.phone+"\n\nÇocuk: "+data.childAd+" "+data.childSoyad+"\nDoğum: "+data.childDogum+"\n\n"+tablo+"\n\nRef Kodu: "+data.refKodu+"\nRef Kullanıldı: "+(data.refKoduKullanildi||"Yok")+"\nTarih: "+new Date().toLocaleString("tr-TR")
   });
-
-  // Veliye teşekkür
   await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email: data.email,
-    cocuk_adi: `${data.childAd} ${data.childSoyad}`,
-    mesaj: `Sayın ${data.veliAd} ${data.veliSoyad},
-
-${data.childAd}'in Bir Çiçek Koleji Anaokulu'na ön kayıt başvurusu alındı. Sizi en kısa sürede arayacağız.
-
-"Bu okulda hiçbir balık uçmaya, hiçbir kuş yüzmeye zorlanmaz."
-
-${tablo}
-
-REFERANS KODUNUZ: ${data.refKodu}
-Bu kodu paylaşın, her kayıtta sürpriz avantajlar kazanın!
-
-1. Kayıt → I. Dönem Orman Okulu Servis ücreti — alınmaz!
-2. Kayıt → II. Dönem Orman Okulu Servis ücreti — alınmaz!
-3. Kayıt → Eğitim Materyallerinin %%50'si — alınmaz!
-
-Sevgi ve saygılarımızla,
-Bir Çiçek Koleji Anaokulu
-Tuzla Aydınlı, İstanbul
-eposta@bircicekkoleji.com`
+    to_email:data.email, cocuk_adi:data.childAd+" "+data.childSoyad,
+    mesaj:"Sayın "+data.veliAd+" "+data.veliSoyad+",\n\n"+data.childAd+"'in başvurusu alındı. En kısa sürede sizi arayacağız.\n\n"+tablo+"\n\nREFERANS KODUNUZ: "+data.refKodu+"\n\n1. Kayıt → I. Dönem Orman Okulu Servis ücreti — alınmaz!\n2. Kayıt → II. Dönem Orman Okulu Servis ücreti — alınmaz!\n3. Kayıt → Eğitim Materyallerinin %50si — alınmaz!\n\nSevgilerimizle,\nBir Çiçek Koleji Anaokulu"
   });
 }
 
-
-// ═══ SLIDER ═══
-let sliderIdx = 0;
-const TOTAL_SLIDES = 8;
-
-function getSliderW() {
-  const wrap = document.getElementById("yorumSlider");
-  if (!wrap) return 0;
-  const parent = wrap.parentElement;
-  return parent ? parent.getBoundingClientRect().width : 0;
+// ═══ 14. RANDEVU ═══
+function randevuAc(tip) {
+  var link = RANDEVU_LINKS[tip];
+  if(link) window.open(link, "_blank");
 }
 
-function applySlider() {
-  const w = getSliderW();
-  if (!w) return false;
-  const cards = document.querySelectorAll("#yorumSlider .yorum-card");
-  cards.forEach(card => {
-    card.style.minWidth = w + "px";
-    card.style.width = w + "px";
-    card.style.flexShrink = "0";
-  });
-  const slider = document.getElementById("yorumSlider");
-  if (slider) {
-    slider.style.transform = "translateX(-" + (sliderIdx * (w + 24)) + "px)";
+// ═══ 15. REFERANS KODLA BAŞLA ═══
+function refKodileBasla() {
+  var kod = ((document.getElementById("refKodHero")||{}).value||"").trim().toUpperCase();
+  if(!kod||!kod.startsWith("BCK-")||kod.length<7) { showToast("⚠️ Geçerli bir referans kodu girin (BCK-XXXX)"); return; }
+  appState2._pendingRefKod = kod;
+  if(currentUser) {
+    var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
+    goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı!");
+  } else {
+    var p=new firebase.auth.GoogleAuthProvider();
+    showLoading("Giriş yapılıyor...");
+    auth.signInWithPopup(p).then(function(r){
+      hideLoading(); onLogin(r.user);
+      setTimeout(function(){
+        var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
+        goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
+      }, 500);
+    }).catch(function(e){ hideLoading(); showToast("Giriş hatası: "+e.message); });
   }
-  return w;
 }
 
+// ═══ 16. SLIDER ═══
+var sliderAuto2 = null;
+function getSliderW() {
+  var wrap=document.getElementById("yorumSlider");
+  if(!wrap||!wrap.parentElement) return 0;
+  return wrap.parentElement.getBoundingClientRect().width || 0;
+}
+function applySlider() {
+  var w=getSliderW(); if(!w) return;
+  document.querySelectorAll("#yorumSlider .yorum-card").forEach(function(card){
+    card.style.minWidth=w+"px"; card.style.width=w+"px"; card.style.flexShrink="0";
+  });
+  var slider=document.getElementById("yorumSlider");
+  if(slider) slider.style.transform="translateX(-"+(sliderIdx*(w+24))+"px)";
+}
 function buildDots() {
-  const dots = document.getElementById("sliderDots");
-  if (!dots) return;
-  dots.innerHTML = "";
-  for (let i = 0; i < TOTAL_SLIDES; i++) {
-    const d = document.createElement("div");
-    const active = i === sliderIdx;
-    d.style.cssText = "width:" + (active ? "20" : "8") + "px;height:8px;border-radius:50px;background:" + (active ? "var(--sage)" : "rgba(61,107,79,0.25)") + ";cursor:pointer;transition:all 0.3s;flex-shrink:0;";
-    const idx = i;
-    d.onclick = function() { goSlide(idx); };
+  var dots=document.getElementById("sliderDots"); if(!dots) return;
+  dots.innerHTML="";
+  for(var i=0;i<TOTAL_SLIDES;i++) {
+    var d=document.createElement("div");
+    var active=i===sliderIdx;
+    d.style.cssText="width:"+(active?20:8)+"px;height:8px;border-radius:50px;background:"+(active?"var(--sage)":"rgba(61,107,79,0.25)")+";cursor:pointer;transition:all 0.3s;flex-shrink:0;";
+    (function(idx){ d.onclick=function(){ goSlide(idx); clearInterval(sliderAuto2); sliderAuto2=setInterval(sliderNext,10000); }; })(i);
     dots.appendChild(d);
   }
 }
-
 function goSlide(i) {
-  sliderIdx = ((i % TOTAL_SLIDES) + TOTAL_SLIDES) % TOTAL_SLIDES;
-  applySlider();
-  buildDots();
+  sliderIdx=((i%TOTAL_SLIDES)+TOTAL_SLIDES)%TOTAL_SLIDES;
+  applySlider(); buildDots();
 }
+function sliderNext() { goSlide(sliderIdx+1); }
+function sliderPrev() { goSlide(sliderIdx-1); }
+function reinitSlider() { applySlider(); buildDots(); }
 
-function sliderNext() { goSlide(sliderIdx + 1); }
-function sliderPrev() { goSlide(sliderIdx - 1); }
+// ═══ 17. YARDIMCI ═══
+function fmt(n) { return new Intl.NumberFormat("tr-TR").format(Math.round(n)); }
+function showLoading(msg) { var o=document.getElementById("loadingOverlay"),t=document.getElementById("loadingText"); if(o) o.classList.add("show"); if(t) t.textContent=msg||"Bekleyin..."; }
+function hideLoading() { var o=document.getElementById("loadingOverlay"); if(o) o.classList.remove("show"); }
+function showToast(msg) { var t=document.getElementById("toast"); if(!t) return; t.textContent=msg; t.classList.add("show"); setTimeout(function(){ t.classList.remove("show"); },3000); }
 
-let sliderAuto = setInterval(sliderNext, 10000);
+// ═══ 18. BAŞLATMA ═══
+// Auth - en sona, tüm fonksiyonlar tanımlandıktan sonra
+auth.onAuthStateChanged(function(u){ if(u){ currentUser=u; onLogin(u); } });
 
-function reinitSlider() {
-  applySlider();
-  buildDots();
-}
-
-// Birden fazla noktada başlat — DOM hazır olana kadar dene
-window.addEventListener("load", function() {
+window.addEventListener("load", function(){
   reinitSlider();
-  setTimeout(reinitSlider, 200);
-  setTimeout(reinitSlider, 600);
+  setTimeout(reinitSlider, 300);
+  sliderAuto2 = setInterval(sliderNext, 10000);
 });
 window.addEventListener("resize", reinitSlider);
-document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(reinitSlider, 100);
-});
-
-
-// ═══ RANDEVU ═══
-// Linkleri buraya girin:
-const RANDEVU_LINKS = {
-  online:   "https://calendar.app.google/t6kd22VPtPCHyG5o8",   // Google Calendar online randevu linki
-  yuzyuze:  "https://calendar.app.google/ocKandk7qZfSnYkPA"   // Google Calendar yüz yüze randevu linki
-};
-
-function randevuAc(tip) {
-  const link = RANDEVU_LINKS[tip];
-  if (!link || link.includes("BURAYA")) {
-    // Modal göster - link henüz girilmemiş
-    showRandevuModal(tip);
-    return;
-  }
-  window.open(link, "_blank");
-}
-
-function showRandevuModal(tip) {
-  const modal = document.getElementById("randevuModal");
-  const title = document.getElementById("randevuModalTitle");
-  const desc = document.getElementById("randevuModalDesc");
-  if(!modal) return;
-  if(tip === "online") {
-    title.textContent = "💻 Online Randevu";
-    desc.textContent = "45 dakika · Google Meet veya benzeri platformda";
-  } else {
-    title.textContent = "🤝 Yüz Yüze Randevu";
-    desc.textContent = "1 saat · Bir Çiçek Koleji Anaokulu, Tuzla Aydınlı";
-  }
-  modal.style.display = "flex";
-}
-
-function closeRandevuModal() {
-  const modal = document.getElementById("randevuModal");
-  if(modal) modal.style.display = "none";
-}
-
-
-function refKodileBasla() {
-  const kod = document.getElementById("refKodHero")?.value?.trim().toUpperCase();
-  if(!kod || !kod.startsWith("BCK-") || kod.length < 7) {
-    showToast("⚠️ Geçerli bir referans kodu girin (BCK-XXXX)");
-    return;
-  }
-  // Google ile giriş yap, sonra referans kodu form'a otomatik doldur
-  signInWithGoogle().then ? null : null;
-  // Kodu state'e kaydet
-  appState2._pendingRefKod = kod;
-  if(currentUser) {
-    // Zaten giriş yapmışsa direkt form'a geç
-    document.getElementById("refKodGiris").value = kod;
-    goToScreen("screen-form");
-    showToast("✅ Referans kodu uygulandı!");
-  } else {
-    // Giriş yaptıktan sonra otomatik doldur
-    const p = new firebase.auth.GoogleAuthProvider();
-    showLoading("Giriş yapılıyor...");
-    auth.signInWithPopup(p).then(r => {
-      hideLoading();
-      onLogin(r.user);
-      setTimeout(() => {
-        const el = document.getElementById("refKodGiris");
-        if(el) el.value = kod;
-        goToScreen("screen-form");
-        showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
-      }, 500);
-    }).catch(e => { hideLoading(); showToast("Giriş hatası: "+e.message); });
-  }
-}
-
-
-// ═══ DÖNEM SAYAÇLARI ═══
-const PERIODS = [
-  { id: "cd-onkayit",  end: new Date("2026-04-30T23:59:59"), label: "Avantajlı Ön Kayıt" },
-  { id: "cd-erken",    end: new Date("2026-05-30T23:59:59"), label: "Erken Kayıt" },
-  { id: "cd-normal",   end: new Date("2026-09-30T23:59:59"), label: "Normal Kayıt", start: new Date("2026-06-01") }
-];
-
-function updatePeriodCountdowns() {
-  const now = new Date();
-  PERIODS.forEach(p => {
-    const el = document.getElementById(p.id);
-    if (!el) return;
-    const diff = p.end - now;
-    if (diff <= 0) {
-      el.innerHTML = '<span style="color:#ef4444; font-size:10px; white-space:nowrap;">⛔ Dönem Kapandı</span>';
-      return;
-    }
-    // Henüz başlamamışsa
-    if (p.start && now < p.start) {
-      const startDiff = p.start - now;
-      const sd = Math.floor(startDiff/86400000);
-      el.innerHTML = `<span style="font-size:10px; opacity:0.6; display:block; white-space:nowrap;">${sd} gün sonra başlar</span>`;
-      return;
-    }
-    const d = Math.floor(diff/86400000);
-    const h = Math.floor((diff%86400000)/3600000);
-    const m = Math.floor((diff%3600000)/60000);
-    const s = Math.floor((diff%60000)/1000);
-    el.innerHTML = `<span style="font-size:10px; opacity:0.8; display:block; margin-bottom:2px; white-space:nowrap;">Kalan süre</span><span style="font-size:12px; font-weight:800; letter-spacing:0.3px; white-space:nowrap;">${d}g ${String(h).padStart(2,"0")}s ${String(m).padStart(2,"0")}d ${String(s).padStart(2,"0")}sn</span>`;
-  });
-}
-setInterval(updatePeriodCountdowns, 1000);
-updatePeriodCountdowns();
-
-// ═══ YARDIMCI ═══
-function fmt(n) { return new Intl.NumberFormat("tr-TR").format(Math.round(n)); }
-function showLoading(msg) { const o=document.getElementById("loadingOverlay"),t=document.getElementById("loadingText"); if(o)o.classList.add("show"); if(t)t.textContent=msg||"Bekleyin..."; }
-function hideLoading() { document.getElementById("loadingOverlay")?.classList.remove("show"); }
-function showToast(msg) { const t=document.getElementById("toast"); if(!t)return; t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),3000); }
 </script>
 </body>
 </html>
