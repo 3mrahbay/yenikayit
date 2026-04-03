@@ -573,9 +573,7 @@ textarea { resize:vertical; min-height:80px; }
     <div class="hero-left">
       <div class="hero-eyebrow">🌿 2026-2027 Erken Kayıt Dönemini Açıktık</div>
       <h1 class="hero-title">
-        Kökler toprakta,<br>
-        <em>merak sınırsız,</em><br>
-        gelecek güvende
+        Her Çocuk Bir Çiçek —<br><em>Nasıl Açacağını</em> Seçmek Ona Ait.<br><span style="font-size:0.6em; font-weight:400; color:var(--sage-light); letter-spacing:0.5px;">O Öğrenir, Yapar ve Olur. 📖</span>
       </h1>
       <p class="hero-lead">
         Tuzla'da tek MACTE onaylı Montessori ve Türkiye Orman Okulları 3. Seviye Orman Lideri Eğitimli programını bir arada sunan okulumuz çocuklarımıza;
@@ -620,34 +618,31 @@ textarea { resize:vertical; min-height:80px; }
         <div class="price-options">
           <div class="price-option gold-card" style="background:var(--gold-pale); border-color:rgba(184,150,46,0.4);">
             <div class="price-option-left">
-              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
-                <div style="background:var(--gold); color:white; font-size:10px; font-weight:800; padding:2px 8px; border-radius:50px; letter-spacing:0.3px;">%7,5 İNDİRİM</div>
-              </div>
-              <div class="price-option-name">30 Nisan'a kadar</div>
-              <div class="price-option-date">Normal kayıta göre 3.000 TL tasarruf</div>
+              <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
+              <div class="price-option-name">30 Nisan 2026'a kadar</div>
             </div>
-            <div style="text-align:right;">
-              <div style="text-decoration:line-through; font-size:12px; color:var(--text-light); margin-bottom:2px;">40.000 TL</div>
-              <div class="price-option-val gold">37.000 TL</div>
-            </div>
+            <div style="font-size:11px; color:var(--gold); font-weight:700; background:rgba(184,150,46,0.15); padding:4px 10px; border-radius:6px; white-space:nowrap;">Ücret için randevu alın</div>
           </div>
           <div class="price-option featured">
             <div class="price-option-left">
-              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                <div class="price-option-tag">Erken Kayıt</div>
-                <div style="background:var(--sage); color:white; font-size:10px; font-weight:800; padding:2px 8px; border-radius:50px; letter-spacing:0.3px;">%3,75 İNDİRİM</div>
-              </div>
-              <div class="price-option-name">01 Mayıs – 30 Mayıs</div>
-              <div class="price-option-date">Normal kayıta göre 1.500 TL tasarruf</div>
+              <div class="price-option-tag">Erken Kayıt</div>
+              <div class="price-option-name">01 Mayıs – 30 Mayıs 2026</div>
             </div>
-            <div style="text-align:right;">
-              <div style="text-decoration:line-through; font-size:12px; color:var(--text-light); margin-bottom:2px;">40.000 TL</div>
-              <div class="price-option-val">38.500 TL</div>
-            </div>
+            <div style="font-size:11px; color:var(--sage); font-weight:700; background:rgba(61,107,79,0.12); padding:4px 10px; border-radius:6px; white-space:nowrap;">Ücret için randevu alın</div>
           </div>
-
         </div>
+        <!-- Referans ile ön kayıt -->
+        <div style="background:linear-gradient(135deg,rgba(184,150,46,0.25) 0%,rgba(184,150,46,0.1) 100%); border:1.5px solid rgba(184,150,46,0.5); border-radius:14px; padding:16px 18px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:700; color:#F0D490; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">🎁 Veli Referansı ile Ön Kayıt</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.78); margin-bottom:12px; line-height:1.5;">Referans kodu olan aileler Orman Okulu kıyafeti <strong style="color:#F0D490;">ücretsiz!</strong></div>
+          <div style="display:flex; gap:8px;">
+            <input id="refKodHero" type="text" placeholder="BCK-XXXX" maxlength="8"
+              style="flex:1; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.35); border-radius:8px; padding:9px 12px; font-size:14px; color:white; font-family:'Outfit',sans-serif; text-transform:uppercase; letter-spacing:2px; outline:none;"
+              oninput="this.value=this.value.toUpperCase()">
+            <button onclick="refKodileBasla()" style="background:var(--gold); border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:700; color:white; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">Başvur →</button>
+          </div>
+        </div>
+
         <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:14px 16px; margin-bottom:16px;">
           <div style="font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">📅 Ücret için randevu alın</div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="randevuBtnler">
@@ -926,7 +921,7 @@ textarea { resize:vertical; min-height:80px; }
       <div style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; margin-bottom:8px;">Hoş geldiniz! 🌸</div>
       <div style="color:rgba(255,255,255,0.75); font-size:14px;" id="portalEmail">–</div>
       <div style="margin-top:16px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:rgba(255,255,255,0.88); line-height:1.65;">
-        ⭐ <strong>30 Nisan'a kadar</strong> ön kayıt yapan aileler <strong>37.000 TL avantajlı ücretle</strong> başvurabilir.
+        ⭐ <strong>30 Nisan'a kadar</strong> avantajlı ön kayıt fırsatı. Ücret bilgisi için randevu alın.
       </div>
     </div>
     <div style="display:flex; flex-direction:column; gap:14px;">
@@ -964,14 +959,14 @@ textarea { resize:vertical; min-height:80px; }
             <div class="kayit-label">⭐ Avantajlı Ön Kayıt</div>
             <div class="kayit-desc">30 Nisan 2026'ya kadar · Özel erken başvuru fırsatı</div>
           </div>
-          <div class="kayit-price gold">37.000 TL</div>
+          <div style="font-size:12px; color:var(--gold); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
         <div class="kayit-type-card" onclick="selectKayitType('erken', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">Erken Kayıt</div>
             <div class="kayit-desc">01 Mayıs – 30 Mayıs 2026</div>
           </div>
-          <div class="kayit-price">38.500 TL</div>
+          <div style="font-size:12px; color:var(--sage); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
 
       </div>
@@ -1293,7 +1288,7 @@ function renderHesaplama2() {
   const childSoyad = document.getElementById("childSoyad")?.value?.trim() || "";
   if(s("childAdDisplay")) s("childAdDisplay").textContent = childAd+" "+childSoyad;
 
-  const turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt (37.000 TL)", erken:"Erken Kayıt (38.000 TL)", normal:"Normal Kayıt (40.000 TL)"};
+  const turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
   if(s("kayitTurDisplay")) s("kayitTurDisplay").textContent = turLabel[appState2.kayitTur]||"–";
   if(s("aylikDisplay")) s("aylikDisplay").textContent = fmt(h.aylik)+" TL";
   if(s("egitimDisplay")) s("egitimDisplay").textContent = fmt(h.egitim)+" TL";
@@ -1593,6 +1588,39 @@ function showRandevuModal(tip) {
 function closeRandevuModal() {
   const modal = document.getElementById("randevuModal");
   if(modal) modal.style.display = "none";
+}
+
+
+function refKodileBasla() {
+  const kod = document.getElementById("refKodHero")?.value?.trim().toUpperCase();
+  if(!kod || !kod.startsWith("BCK-") || kod.length < 7) {
+    showToast("⚠️ Geçerli bir referans kodu girin (BCK-XXXX)");
+    return;
+  }
+  // Google ile giriş yap, sonra referans kodu form'a otomatik doldur
+  signInWithGoogle().then ? null : null;
+  // Kodu state'e kaydet
+  appState2._pendingRefKod = kod;
+  if(currentUser) {
+    // Zaten giriş yapmışsa direkt form'a geç
+    document.getElementById("refKodGiris").value = kod;
+    goToScreen("screen-form");
+    showToast("✅ Referans kodu uygulandı!");
+  } else {
+    // Giriş yaptıktan sonra otomatik doldur
+    const p = new firebase.auth.GoogleAuthProvider();
+    showLoading("Giriş yapılıyor...");
+    auth.signInWithPopup(p).then(r => {
+      hideLoading();
+      onLogin(r.user);
+      setTimeout(() => {
+        const el = document.getElementById("refKodGiris");
+        if(el) el.value = kod;
+        goToScreen("screen-form");
+        showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
+      }, 500);
+    }).catch(e => { hideLoading(); showToast("Giriş hatası: "+e.message); });
+  }
 }
 
 // ═══ YARDIMCI ═══
