@@ -1370,7 +1370,6 @@ function initFirebase() {
       if(u && !authHandled) {
         authHandled = true;
         currentUser = u;
-        hideLoading();
         try {
           var pendingKod = localStorage.getItem("pendingRefKod");
           if(pendingKod) { localStorage.removeItem("pendingRefKod"); appState2._pendingRefKod = pendingKod; }
@@ -1441,20 +1440,22 @@ function scrollTo(id) { document.getElementById(id) && document.getElementById(i
 
 // ═══ 7. AUTH ═══
 function signInWithGoogle() {
+  // auth henüz hazır değilse Firebase'i başlat ve bekle
+  if(!auth) {
+    showToast("⏳ Sistem başlatılıyor...");
+    initFirebase();
+    setTimeout(signInWithGoogle, 1500);
+    return;
+  }
   var p = new firebase.auth.GoogleAuthProvider();
   p.setCustomParameters({ prompt: "select_account" });
-  showLoading("Giriş yapılıyor...");
-  // Popup dene, iOS/bazı tarayıcılarda hata verirse redirect'e geç
   auth.signInWithPopup(p)
-    .then(function(r){ hideLoading(); onLogin(r.user); })
-    .catch(function(e){
-      hideLoading();
-      if(e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment" || e.code === "auth/cancelled-popup-request") {
-        // Popup çalışmadı, redirect dene
-        showLoading("Yönlendiriliyor...");
-        try { localStorage.setItem("pendingLogin","1"); } catch(ex){}
-        auth.signInWithRedirect(p);
-      } else {
+    .then(function(r) {
+      if(r && r.user) onLogin(r.user);
+    })
+    .catch(function(e) {
+      console.error("Popup hatası:", e.code, e.message);
+      if(e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") {
         showToast("Giriş hatası: " + e.message);
       }
     });
@@ -1670,26 +1671,24 @@ function refKodileBasla() {
     var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
     goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı!");
   } else {
+    if(!auth) { showToast("Sistem hazırlanıyor..."); return; }
     var p = new firebase.auth.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
-    showLoading("Giriş yapılıyor...");
     auth.signInWithPopup(p)
-      .then(function(r){
-        hideLoading(); onLogin(r.user);
-        setTimeout(function(){
-          var el=document.getElementById("refKodGiris"); if(el) el.value=kod;
-          goToScreen("screen-form"); showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
-        }, 600);
-      })
-      .catch(function(e){
-        hideLoading();
-        if(e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
-          try { localStorage.setItem("pendingRefKod", kod); localStorage.setItem("pendingLogin","1"); } catch(ex){}
-          showLoading("Yönlendiriliyor...");
-          auth.signInWithRedirect(p);
-        } else {
-          showToast("Giriş hatası: " + e.message);
+      .then(function(r) {
+        if(r && r.user) {
+          onLogin(r.user);
+          setTimeout(function(){
+            var el = document.getElementById("refKodGiris");
+            if(el) el.value = kod;
+            goToScreen("screen-form");
+            showToast("✅ Referans kodu uygulandı! Kıyafet ücretsiz!");
+          }, 600);
         }
+      })
+      .catch(function(e) {
+        console.error("Popup hatası:", e.code, e.message);
+        showToast("Giriş hatası: " + e.message);
       });
   }
 }
@@ -1749,10 +1748,20 @@ function showToast(msg) { var t=document.getElementById("toast"); if(!t) return;
 
 // ═══ 18. BAŞLATMA ═══
 
-window.addEventListener("load", function(){
-  // Firebase'i başlat
+// Firebase'i hemen başlat (script yüklendikten sonra)
+if(typeof firebase !== "undefined") {
   initFirebase();
-  // Slider'ı başlat
+} else {
+  // Script henüz yüklenmediyse bekle
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(initFirebase, 100);
+  });
+}
+
+window.addEventListener("load", function(){
+  // Emin olmak için tekrar çalıştır
+  if(!auth) initFirebase();
+  // Slider
   reinitSlider();
   setTimeout(reinitSlider, 300);
   sliderAuto2 = setInterval(sliderNext, 10000);
