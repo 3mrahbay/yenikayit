@@ -694,23 +694,24 @@ img, video, iframe {
           </div>
         </div>
         <!-- Referans ile ön kayıt -->
-        <div style="background:linear-gradient(135deg,rgba(184,150,46,0.25) 0%,rgba(184,150,46,0.1) 100%); border:1.5px solid rgba(184,150,46,0.5); border-radius:14px; padding:16px 18px; margin-bottom:12px;">
-          <div style="font-size:12px; font-weight:700; color:#F0D490; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">🎁 Veli Referansı ile Ön Kayıt</div>
-          <div style="font-size:12px; color:rgba(255,255,255,0.78); margin-bottom:12px; line-height:1.5;">Referans kodu olan aileler Orman Okulu kıyafeti <strong style="color:#F0D490;">ücretsiz!</strong></div>
+        <div style="background:linear-gradient(135deg,#FF6B35 0%,#E8521A 100%); border:none; border-radius:14px; padding:16px 18px; margin-bottom:12px; box-shadow:0 4px 20px rgba(255,107,53,0.35);">
+          <div style="font-size:12px; font-weight:800; color:white; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.8px;">🎁 Veli Referansı ile Ön Kayıt</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.9); margin-bottom:12px; line-height:1.5;">Referans kodu olan aileler Orman Okulu kıyafeti için <strong style="color:#FFE0D0; text-decoration:underline;">ücret ödemezsiniz!</strong></div>
           <div style="display:flex; gap:8px;">
             <input id="refKodHero" type="text" placeholder="BCK-XXXX" maxlength="8"
-              style="flex:1; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.35); border-radius:8px; padding:9px 12px; font-size:14px; color:white; font-family:'Outfit',sans-serif; text-transform:uppercase; letter-spacing:2px; outline:none;"
-              oninput="this.value=this.value.toUpperCase()">
-            <button onclick="refKodileBasla()" style="background:var(--gold); border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:700; color:white; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">Başvur →</button>
+              style="flex:1; background:rgba(255,255,255,0.2); border:1.5px solid rgba(255,255,255,0.5); border-radius:8px; padding:9px 12px; font-size:14px; color:white; font-family:'Outfit',sans-serif; text-transform:uppercase; letter-spacing:2px; outline:none;"
+              oninput="this.value=this.value.toUpperCase()"
+              onfocus="this.style.background='rgba(255,255,255,0.3)'" onblur="this.style.background='rgba(255,255,255,0.2)'">
+            <button onclick="refKodileBasla()" style="background:white; border:none; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:800; color:#E8521A; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.15);">Başvur →</button>
           </div>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px;">
-          <a href="https://calendar.app.google/t6kd22VPtPCHyG5o8" target="_blank" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:white; border-radius:10px; padding:10px 8px; font-size:12px; font-weight:600; text-decoration:none; text-align:center; display:block; transition:all 0.2s;">
-            💻 Online Randevu<br><span style="font-weight:400; opacity:0.7; font-size:11px;">45 dakika</span>
+          <a href="https://calendar.app.google/t6kd22VPtPCHyG5o8" target="_blank" style="background:linear-gradient(135deg,#3D8B6E,#2A6B52); border:none; color:white; border-radius:10px; padding:11px 8px; font-size:12px; font-weight:700; text-decoration:none; text-align:center; display:block; transition:all 0.2s; box-shadow:0 3px 10px rgba(61,107,79,0.4);">
+            💻 Online Randevu<br><span style="font-weight:400; opacity:0.85; font-size:11px;">45 dakika</span>
           </a>
-          <a href="https://calendar.app.google/ocKandk7qZfSnYkPA" target="_blank" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:white; border-radius:10px; padding:10px 8px; font-size:12px; font-weight:600; text-decoration:none; text-align:center; display:block; transition:all 0.2s;">
-            🤝 Yüz Yüze<br><span style="font-weight:400; opacity:0.7; font-size:11px;">1 saat · Okulda</span>
+          <a href="https://calendar.app.google/ocKandk7qZfSnYkPA" target="_blank" style="background:linear-gradient(135deg,#B8962E,#9A7A22); border:none; color:white; border-radius:10px; padding:11px 8px; font-size:12px; font-weight:700; text-decoration:none; text-align:center; display:block; transition:all 0.2s; box-shadow:0 3px 10px rgba(184,150,46,0.4);">
+            🤝 Yüz Yüze<br><span style="font-weight:400; opacity:0.85; font-size:11px;">1 saat · Okulda</span>
           </a>
         </div>
 
@@ -881,15 +882,15 @@ img, video, iframe {
           <div style="display:flex; flex-direction:column; gap:12px;">
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">1</div>
-              <div><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis — alınmaz!</div>
+              <div><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — alınmaz!</div>
             </div>
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">2</div>
-              <div><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis — alınmaz!</div>
+              <div><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — alınmaz!</div>
             </div>
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">3</div>
-              <div><strong>3. Kayıt:</strong> Eğitim Materyalleri — alınmaz!</div>
+              <div><strong>3. Kayıt:</strong> Eğitim Materyallerinin %50'si — alınmaz!</div>
             </div>
           </div>
           <div style="margin-top:16px; font-size:12px; color:var(--text-light); font-style:italic; line-height:1.6;">
@@ -1164,6 +1165,14 @@ img, video, iframe {
       <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:var(--sage-dark); line-height:1.6; margin-top:12px;">
         ℹ️ Ek ödemeler eğitim ücretinden bağımsız olup belirtilen tarihlerde ayrıca ödenir.
       </div>
+      <div style="background:linear-gradient(135deg,#FF6B35,#E8521A); border-radius:12px; padding:14px 18px; font-size:13px; color:white; line-height:1.7; margin-top:10px;">
+        🎁 <strong>Referans Avantajlarınız:</strong><br>
+        <span style="opacity:0.92;">
+        1. Kayıt → I. Dönem Orman Okulu Servis ücreti alınmaz<br>
+        2. Kayıt → II. Dönem Orman Okulu Servis ücreti alınmaz<br>
+        3. Kayıt → Eğitim Materyallerinin %50'si alınmaz
+        </span>
+      </div>
     </div>
 
     <!-- Referans kutusu -->
@@ -1173,9 +1182,9 @@ img, video, iframe {
       <div class="ref-desc">Bu kodu arkadaşlarınızla paylaşın. Her kayıt eden aile için sürpriz avantajlar kazanın!</div>
       <button class="btn-copy" onclick="copyRefKod()">📋 Kopyala</button>
       <div class="ref-steps">
-        <div class="ref-step"><div class="ref-step-num">1</div><div class="ref-step-text"><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis — alınmaz!</div></div>
-        <div class="ref-step"><div class="ref-step-num">2</div><div class="ref-step-text"><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis — alınmaz!</div></div>
-        <div class="ref-step"><div class="ref-step-num">3</div><div class="ref-step-text"><strong>3. Kayıt:</strong> Eğitim Materyalleri — alınmaz!</div></div>
+        <div class="ref-step"><div class="ref-step-num">1</div><div class="ref-step-text"><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — alınmaz!</div></div>
+        <div class="ref-step"><div class="ref-step-num">2</div><div class="ref-step-text"><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — alınmaz!</div></div>
+        <div class="ref-step"><div class="ref-step-num">3</div><div class="ref-step-text"><strong>3. Kayıt:</strong> Eğitim Materyallerinin %50'si — alınmaz!</div></div>
       </div>
       <div style="margin-top:14px; background:rgba(0,0,0,0.15); border-radius:10px; padding:12px; font-size:11px; color:rgba(255,255,255,0.7); line-height:1.6; font-style:italic;">
         Ekim ayına kadar referanslı gelen kayıtlarda indirim kabul edilir. İndirim yapılan ödemeler tahsil edildiyse son iki aydaki ödemelerden mahsuplaşılır.
@@ -1598,9 +1607,9 @@ ${tablo}
 REFERANS KODUNUZ: ${data.refKodu}
 Bu kodu paylaşın, her kayıtta sürpriz avantajlar kazanın!
 
-1. Kayıt → I. Dönem Servis — alınmaz!
-2. Kayıt → II. Dönem Servis — alınmaz!
-3. Kayıt → Eğitim Materyalleri — alınmaz!
+1. Kayıt → I. Dönem Orman Okulu Servis ücreti — alınmaz!
+2. Kayıt → II. Dönem Orman Okulu Servis ücreti — alınmaz!
+3. Kayıt → Eğitim Materyallerinin %%50'si — alınmaz!
 
 Sevgi ve saygılarımızla,
 Bir Çiçek Koleji Anaokulu
