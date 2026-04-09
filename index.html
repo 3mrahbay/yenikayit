@@ -501,10 +501,6 @@ html, body {
   max-width: 100vw;
   overflow-x: hidden;
 }
-* {
-  max-width: 100%;
-  box-sizing: border-box;
-}
 img, video, iframe {
   max-width: 100%;
   height: auto;
@@ -512,58 +508,135 @@ img, video, iframe {
 .hero-section {
   overflow: hidden;
 }
-#yorumSlider {
+#sliderWrapper {
   overflow: hidden;
-}
-
-.slider-card {
-  min-width: 100% !important;
-  width: 100% !important;
-  box-sizing: border-box;
-}
-#yorumSlider {
-  overflow: visible;
 }
 .yorum-card {
   box-sizing: border-box;
 }
-@media (max-width: 768px) {
-  .iletisim-grid { grid-template-columns: 1fr 1fr !important; gap:12px !important; }
-}
-/* Responsive */
+
+/* ══ RESPONSIVE: TABLET ══ */
 @media (max-width:768px) {
-  .harita-grid { grid-template-columns:1fr !important; gap:24px !important; padding:32px 16px !important; }
-  .harita-iframe-wrap { height:260px !important; }
-  .harita-iframe-wrap iframe { height:260px !important; }
-  .hero-section { grid-template-columns:1fr; gap:32px; padding:28px 20px !important; }
-  .hero-right { display:none; }
-  .hero-title { font-size:36px !important; }
-  .philosophy-grid { grid-template-columns:1fr; gap:16px; }
-  .yorum-grid { grid-template-columns:1fr; }
-  .orman-section { grid-template-columns:1fr !important; padding:32px 24px !important; gap:28px !important; }
-  .stat-strip { grid-template-columns:1fr 1fr; padding:24px; gap:16px; }
-  .field-row { grid-template-columns:1fr; }
-  .navbar { padding:12px 16px; }
-  .nav-brand { font-size:14px; }
-  .section { padding:40px 16px !important; }
+  /* Navbar */
+  .navbar { padding:10px 14px; gap:8px; }
+  .nav-logo img { width:32px; height:32px; }
+  .nav-brand { font-size:13px; }
+  .nav-sub { font-size:10px; }
+  .nav-cta { padding:8px 14px; font-size:12px; gap:6px; white-space:nowrap; }
+  .nav-cta svg { width:14px; height:14px; }
+
+  /* Hero */
+  .hero-section { grid-template-columns:1fr; gap:24px; padding:24px 16px !important; }
+  .hero-title { font-size:32px !important; }
+  .hero-lead { font-size:15px; margin-bottom:20px; }
+  .hero-eyebrow { font-size:12px; padding:6px 14px; margin-bottom:20px; }
+  .hero-actions { flex-direction:column; gap:10px; }
+  .hero-actions .btn-primary { width:100%; justify-content:center; padding:14px 20px; font-size:15px; }
+  .hero-actions .btn-outline { width:100%; text-align:center; justify-content:center; padding:12px 20px; font-size:14px; }
+
+  /* Hero right — mobilden GÖSTERİLSİN ama kompakt */
+  .hero-right { display:block !important; }
+  .price-showcase { padding:20px 16px !important; border-radius:20px; }
+  .price-badge { font-size:11px; padding:6px 14px; margin-bottom:16px; }
+  .price-deadline { padding:12px 14px; border-radius:12px; flex-direction:column; gap:10px; align-items:flex-start; }
+  .price-deadline-val { font-size:18px; }
+  .price-countdown { gap:8px; }
+  .price-cd-item { padding:6px 10px; }
+  .price-cd-num { font-size:20px !important; }
+  .price-option { padding:14px 16px; border-radius:12px; }
+  .price-option-name { font-size:13px; }
+  .price-option-tag { font-size:9px; }
+
+  /* Sections */
+  .section { padding:36px 16px !important; }
   .section-inner { padding:0 !important; }
-  .kayit-cta { padding:36px 20px !important; }
-  .kayit-cta h2 { font-size:30px !important; }
-  .form-wrap { padding:32px 16px !important; }
-  .price-showcase { padding:24px 20px !important; }
-  .yorum-section { padding:36px 20px !important; }
-  .ref-box { padding:24px 20px !important; }
-  .orman-title { font-size:32px !important; }
-  .done-wrap { padding:48px 20px !important; }
+  .section-title { font-size:28px !important; }
+
+  /* Montessori kartları */
+  .philosophy-grid { grid-template-columns:1fr !important; gap:14px; }
+
+  /* Orman Okulu */
+  .orman-section { grid-template-columns:1fr !important; padding:28px 16px !important; gap:24px !important; }
+  .orman-title { font-size:28px !important; }
+
+  /* Yorum Slider */
+  .yorum-section { padding:32px 16px !important; }
+
+  /* Kayıt CTA */
+  .kayit-cta { padding:32px 16px !important; }
+  .kayit-cta h2 { font-size:26px !important; }
+
+  /* Referans section — 2 kolon → 1 kolon */
+  .ref-grid-2col {
+    grid-template-columns:1fr !important;
+    gap:24px !important;
+  }
+
+  /* İletişim grid — 4 kolon → 2 kolon */
+  .iletisim-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+  .iletisim-grid a { padding:20px 12px !important; border-radius:14px !important; }
+  .iletisim-grid a div:first-child { width:44px !important; height:44px !important; font-size:20px !important; }
+
+  /* Harita */
+  .harita-grid { grid-template-columns:1fr !important; gap:24px !important; padding:32px 16px !important; }
+  .harita-grid h2 { font-size:28px !important; }
+  .harita-iframe-wrap { height:240px !important; }
+  .harita-iframe-wrap iframe { height:240px !important; }
+
+  /* Stat strip */
+  .stat-strip { grid-template-columns:1fr 1fr; padding:20px 16px; gap:14px; }
+
+  /* Form */
+  .field-row { grid-template-columns:1fr; }
+  .form-wrap { padding:28px 16px !important; }
+
+  /* Done screen */
+  .done-wrap { padding:40px 16px !important; }
+  .ref-box { padding:20px 16px !important; }
+
+  /* İletişim üst bölüm */
+  .iletisim-section { padding:36px 16px !important; }
+  .iletisim-section h2 { font-size:28px !important; }
 }
+
+/* ══ RESPONSIVE: KÜÇÜK TELEFON ══ */
 @media (max-width:480px) {
-  .hero-title { font-size:30px !important; }
-  .section-title { font-size:26px !important; }
-  .orman-title { font-size:26px !important; }
+  .hero-title { font-size:26px !important; }
+  .hero-lead { font-size:14px; }
+  .section-title { font-size:24px !important; }
+  .orman-title { font-size:24px !important; }
   .stat-strip { grid-template-columns:1fr; }
   .price-cd-num { font-size:18px !important; }
   .price-countdown { gap:6px !important; }
-  .price-cd-item { padding:6px 8px !important; }
+  .price-cd-item { padding:5px 8px !important; }
+  .price-deadline-val { font-size:16px; }
+  .kayit-cta h2 { font-size:22px !important; }
+  .iletisim-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
+  .iletisim-grid a { padding:16px 10px !important; }
+  .iletisim-grid a div:first-child { width:40px !important; height:40px !important; }
+  .harita-grid h2 { font-size:24px !important; }
+
+  /* Referans gold kutusu */
+  .ref-gold-box { padding:28px 16px !important; border-radius:18px !important; }
+  .ref-gold-box div[style*="font-size:28px"] { font-size:22px !important; }
+}
+
+/* ══ RESPONSIVE: ÇOK KÜÇÜK EKRAN ══ */
+@media (max-width:360px) {
+  .navbar { padding:8px 10px; }
+  .nav-logo img { width:28px; height:28px; }
+  .nav-brand { font-size:12px; }
+  .nav-cta { padding:7px 10px; font-size:11px; }
+  .hero-title { font-size:22px !important; }
+  .hero-section { padding:20px 12px !important; }
+  .section { padding:28px 12px !important; }
+  .form-wrap { padding:24px 12px !important; }
+  .price-showcase { padding:16px 12px !important; }
+}
+
+/* Randevu modal mobil */
+@media (max-width:480px) {
+  #randevuModal > div { padding:28px 20px !important; border-radius:18px !important; }
 }
 </style>
 </head>
@@ -771,7 +844,7 @@ img, video, iframe {
             Çamurda oynamak, risk almak, ateş yakmak — bunlar eğitimin tam kendisi.
           </p>
           <p class="orman-text">
-            Okulumuzdan 15 dakika mesafedeki orman alanımızda, çocuklar her hava koşulunda en az 2 saat eğitim alır.
+            Okulumuzdan 15 dakika mesafedeki orman alanımızda, çocuklar her hava koşulunda mutlaka ormanda eğitim alır.
           </p>
           <button class="btn-gold" onclick="signInWithGoogle()" style="margin-top:28px;">
             🌲 Başvuruya Başla
@@ -874,12 +947,12 @@ img, video, iframe {
   <!-- REFERANS SECTION -->
   <div class="section" style="background:var(--gold-pale); border-top:1px solid rgba(184,150,46,0.2);">
     <div class="section-inner">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+      <div class="ref-grid-2col" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
         <div>
-          <div class="section-tag" style="color:var(--gold);">🎁 Referans Avantajı</div>
-          <h2 class="section-title">Tanıdıklarınıza referans olun,<br>birlikte kazanın!</h2>
+          <div class="section-tag" style="color:var(--gold);">🎁 Bir Çiçek Referans Programı</div>
+          <h2 class="section-title">Sevdiklerinize referans olun —<br>birlikte yararlanın!</h2>
           <p style="font-size:16px; line-height:1.75; color:var(--text-mid); margin-bottom:24px;">
-            Tanıdıklarınıza referans olun — hem siz hem de referansınızla birlikte kayıt olan ebeveynler ücret avantajından yararlanın! <strong>Not:</strong> Mevcut velilerimizin ücret avantajının kabul edilmesi için referans oldukları kayıtlarda okulumuza ilk defa kayıt olunması şartı vardır.
+            Sevdiklerinize referans olun — hem Bir Çiçekli olun hem de referans avantajından birlikte yararlanın. <strong>Not:</strong> Mevcut velilerimizin ücret avantajının kabul edilmesi için referans oldukları kayıtlarda okulumuza ilk defa kayıt olunması şartı vardır.
           </p>
           <div style="display:flex; flex-direction:column; gap:12px;">
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
@@ -899,7 +972,7 @@ img, video, iframe {
             * Ekim ayına kadar referanslı gelen kayıtlarda indirim kabul edilir. Ayrıca referans kodu ile başvuran yeni ailelerin Orman Okulu kıyafeti ücretsiz sağlanır.
           </div>
         </div>
-        <div style="background:linear-gradient(135deg, var(--gold) 0%, #C8A835 100%); border-radius:24px; padding:40px; color:white; text-align:center;">
+        <div class="ref-gold-box" style="background:linear-gradient(135deg, var(--gold) 0%, #C8A835 100%); border-radius:24px; padding:40px; color:white; text-align:center;">
           <div style="font-size:13px; opacity:0.8; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Başvurunuzu Tamamlayın</div>
           <div style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; margin-bottom:16px; line-height:1.2;">Referans kodunuz<br>otomatik oluşturulur</div>
           <div style="font-size:14px; opacity:0.85; line-height:1.65; margin-bottom:28px;">Google hesabınızla giriş yapın, başvurunuzu tamamlayın. Sisteme girişin ardından size özel BCK-XXXX formatında referans kodunuz anında aktif olur.</div>
@@ -909,8 +982,7 @@ img, video, iframe {
     </div>
   </div>
 
-  <!-- İLETİŞİM / SORULAR -->
-  <div style="background:var(--sage-dark); padding:56px 40px;">
+  <div class="iletisim-section" style="background:var(--sage-dark); padding:56px 40px;">
     <div style="max-width:900px; margin:0 auto; text-align:center;">
       <div style="font-size:12px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.5); margin-bottom:12px; font-weight:700;">İletişim</div>
       <h2 style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:white; margin-bottom:8px;">Sorularınız mı var?</h2>
@@ -1167,10 +1239,10 @@ img, video, iframe {
     <div class="hesap-summary">
       <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.6); margin-bottom:16px;">Özet</div>
       <div class="hesap-row"><span>Kayıt Türü</span><span class="hesap-val" id="kayitTurDisplay">–</span></div>
-      <div class="hesap-row"><span>Aylık Baz Ücret</span><span class="hesap-val" id="aylikDisplay">–</span></div>
+      <div class="hesap-row"><span>I. Dönem Aylık (5 ay)</span><span class="hesap-val" id="iAylikDisplay">–</span></div>
+      <div class="hesap-row"><span>II. Dönem Aylık (5 ay)</span><span class="hesap-val" id="iiAylikDisplay">–</span></div>
       <div class="hesap-row"><span>Eğitim Ücreti</span><span class="hesap-val" id="egitimDisplay">–</span></div>
       <div class="hesap-row"><span>Yemek Ücreti</span><span class="hesap-val" id="yemekDisplay">–</span></div>
-      <div class="hesap-row hesap-row-total"><span>Yıllık Toplam</span><span class="hesap-val" style="font-size:24px;" id="yillikDisplay">–</span></div>
     </div>
 
     <!-- Ödeme tablosu tabs -->
@@ -1582,10 +1654,10 @@ function renderHesaplama2() {
   if(s("childAdDisplay")) s("childAdDisplay").textContent = childAd+" "+childSoyad;
   var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
   if(s("kayitTurDisplay")) s("kayitTurDisplay").textContent = turLabel[appState2.kayitTur]||"–";
-  if(s("aylikDisplay")) s("aylikDisplay").textContent = fmt(h.aylik)+" TL";
+  if(s("iAylikDisplay")) s("iAylikDisplay").textContent = fmt(h.iAylik)+" TL";
+  if(s("iiAylikDisplay")) s("iiAylikDisplay").textContent = fmt(h.iiAylik)+" TL";
   if(s("egitimDisplay")) s("egitimDisplay").textContent = fmt(h.egitim)+" TL";
   if(s("yemekDisplay")) s("yemekDisplay").textContent = fmt(h.yemek)+" TL";
-  if(s("yillikDisplay")) s("yillikDisplay").textContent = fmt(h.yillik)+" TL";
   if(s("onOdemeDisplay")) s("onOdemeDisplay").innerHTML = '<span class="tutar-gold">'+fmt(h.onOdeme)+' TL</span>';
   function renderRows(containerId, rows) {
     var cont = s(containerId); if(!cont) return;
@@ -1709,7 +1781,7 @@ async function sendEmail2(data) {
   emailjs.init(EMAILJS_CONFIG.publicKey);
   var h=appState2.hesap;
   var progLabel=data.program==="tam"?"Tam Gün":"Yarım Gün";
-  var tablo="ÖDEME TABLOSU - "+data.childAd+" "+data.childSoyad+"\n"+"=".repeat(40)+"\nKayıt Türü: "+(data.kayitTur==="onkayit"?"Avantajlı Ön Kayıt":data.kayitTur==="erken"?"Erken Kayıt":"Normal Kayıt")+"\nAylık Ücret: "+fmt(data.aylikUcret)+" TL ("+progLabel+")\nÖn Ödeme: "+fmt(data.onOdeme)+" TL\nI. Dönem: "+fmt(data.iAylik)+" TL/ay\nII. Dönem: "+fmt(data.iiAylik)+" TL/ay\nYıllık Toplam: "+fmt(data.yillik)+" TL\nÖdeme Tercihi: "+data.odemeTercihi+"\nFatura: "+(data.faturaIstegi?"Evet":"Hayır");
+  var tablo="ÖDEME TABLOSU - "+data.childAd+" "+data.childSoyad+"\n"+"=".repeat(40)+"\nKayıt Türü: "+(data.kayitTur==="onkayit"?"Avantajlı Ön Kayıt":data.kayitTur==="erken"?"Erken Kayıt":"Normal Kayıt")+"\nI. Dönem Aylık: "+fmt(data.iAylik)+" TL\nII. Dönem Aylık: "+fmt(data.iiAylik)+" TL\nÖn Ödeme: "+fmt(data.onOdeme)+" TL\nÖdeme Tercihi: "+data.odemeTercihi+"\nFatura: "+(data.faturaIstegi?"Evet":"Hayır");
   await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
     to_email:SCHOOL_EMAIL, cocuk_adi:data.childAd+" — YENİ KAYIT BAŞVURUSU",
     mesaj:"🌸 YENİ KAYIT BAŞVURUSU!\n\nVeli: "+data.veliAd+" "+data.veliSoyad+"\nEmail: "+data.email+"\nTel: "+data.phone+"\n\nÇocuk: "+data.childAd+" "+data.childSoyad+"\nDoğum: "+data.childDogum+"\n\n"+tablo+"\n\nRef Kodu: "+data.refKodu+"\nRef Kullanıldı: "+(data.refKoduKullanildi||"Yok")+"\nTarih: "+new Date().toLocaleString("tr-TR")
@@ -1844,12 +1916,12 @@ function pdfIndir() {
     doc.text("Duzenleme: " + new Date().toLocaleDateString("tr-TR"), mL, y);
     doc.text("Gecerlilik: " + son + " tarihine kadar", mL+90, y); y += 12;
     // Özet
-    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,28,"F");
-    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,28); y += 7;
+    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,21,"F");
+    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,21); y += 7;
     doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(42,77,56);
-    doc.text("Aylik Ucret:", mL+4, y); doc.text(fmt(h.aylik)+" TL", mR-4, y, {align:"right"}); y += 7;
-    doc.text("On Odeme (Kayit gununde):", mL+4, y); doc.text(fmt(h.onOdeme)+" TL", mR-4, y, {align:"right"}); y += 7;
-    doc.text("Yillik Toplam:", mL+4, y); doc.text(fmt(h.yillik)+" TL", mR-4, y, {align:"right"}); y += 12;
+    doc.text("I. Donem Aylik (5 ay):", mL+4, y); doc.text(fmt(h.iAylik)+" TL", mR-4, y, {align:"right"}); y += 7;
+    doc.text("II. Donem Aylik (5 ay):", mL+4, y); doc.text(fmt(h.iiAylik)+" TL", mR-4, y, {align:"right"}); y += 7;
+    doc.text("On Odeme (Kayit gununde):", mL+4, y); doc.text(fmt(h.onOdeme)+" TL", mR-4, y, {align:"right"}); y += 12;
     // I. Dönem
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(11);
     doc.text("I. Donem Odeme Takvimi (Eylul 2026 - Ocak 2027)", mL, y); y += 6;
