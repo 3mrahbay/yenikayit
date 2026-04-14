@@ -1241,8 +1241,6 @@ img, video, iframe {
       <div class="hesap-row"><span>Kayıt Türü</span><span class="hesap-val" id="kayitTurDisplay">–</span></div>
       <div class="hesap-row"><span>I. Dönem Aylık (5 ay)</span><span class="hesap-val" id="iAylikDisplay">–</span></div>
       <div class="hesap-row"><span>II. Dönem Aylık (5 ay)</span><span class="hesap-val" id="iiAylikDisplay">–</span></div>
-      <div class="hesap-row"><span>Eğitim Ücreti</span><span class="hesap-val" id="egitimDisplay">–</span></div>
-      <div class="hesap-row"><span>Yemek Ücreti</span><span class="hesap-val" id="yemekDisplay">–</span></div>
     </div>
 
     <!-- Ödeme tablosu tabs -->
@@ -1263,14 +1261,33 @@ img, video, iframe {
     </div>
 
     <div id="tab-diger" style="display:none;">
-      <div style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:28px; text-align:center;">
-        <div style="font-size:36px; margin-bottom:16px;">📅</div>
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:10px;">Ek Ödemeler Hakkında</div>
-        <div style="font-size:15px; color:var(--text-mid); line-height:1.75; max-width:480px; margin:0 auto;">
-          Eğitim materyalleri, orman okulu servisi ve kıyafet gibi ek kalemler, <strong>ödeme tarihinden 15 gün önce</strong> size ayrıca bildirilecektir.
+      <div style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:6px; text-align:center;">Ek Ödemeler Takvimi</div>
+        <div style="font-size:13px; color:var(--text-light); text-align:center; margin-bottom:20px;">Eğitim dışı ek kalemler ve ödeme ayları</div>
+        <div style="display:flex; flex-direction:column; gap:0; border:1px solid var(--border); border-radius:14px; overflow:hidden;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 18px; background:var(--sage-dark); color:white;">
+            <span style="font-size:13px; font-weight:700;">Kalem</span>
+            <span style="font-size:13px; font-weight:700;">Ödeme Ayı</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); background:white;">
+            <span style="font-size:14px; color:var(--text);">🚌 Orman Okulu I. Dönem Servisi</span>
+            <span style="font-size:13px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px;">Eylül 2026</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); background:var(--cream);">
+            <span style="font-size:14px; color:var(--text);">👕 Orman Okulu Kıyafeti</span>
+            <span style="font-size:13px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px;">Eylül 2026</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); background:white;">
+            <span style="font-size:14px; color:var(--text);">📚 Eğitim Materyalleri</span>
+            <span style="font-size:13px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px;">Temmuz 2026</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:13px 18px; background:var(--cream);">
+            <span style="font-size:14px; color:var(--text);">🚌 Orman Okulu II. Dönem Servisi</span>
+            <span style="font-size:13px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px;">Şubat 2027</span>
+          </div>
         </div>
-        <div style="margin-top:20px; background:var(--sage-pale); border-radius:12px; padding:14px 20px; font-size:13px; color:var(--sage-dark); line-height:1.65; display:inline-block;">
-          ℹ️ Detaylı bilgi için okul yönetimi ile iletişime geçebilirsiniz.
+        <div style="margin-top:16px; background:var(--sage-pale); border-radius:12px; padding:14px 18px; font-size:12px; color:var(--sage-dark); line-height:1.65;">
+          ℹ️ Ücret tutarları ilgili dönem başlamadan önce ayrıca bildirilecektir.
         </div>
       </div>
     </div>
@@ -1310,7 +1327,7 @@ img, video, iframe {
     <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:14px; padding:18px 20px; margin-top:16px;">
       <div id="gecerlilikYazisi" style="font-size:13px; color:var(--sage-dark); line-height:1.7; margin-bottom:12px;"></div>
       <div style="font-size:13px; color:var(--text-mid); line-height:1.7; padding-top:12px; border-top:1px solid rgba(61,107,79,0.15);">
-        📅 <strong>Ek Ödemeler:</strong> Orman Okulu servis ücreti, kıyafet ve eğitim materyali ücretleri, ilgili ödeme tarihinden <strong>15 gün önce</strong> ayrıca tarafınıza bildirilecektir.
+        📅 <strong>Ek Ödemeler:</strong> Orman Okulu servisi, kıyafet ve eğitim materyali ücretleri "Diğer Ödemeler" sekmesinde belirtilen aylarda ayrıca bildirilecektir.
       </div>
     </div>
 
