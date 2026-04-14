@@ -734,7 +734,7 @@ img, video, iframe {
         <div class="price-deadline">
           <div>
             <div class="price-deadline-label">Avantajlı Ön Kayıt Son Gün</div>
-            <div class="price-deadline-val">30 Nisan 2026</div>
+            <div class="price-deadline-val">15 Mayıs 2026</div>
           </div>
           <div class="price-countdown">
             <div class="price-cd-item"><div class="price-cd-num" id="cd2Days">00</div><div class="price-cd-lbl">Gün</div></div>
@@ -748,7 +748,7 @@ img, video, iframe {
           <div class="price-option gold-card" style="background:var(--gold-pale); border-color:rgba(184,150,46,0.4);">
             <div class="price-option-left">
               <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
-              <div class="price-option-name">– 30 Nisan 2026</div>
+              <div class="price-option-name">– 15 Mayıs 2026</div>
             </div>
             <div id="cd-onkayit" style="font-size:11px; color:var(--gold); font-weight:700; text-align:right;"></div>
           </div>
@@ -756,7 +756,7 @@ img, video, iframe {
           <div class="price-option featured">
             <div class="price-option-left">
               <div class="price-option-tag">Erken Kayıt</div>
-              <div class="price-option-name">01 Mayıs – 30 Mayıs 2026</div>
+              <div class="price-option-name">16 Mayıs – 30 Mayıs 2026</div>
             </div>
             <div id="cd-erken" style="font-size:11px; color:var(--sage); font-weight:700; text-align:right;"></div>
           </div>
@@ -1130,7 +1130,7 @@ img, video, iframe {
       <div style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; margin-bottom:8px;">Hoş geldiniz! 🌸</div>
       <div style="color:rgba(255,255,255,0.75); font-size:14px;" id="portalEmail">–</div>
       <div style="margin-top:16px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:rgba(255,255,255,0.88); line-height:1.65;">
-        ⭐ <strong>30 Nisan'a kadar</strong> avantajlı ön kayıt fırsatı. Ücret bilgisi için randevu alın.
+        ⭐ <strong>15 Mayıs'a kadar</strong> avantajlı ön kayıt fırsatı. Ücret bilgisi için randevu alın.
       </div>
     </div>
     <div id="portalKartlar" style="display:flex; flex-direction:column; gap:14px;">
@@ -1159,14 +1159,14 @@ img, video, iframe {
         <div class="kayit-type-card gold-card selected" onclick="selectKayitType('onkayit', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">⭐ Avantajlı Ön Kayıt</div>
-            <div class="kayit-desc">30 Nisan 2026'ya kadar · Özel erken başvuru fırsatı</div>
+            <div class="kayit-desc">15 Mayıs 2026'ya kadar · Özel erken başvuru fırsatı</div>
           </div>
           <div style="font-size:12px; color:var(--gold); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
         <div class="kayit-type-card" onclick="selectKayitType('erken', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">Erken Kayıt</div>
-            <div class="kayit-desc">01 Mayıs – 30 Mayıs 2026</div>
+            <div class="kayit-desc">16 Mayıs – 30 Mayıs 2026</div>
           </div>
           <div style="font-size:12px; color:var(--sage); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
@@ -1373,7 +1373,7 @@ const FIREBASE_CONFIG = {
 };
 const EMAILJS_CONFIG = { serviceId:"BirCicek_Mail", templateId:"template_7bi65w8", publicKey:"_VnABdAj03KuoOHYM" };
 const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
-const DEADLINE = new Date("2026-04-30T23:59:59");
+const DEADLINE = new Date("2026-05-15T23:59:59");
 const RANDEVU_LINKS = {
   online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
   yuzyuze: "https://calendar.app.google/ocKandk7qZfSnYkPA"
@@ -1456,8 +1456,8 @@ setInterval(updateCD, 1000); updateCD();
 
 // ═══ 5. DÖNEM SAYAÇLARI ═══
 var PERIODS = [
-  { id:"cd-onkayit", end:new Date("2026-04-30T23:59:59") },
-  { id:"cd-erken",   end:new Date("2026-05-30T23:59:59"), start:new Date("2026-05-01") },
+  { id:"cd-onkayit", end:new Date("2026-05-15T23:59:59") },
+  { id:"cd-erken",   end:new Date("2026-05-30T23:59:59"), start:new Date("2026-05-16") },
   { id:"cd-normal",  end:new Date("2026-09-30T23:59:59"), start:new Date("2026-06-01") }
 ];
 function updatePeriodCountdowns() {
@@ -1652,7 +1652,7 @@ function renderHesaplama2() {
   var childAd = ((document.getElementById("childAd")||{}).value||"").trim();
   var childSoyad = ((document.getElementById("childSoyad")||{}).value||"").trim();
   if(s("childAdDisplay")) s("childAdDisplay").textContent = childAd+" "+childSoyad;
-  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
+  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (16 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
   if(s("kayitTurDisplay")) s("kayitTurDisplay").textContent = turLabel[appState2.kayitTur]||"–";
   if(s("iAylikDisplay")) s("iAylikDisplay").textContent = fmt(h.iAylik)+" TL";
   if(s("iiAylikDisplay")) s("iiAylikDisplay").textContent = fmt(h.iiAylik)+" TL";
@@ -1677,9 +1677,9 @@ function renderHesaplama2() {
   // Geçerlilik yazısı
   var gecerlilik = s("gecerlilikYazisi");
   if(gecerlilik) {
-    var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayıs 2026", normal:"30 Eylül 2026"};
+    var turSon = {onkayit:"15 Mayıs 2026", erken:"30 Mayıs 2026", normal:"30 Eylül 2026"};
     var turAd = {onkayit:"Avantajlı Ön Kayıt", erken:"Erken Kayıt", normal:"Normal Kayıt"};
-    var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
+    var son = turSon[appState2.kayitTur] || "15 Mayıs 2026";
     var ad = turAd[appState2.kayitTur] || "Avantajlı Ön Kayıt";
     gecerlilik.innerHTML = "📋 Bu ödeme planı <strong>" + ad + "</strong> dönemi kapsamında hazırlanmıştır. " +
       "<strong>" + son + "</strong> tarihine kadar geçerlidir. Bu tarihten sonra yapılan başvurularda güncel ücretler uygulanır.";
@@ -1887,9 +1887,9 @@ function pdfIndir() {
   var veliSoyad = ((document.getElementById("veliSoyad")||{}).value||"").trim();
   var prog = appState2.program === "tam" ? "Tam Gun (08:00-18:00)" : "Yarim Gun (08:00-13:00)";
   var turLabel = {onkayit:"Avantajli On Kayit", erken:"Erken Kayit", normal:"Normal Kayit"};
-  var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayis 2026", normal:"30 Eylul 2026"};
+  var turSon = {onkayit:"15 Mayis 2026", erken:"30 Mayis 2026", normal:"30 Eylul 2026"};
   var tur = turLabel[appState2.kayitTur] || "Avantajli On Kayit";
-  var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
+  var son = turSon[appState2.kayitTur] || "15 Mayıs 2026";
   try {
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({orientation:"portrait", unit:"mm", format:"a4"});
