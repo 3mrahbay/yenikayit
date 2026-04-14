@@ -954,18 +954,22 @@ img, video, iframe {
           <p style="font-size:16px; line-height:1.75; color:var(--text-mid); margin-bottom:24px;">
             Sevdiklerinize referans olun — hem Bir Çiçekli olun hem de referans avantajından birlikte yararlanın. <strong>Not:</strong> Mevcut velilerimizin ücret avantajının kabul edilmesi için referans oldukları kayıtlarda okulumuza ilk defa kayıt olunması şartı vardır.
           </p>
-          <div style="display:flex; flex-direction:column; gap:12px;">
+          <div id="refAvantajKartlar" style="display:flex; flex-direction:column; gap:12px;">
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">1</div>
-              <div><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — alınmaz!</div>
+              <div><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
             </div>
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">2</div>
-              <div><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — alınmaz!</div>
+              <div><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
             </div>
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">3</div>
-              <div><strong>3. Kayıt:</strong> Eğitim Materyallerinin %50'si — alınmaz!</div>
+              <div><strong>3. Kayıt:</strong> Eğitim Materyalleri.. — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">%50'si alınmaz!</span></div>
+            </div>
+            <div class="ref-gizli" style="margin-top:8px; background:rgba(184,150,46,0.1); border:1px dashed var(--gold); border-radius:12px; padding:12px 16px; text-align:center;">
+              <span style="font-size:13px; color:var(--gold); font-weight:600;">🔒 Avantaj detaylarını görmek için giriş yapın</span>
+              <button onclick="signInWithGoogle()" style="display:block; margin:10px auto 0; background:var(--gold); color:white; border:none; border-radius:50px; padding:10px 24px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">Google ile Giriş Yap</button>
             </div>
           </div>
           <div style="margin-top:16px; font-size:12px; color:var(--text-light); font-style:italic; line-height:1.6;">
@@ -1304,7 +1308,7 @@ img, video, iframe {
         </div>
         <div class="ot-card" id="ot-kredi" onclick="setOdemeTip2('kredi')">
           <div class="ot-radio" id="or-kredi"><div class="ot-dot"></div></div>
-          <div><div class="ot-title" style="color:white;">💳 Kredi Kartı ile Ödeme</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Sanal Pos — ücretsiz 3-5-8 taksit imkânı. (Bankanızla teyit alınız.)</div></div>
+          <div><div class="ot-title" style="color:white;">💳 Kredi Kartı ile Ödeme</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Sanal Pos — Ücretsiz 3-5-8 taksit imkânı. (Taksit süreci için bankanızdan bilgi alınız.)</div></div>
         </div>
         <div class="ot-card" id="ot-vinov" onclick="setOdemeTip2('vinov')">
           <div class="ot-radio" id="or-vinov"><div class="ot-dot"></div></div>
@@ -1318,7 +1322,7 @@ img, video, iframe {
       <div style="font-size:14px; font-weight:700; color:var(--sage-dark); margin-bottom:12px;">📧 Fatura Tercihi</div>
       <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer; font-weight:400;">
         <input type="checkbox" id="faturaCheck2" style="width:18px; height:18px; margin-top:2px; accent-color:var(--sage); flex-shrink:0;">
-        <span style="font-size:13px; color:var(--text-mid); line-height:1.6;">Yıllık gider planlamam için faturalarımın düzenli olarak mail adresime gönderilmesini rica ediyorum.</span>
+        <span style="font-size:13px; color:var(--text-mid); line-height:1.6;">Fatura mükellefiyim ve/veya yıl sonu gider göstereceğim, faturalarımın düzenli olarak mail adresime gönderilmesini rica ediyorum.</span>
       </label>
     </div>
 
@@ -1502,7 +1506,13 @@ updatePeriodCountdowns();
 function goToScreen(id) {
   document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
   var el = document.getElementById(id);
-  if(el) { el.classList.add("active"); window.scrollTo(0,0); }
+  if(el) {
+    el.classList.add("active");
+    // Navbar yüksekliğini hesapla ve ekranın hemen altına scroll yap
+    var navbar = document.querySelector(".navbar");
+    var navH = navbar ? navbar.offsetHeight : 70;
+    window.scrollTo({ top: Math.max(0, el.offsetTop - navH), behavior: "smooth" });
+  }
 }
 function scrollTo(id) { document.getElementById(id) && document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
 
@@ -1540,13 +1550,12 @@ function onLogin(u) {
   ["userName","userName2","userName3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
   var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
   getOrCreateRefKod2(u.uid, u.email);
+  // Referans avantaj detaylarını aç
+  document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="none"; });
+  document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="inline"; });
   goToScreen("screen-portal");
   // Başvuru durumunu kontrol et ve portal kartlarını güncelle
   checkBasvuruDurumu(u.uid);
-  // Giriş sonrası en üste scroll
-  setTimeout(function(){
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, 150);
 }
 
 function checkBasvuruDurumu(uid) {
