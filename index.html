@@ -53,6 +53,12 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
   font-family:'Outfit',sans-serif; transition:all 0.2s; display:flex; align-items:center; gap:8px;
 }
 .nav-cta:hover { background:var(--sage-dark); transform:translateY(-1px); }
+.nav-login {
+  background:transparent; color:var(--sage-dark); border:1.5px solid var(--sage-light); border-radius:50px;
+  padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer;
+  font-family:'Outfit',sans-serif; transition:all 0.2s; display:flex; align-items:center; gap:7px;
+}
+.nav-login:hover { background:var(--sage-pale); border-color:var(--sage); color:var(--sage-dark); }
 .user-pill {
   display:flex; align-items:center; gap:8px;
   background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2);
@@ -524,6 +530,8 @@ img, video, iframe {
   .nav-sub { font-size:10px; }
   .nav-cta { padding:8px 14px; font-size:12px; gap:6px; white-space:nowrap; }
   .nav-cta svg { width:14px; height:14px; }
+  .nav-login { padding:7px 12px; font-size:12px; gap:5px; white-space:nowrap; }
+  .nav-login svg { width:13px; height:13px; }
 
   /* Hero */
   .hero-section { grid-template-columns:1fr; gap:24px; padding:24px 16px !important; }
@@ -627,6 +635,7 @@ img, video, iframe {
   .nav-logo img { width:28px; height:28px; }
   .nav-brand { font-size:12px; }
   .nav-cta { padding:7px 10px; font-size:11px; }
+  .nav-login { display:none !important; }
   .hero-title { font-size:22px !important; }
   .hero-section { padding:20px 12px !important; }
   .section { padding:28px 12px !important; }
@@ -638,6 +647,7 @@ img, video, iframe {
 @media (max-width:480px) {
   #randevuModal > div { padding:28px 20px !important; border-radius:18px !important; }
 }
+@keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -690,10 +700,15 @@ img, video, iframe {
         <div class="nav-sub">Montessori & Orman Okulu</div>
       </div>
     </div>
-    <button class="nav-cta" onclick="signInWithGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Başvuru Yap
-    </button>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="nav-login" onclick="signInWithGoogle()">
+        <svg width="16" height="16" viewBox="0 0 24 24" style="flex-shrink:0;"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Giriş Yap
+      </button>
+      <button class="nav-cta" onclick="signInWithGoogle()">
+        🌸 Başvuru Yap
+      </button>
+    </div>
   </nav>
 
   <!-- HERO -->
@@ -1405,6 +1420,153 @@ img, video, iframe {
   </div>
 </div>
 
+<!-- ════════════════════════════════════ -->
+<!-- SCREEN: ÖDEME BİLGİLERİM -->
+<!-- ════════════════════════════════════ -->
+<div id="screen-odeme-bilgileri" class="screen">
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="data:image/png;base64,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" alt="Logo">
+      <div><div class="nav-brand">Bir Çiçek Koleji</div><div class="nav-sub">Ödeme Bilgilerim</div></div>
+    </div>
+    <div class="user-pill" onclick="signOut()">
+      <div class="user-avatar" id="userInitial4">?</div>
+      <span id="userName4">Veli</span>
+      <span style="color:var(--text-light); font-size:12px;">· Çıkış</span>
+    </div>
+  </nav>
+
+  <div style="max-width:900px; margin:0 auto; padding:48px 24px 64px;">
+
+    <!-- Geri butonu -->
+    <button onclick="goToScreen('screen-portal')" style="background:transparent; border:1.5px solid var(--border); color:var(--text-mid); border-radius:50px; padding:10px 20px; font-size:13px; font-weight:500; cursor:pointer; font-family:'Outfit',sans-serif; margin-bottom:24px;">← Portale Dön</button>
+
+    <!-- Başlık -->
+    <div style="margin-bottom:28px;">
+      <div style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:var(--sage-dark); margin-bottom:6px;">Ödeme Bilgilerim</div>
+      <div style="color:var(--text-light); font-size:14px;">Ödeme planınızı ve ödeme durumunuzu buradan takip edebilirsiniz.</div>
+    </div>
+
+    <!-- Loading -->
+    <div id="vob-loading" style="text-align:center; padding:60px 20px;">
+      <div style="display:inline-block; width:40px; height:40px; border:4px solid var(--sage-pale); border-top:4px solid var(--sage); border-radius:50%; animation:spin 1s linear infinite;"></div>
+      <div style="margin-top:16px; color:var(--text-light); font-size:14px;">Ödeme bilgileriniz yükleniyor...</div>
+    </div>
+
+    <!-- Boş durum -->
+    <div id="vob-bos" style="display:none; background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:48px 32px; text-align:center;">
+      <div style="font-size:48px; margin-bottom:16px;">📋</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:12px;">Henüz Ödeme Planınız Oluşturulmamış</div>
+      <div style="color:var(--text-mid); font-size:14px; line-height:1.6; max-width:480px; margin:0 auto 24px;">
+        Başvurunuz onaylandıktan sonra ödeme planınız okul yönetimi tarafından oluşturulacak ve bu sayfada görüntülenebilecektir.
+        <br><br>
+        Sorularınız için bize ulaşabilirsiniz.
+      </div>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <a href="tel:+902163935457" style="background:var(--sage); color:white; text-decoration:none; border-radius:50px; padding:12px 22px; font-size:13px; font-weight:600;">📞 0216 393 54 57</a>
+        <a href="https://wa.me/905551035457" target="_blank" style="background:#25D366; color:white; text-decoration:none; border-radius:50px; padding:12px 22px; font-size:13px; font-weight:600;">💬 WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- İçerik -->
+    <div id="vob-icerik" style="display:none;">
+
+      <!-- Özet Kartları -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:24px;">
+        <div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); color:white; border-radius:var(--radius); padding:22px;">
+          <div style="font-size:11px; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:8px;">Toplam Tutar</div>
+          <div id="vob-toplam" style="font-size:26px; font-weight:700; font-family:'Cormorant Garamond',serif;">–</div>
+        </div>
+        <div style="background:#E8F5EE; border:1px solid #B8D8C5; border-radius:var(--radius); padding:22px;">
+          <div style="font-size:11px; color:#2A6A43; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:8px;">Ödenen</div>
+          <div id="vob-odenen" style="font-size:26px; font-weight:700; color:#1F5233; font-family:'Cormorant Garamond',serif;">–</div>
+        </div>
+        <div style="background:var(--gold-pale); border:1px solid rgba(184,150,46,0.3); border-radius:var(--radius); padding:22px;">
+          <div style="font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:8px;">Kalan Tutar</div>
+          <div id="vob-kalan" style="font-size:26px; font-weight:700; color:var(--earth); font-family:'Cormorant Garamond',serif;">–</div>
+        </div>
+      </div>
+
+      <!-- İlerleme Çubuğu -->
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; margin-bottom:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div style="font-size:13px; font-weight:600; color:var(--sage-dark);">Ödeme İlerlemesi</div>
+          <div id="vob-yuzde" style="font-size:14px; font-weight:700; color:var(--sage);">0%</div>
+        </div>
+        <div style="background:var(--sage-pale); border-radius:50px; height:10px; overflow:hidden;">
+          <div id="vob-bar" style="background:linear-gradient(90deg, var(--sage), var(--sage-mid)); height:100%; width:0%; transition:width 0.6s ease;"></div>
+        </div>
+      </div>
+
+      <!-- Öğrenci/Program bilgisi -->
+      <div id="vob-bilgi" style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; margin-bottom:24px; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px;"></div>
+
+      <!-- Ödeme Planı Tablosu -->
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:16px;">📋 Ödeme Planı</div>
+        <div id="vob-plan-tablo"></div>
+      </div>
+
+      <!-- Yapılan Ödemeler -->
+      <div id="vob-odenenler-kutu" style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px; display:none;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:16px;">✅ Yapılan Ödemeler</div>
+        <div id="vob-odenenler-liste"></div>
+      </div>
+
+      <!-- Diğer Ödemeler -->
+      <div id="vob-diger-kutu" style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px; display:none;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:16px;">➕ Diğer Ödemeler</div>
+        <div id="vob-diger-liste"></div>
+      </div>
+
+      <!-- Banka Bilgileri -->
+      <div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); color:white; border-radius:var(--radius); padding:26px 24px; margin-bottom:24px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; margin-bottom:6px;">🏦 Banka Hesap Bilgileri</div>
+        <div style="font-size:13px; opacity:0.85; margin-bottom:18px;">Ödemelerinizi aşağıdaki hesaba havale/EFT ile yapabilirsiniz.</div>
+
+        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
+          <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Banka</div>
+          <div style="font-size:16px; font-weight:600;">Kuveyt Türk Katılım Bankası</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
+          <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Hesap Sahibi</div>
+          <div style="font-size:15px; font-weight:600;">Bir Çiçek Koleji Anaokulu</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">IBAN</div>
+              <div id="vob-iban" style="font-size:15px; font-weight:600; font-family:monospace; word-break:break-all;">TR00 0000 0000 0000 0000 0000 00</div>
+            </div>
+            <button onclick="kopyalaIBAN()" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">📋 Kopyala</button>
+          </div>
+        </div>
+
+        <div id="vob-aciklama-kutu" style="background:rgba(255,255,255,0.15); border:1px dashed rgba(255,255,255,0.4); border-radius:12px; padding:16px; margin-top:14px;">
+          <div style="font-size:11px; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-weight:600;">⚠️ Havale Açıklaması (Mutlaka yazınız)</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div id="vob-aciklama" style="font-size:14px; font-weight:600; word-break:break-all;">–</div>
+            <button onclick="kopyalaAciklama()" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:6px 12px; font-size:11px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">📋 Kopyala</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Destek Kutusu -->
+      <div style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; text-align:center;">
+        <div style="font-size:13px; color:var(--text-mid); margin-bottom:12px;">Sorularınız mı var? Bize ulaşın:</div>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+          <a href="tel:+902163935457" style="background:var(--sage); color:white; text-decoration:none; border-radius:50px; padding:10px 18px; font-size:12px; font-weight:600;">📞 0216 393 54 57</a>
+          <a href="https://wa.me/905551035457" target="_blank" style="background:#25D366; color:white; text-decoration:none; border-radius:50px; padding:10px 18px; font-size:12px; font-weight:600;">💬 WhatsApp</a>
+          <a href="mailto:eposta@bircicekkoleji.com" style="background:var(--white); color:var(--sage-dark); text-decoration:none; border:1px solid var(--border); border-radius:50px; padding:10px 18px; font-size:12px; font-weight:600;">✉️ E-posta</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -1576,8 +1738,8 @@ function onLogin(u) {
   logGiris2(u);
   var parts = (u.displayName||"").split(" ");
   var ini = (parts[0]||"?")[0].toUpperCase();
-  ["userInitial","userInitial2","userInitial3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=ini; });
-  ["userName","userName2","userName3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
+  ["userInitial","userInitial2","userInitial3","userInitial4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=ini; });
+  ["userName","userName2","userName3","userName4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
   var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
   getOrCreateRefKod2(u.uid, u.email);
   // Referans avantaj detaylarını aç
@@ -1619,7 +1781,21 @@ function checkBasvuruDurumu(uid) {
             <button onclick="goToScreen('screen-form')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">✏️ Başvuruyu Güncelle</button>
             <a href="https://wa.me/905551035457" target="_blank" style="background:var(--cream-warm); border:1px solid var(--border); color:var(--text-mid); border-radius:50px; padding:10px 20px; font-size:13px; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px;">💬 Okul ile İletişim</a>
           </div>
+        </div>
+
+        <!-- 💰 ÖDEME BİLGİLERİM KARTI -->
+        <div id="odemeCard" onclick="goToOdemeBilgileri()" style="background:var(--white); border:2px solid var(--gold-light); border-radius:var(--radius); padding:24px; cursor:pointer; display:flex; align-items:center; gap:18px; transition:all 0.2s; margin-top:14px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+          <div style="font-size:36px;">💰</div>
+          <div style="flex:1;">
+            <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--earth); margin-bottom:4px;">Ödeme Bilgilerim</div>
+            <div style="font-size:13px; color:var(--text-light); margin-bottom:6px;">Ödeme planınızı, taksitlerinizi ve banka bilgilerini görüntüleyin.</div>
+            <div id="odemeCardOzet" style="font-size:12px; font-weight:600; color:var(--gold);"></div>
+          </div>
+          <div style="color:var(--gold); font-size:22px;">→</div>
         </div>`;
+
+      // Ödeme özetini getir
+      guncelleOdemeKartOzeti(uid);
     } else {
       // İlk kez başvuracak
       kartlar.innerHTML = `
@@ -1646,6 +1822,337 @@ function checkBasvuruDurumu(uid) {
         <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
       </div>`;
   });
+}
+
+// ═══ ÖDEME BİLGİLERİM SİSTEMİ ═══
+
+function fmtTL(n) {
+  n = Math.round(Number(n)||0);
+  return n.toLocaleString("tr-TR") + " ₺";
+}
+
+function parseAciklama(str) {
+  // "Kuveyt Türk Hesabına Havale/EFT" gibi yapılandır
+  return String(str||"").trim();
+}
+
+// Portal'daki Ödeme Bilgilerim kartında özet göster
+async function guncelleOdemeKartOzeti(uid) {
+  try {
+    var ozetEl = document.getElementById("odemeCardOzet");
+    if(!ozetEl) return;
+    var snap = await db.collection("odemeler").doc(uid).get();
+    if(!snap.exists) {
+      ozetEl.innerHTML = '<span style="color:var(--text-light);">Ödeme planınız henüz oluşturulmamış</span>';
+      return;
+    }
+    var d = snap.data() || {};
+    var toplam = Number(d.toplam)||0;
+    var odemeler = d.odemeler || [];
+    var odenen = odemeler.filter(function(o){ return o && o.tip !== "serbest"; })
+                         .reduce(function(t,o){ return t + (Number(o.tutar)||0); }, 0);
+    var kalan = toplam - odenen;
+    if(kalan <= 0 && toplam > 0) {
+      ozetEl.innerHTML = '<span style="color:var(--sage);">✅ Tüm ödemeler tamamlandı</span>';
+    } else if(toplam > 0) {
+      ozetEl.innerHTML = 'Kalan: <strong>' + fmtTL(kalan) + '</strong> / ' + fmtTL(toplam);
+    } else {
+      ozetEl.innerHTML = '<span style="color:var(--text-light);">Detayları görüntülemek için tıklayın</span>';
+    }
+  } catch(e) {
+    console.log("Ödeme özet hatası:", e);
+  }
+}
+
+// Ana fonksiyon — Ödeme Bilgilerim ekranına git ve verileri yükle
+async function goToOdemeBilgileri() {
+  goToScreen("screen-odeme-bilgileri");
+  var loading = document.getElementById("vob-loading");
+  var bos = document.getElementById("vob-bos");
+  var icerik = document.getElementById("vob-icerik");
+  loading.style.display = "block";
+  bos.style.display = "none";
+  icerik.style.display = "none";
+
+  if(!currentUser) {
+    loading.style.display = "none";
+    bos.style.display = "block";
+    return;
+  }
+
+  try {
+    // Başvuru bilgilerini çek
+    var kayitSnap = await db.collection("yenikayit").doc(currentUser.uid).get();
+    if(!kayitSnap.exists) {
+      loading.style.display = "none";
+      bos.style.display = "block";
+      return;
+    }
+    var kayitData = kayitSnap.data() || {};
+
+    // Ödeme bilgilerini çek
+    var odemeSnap = await db.collection("odemeler").doc(currentUser.uid).get();
+    if(!odemeSnap.exists) {
+      loading.style.display = "none";
+      bos.style.display = "block";
+      return;
+    }
+    var o = odemeSnap.data() || {};
+    var toplam = Number(o.toplam) || 0;
+    if(toplam <= 0 || !o.plan || !Array.isArray(o.plan) || o.plan.length === 0) {
+      loading.style.display = "none";
+      bos.style.display = "block";
+      return;
+    }
+
+    // İçeriği render et
+    renderOdemeBilgileri(kayitData, o);
+    loading.style.display = "none";
+    icerik.style.display = "block";
+  } catch(e) {
+    console.error("Ödeme bilgileri yükleme hatası:", e);
+    loading.style.display = "none";
+    bos.style.display = "block";
+  }
+}
+
+function renderOdemeBilgileri(kayitData, o) {
+  var toplam = Number(o.toplam) || 0;
+  var odemeler = o.odemeler || [];
+  var plan = o.plan || [];
+  var digerOdemeler = o.digerOdemeler || [];
+
+  // Taksit ödemeleri (serbest olmayanlar)
+  var taksitOdemeleri = odemeler.filter(function(x){ return x && x.tip !== "serbest"; });
+  var serbestOdemeler = odemeler.filter(function(x){ return x && x.tip === "serbest"; });
+  var odenen = taksitOdemeleri.reduce(function(t,x){ return t + (Number(x.tutar)||0); }, 0);
+  var kalan = toplam - odenen;
+  var yuzde = toplam > 0 ? Math.min(100, Math.round((odenen/toplam)*100)) : 0;
+
+  // Özet kartları
+  document.getElementById("vob-toplam").textContent = fmtTL(toplam);
+  document.getElementById("vob-odenen").textContent = fmtTL(odenen);
+  document.getElementById("vob-kalan").textContent = fmtTL(kalan);
+  document.getElementById("vob-yuzde").textContent = yuzde + "%";
+  document.getElementById("vob-bar").style.width = yuzde + "%";
+
+  // Öğrenci/program bilgisi
+  var cocukAdi = ((kayitData.childAd||"") + " " + (kayitData.childSoyad||"")).trim() || "—";
+  var program = kayitData.program === "tam" ? "Tam Gün" : kayitData.program === "yarim" ? "Yarım Gün" : "—";
+  var kayitTuru = kayitData.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" :
+                  kayitData.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
+  document.getElementById("vob-bilgi").innerHTML =
+    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Öğrenci</div><div style="font-size:14px; font-weight:700;">' + cocukAdi + '</div></div>' +
+    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Program</div><div style="font-size:14px; font-weight:700;">' + program + '</div></div>' +
+    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Kayıt Türü</div><div style="font-size:14px; font-weight:700;">' + kayitTuru + '</div></div>' +
+    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Eğitim Dönemi</div><div style="font-size:14px; font-weight:700;">2026-2027</div></div>';
+
+  // Ödeme planı tablosu
+  renderPlanTablo(plan, odemeler);
+
+  // Yapılan ödemeler listesi
+  if(odemeler.length > 0) {
+    document.getElementById("vob-odenenler-kutu").style.display = "block";
+    renderYapilanOdemeler(odemeler);
+  }
+
+  // Diğer ödemeler
+  if(digerOdemeler.length > 0) {
+    document.getElementById("vob-diger-kutu").style.display = "block";
+    renderDigerOdemeler(digerOdemeler, odemeler);
+  }
+
+  // Banka bilgileri
+  var iban = o.iban || "TR00 0000 0000 0000 0000 0000 00";
+  document.getElementById("vob-iban").textContent = iban;
+  var aciklama = o.aciklama || (cocukAdi + " - Okul Ödemesi");
+  document.getElementById("vob-aciklama").textContent = aciklama;
+}
+
+function renderPlanTablo(plan, odemeler) {
+  var h = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:13px;">';
+  h += '<thead><tr style="background:var(--sage-pale); color:var(--sage-dark);">';
+  h += '<th style="padding:12px 10px; text-align:left; font-weight:700; border-radius:8px 0 0 8px;">Ay / Taksit</th>';
+  h += '<th style="padding:12px 10px; text-align:right; font-weight:700;">Tutar</th>';
+  h += '<th style="padding:12px 10px; text-align:center; font-weight:700;">Durum</th>';
+  h += '<th style="padding:12px 10px; text-align:center; font-weight:700; border-radius:0 8px 8px 0;">İşlem</th>';
+  h += '</tr></thead><tbody>';
+
+  plan.forEach(function(taksit, i) {
+    var taksitId = taksit.id || ("t"+i);
+    // Bu taksite ait ödeme var mı?
+    var ilgiliOdeme = odemeler.find(function(o){ return o && o.taksitId === taksitId && o.tip !== "serbest"; });
+    var odendi = !!ilgiliOdeme;
+    var bildirimGonderilmis = ilgiliOdeme && ilgiliOdeme.bildirimGonderildi;
+
+    var durumBadge, islemButton;
+    if(odendi) {
+      durumBadge = '<span style="background:#E8F5EE; color:#1F5233; padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">✅ Ödendi</span>';
+      islemButton = '<span style="color:var(--text-light); font-size:11px;">—</span>';
+    } else {
+      durumBadge = '<span style="background:var(--gold-pale); color:var(--gold); padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Bekliyor</span>';
+      if(bildirimGonderilmis) {
+        islemButton = '<span style="color:var(--sage); font-size:11px; font-weight:600;">📬 Bildirim Gönderildi</span>';
+      } else {
+        islemButton = '<button onclick="odemeBildirimGonder(\'' + taksitId + '\', \'' + (taksit.ay||taksit.aciklama||"Taksit").replace(/'/g,"") + '\', ' + (Number(taksit.tutar)||0) + ')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
+      }
+    }
+
+    h += '<tr style="border-bottom:1px solid var(--border);">';
+    h += '<td style="padding:14px 10px;"><strong>' + (taksit.ay || taksit.aciklama || ("Taksit "+(i+1))) + '</strong>';
+    if(taksit.sonTarih) {
+      h += '<div style="font-size:11px; color:var(--text-light); margin-top:2px;">Son: ' + taksit.sonTarih + '</div>';
+    }
+    h += '</td>';
+    h += '<td style="padding:14px 10px; text-align:right; font-weight:700; font-family:Cormorant Garamond,serif; font-size:15px;">' + fmtTL(taksit.tutar||0) + '</td>';
+    h += '<td style="padding:14px 10px; text-align:center;">' + durumBadge + '</td>';
+    h += '<td style="padding:14px 10px; text-align:center;">' + islemButton + '</td>';
+    h += '</tr>';
+  });
+  h += '</tbody></table></div>';
+  document.getElementById("vob-plan-tablo").innerHTML = h;
+}
+
+function renderYapilanOdemeler(odemeler) {
+  var h = '';
+  odemeler.forEach(function(o) {
+    var tarih = o.tarih ? o.tarih : (o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toLocaleDateString("tr-TR") : "—");
+    var aciklama = o.aciklama || o.taksitAd || "Ödeme";
+    h += '<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); gap:12px;">';
+    h += '<div style="flex:1;">';
+    h += '<div style="font-size:13px; font-weight:600; color:var(--text);">' + aciklama + '</div>';
+    h += '<div style="font-size:11px; color:var(--text-light); margin-top:2px;">' + tarih + (o.yontem ? ' · ' + o.yontem : '') + '</div>';
+    h += '</div>';
+    h += '<div style="font-size:14px; font-weight:700; color:var(--sage); font-family:Cormorant Garamond,serif;">' + fmtTL(o.tutar||0) + '</div>';
+    h += '</div>';
+  });
+  document.getElementById("vob-odenenler-liste").innerHTML = h || '<div style="color:var(--text-light); font-size:13px;">Henüz ödeme yapılmamış.</div>';
+}
+
+function renderDigerOdemeler(digerOdemeler, odemeler) {
+  var h = '';
+  digerOdemeler.forEach(function(d, i) {
+    var digerId = d.id || ("d"+i);
+    var ilgiliOdeme = (odemeler||[]).find(function(o){ return o && o.digerId === digerId; });
+    var odendi = !!ilgiliOdeme;
+    var bildirimGonderilmis = ilgiliOdeme && ilgiliOdeme.bildirimGonderildi;
+
+    h += '<div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); gap:12px; flex-wrap:wrap;">';
+    h += '<div style="flex:1; min-width:160px;">';
+    h += '<div style="font-size:14px; font-weight:700; color:var(--text);">' + (d.ad || "Diğer Ödeme") + '</div>';
+    if(d.aciklama) h += '<div style="font-size:12px; color:var(--text-light); margin-top:3px;">' + d.aciklama + '</div>';
+    if(d.sonTarih) h += '<div style="font-size:11px; color:var(--text-light); margin-top:3px;">📅 Son ödeme: ' + d.sonTarih + '</div>';
+    h += '</div>';
+    h += '<div style="font-size:15px; font-weight:700; color:var(--earth); font-family:Cormorant Garamond,serif;">' + fmtTL(d.tutar||0) + '</div>';
+    if(odendi) {
+      h += '<div style="background:#E8F5EE; color:#1F5233; padding:5px 12px; border-radius:50px; font-size:11px; font-weight:700;">✅ Ödendi</div>';
+    } else if(bildirimGonderilmis) {
+      h += '<div style="color:var(--sage); font-size:11px; font-weight:600;">📬 Bildirim Gönderildi</div>';
+    } else {
+      h += '<button onclick="odemeBildirimGonder(\'diger_' + digerId + '\', \'' + (d.ad||"Diğer").replace(/'/g,"") + '\', ' + (Number(d.tutar)||0) + ')" style="background:var(--earth); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
+    }
+    h += '</div>';
+  });
+  document.getElementById("vob-diger-liste").innerHTML = h;
+}
+
+// Ödeme bildirimi gönder — EmailJS ile okula mail + Firestore'a kayıt
+async function odemeBildirimGonder(taksitId, taksitAd, tutar) {
+  if(!currentUser) { showToast("⚠️ Giriş yapmanız gerekiyor"); return; }
+  if(!confirm("'" + taksitAd + "' taksiti için " + fmtTL(tutar) + " tutarında ödeme yaptığınızı okula bildirmek istiyor musunuz?\n\nOkul yönetimi ödemenizi bankadan kontrol ettikten sonra onaylayacaktır.")) return;
+
+  showLoading();
+  try {
+    // 1. Başvuru bilgilerini çek
+    var kayitSnap = await db.collection("yenikayit").doc(currentUser.uid).get();
+    var kayitData = kayitSnap.exists ? kayitSnap.data() : {};
+    var cocukAdi = ((kayitData.childAd||"") + " " + (kayitData.childSoyad||"")).trim() || "—";
+    var veliTel = kayitData.veliTel || "—";
+
+    // 2. Firestore'a bildirim kaydı (odemeler koleksiyonuna bildirim notu)
+    var odemeRef = db.collection("odemeler").doc(currentUser.uid);
+    var odemeSnap = await odemeRef.get();
+    var bildirimler = odemeSnap.exists ? (odemeSnap.data().bildirimler || []) : [];
+    bildirimler.push({
+      taksitId: taksitId,
+      taksitAd: taksitAd,
+      tutar: Number(tutar)||0,
+      veliEmail: currentUser.email,
+      veliAd: currentUser.displayName || "—",
+      gonderildi: new Date().toISOString(),
+      durum: "beklemede"
+    });
+    await odemeRef.set({ bildirimler: bildirimler, sonBildirim: new Date().toISOString() }, { merge: true });
+
+    // 3. EmailJS ile okula bildirim maili
+    emailjs.init(EMAILJS_CONFIG.publicKey);
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+      to_email: SCHOOL_EMAIL,
+      cocuk_adi: cocukAdi + " — 💰 ÖDEME BİLDİRİMİ",
+      mesaj:
+        "Merhaba,\n\n" +
+        "Aşağıdaki veli ödeme yaptığını bildirdi:\n\n" +
+        "👤 Veli: " + (currentUser.displayName||"—") + "\n" +
+        "📧 E-posta: " + currentUser.email + "\n" +
+        "📞 Telefon: " + veliTel + "\n" +
+        "👶 Öğrenci: " + cocukAdi + "\n\n" +
+        "💳 Ödeme:\n" +
+        "  • Taksit: " + taksitAd + "\n" +
+        "  • Tutar: " + fmtTL(tutar) + "\n\n" +
+        "Lütfen Kuveyt Türk hesabınızı kontrol ederek ödemeyi teyit edin.\n\n" +
+        "— Bir Çiçek Koleji Yeni Kayıt Sistemi",
+      veli_email: currentUser.email,
+      veli_tel: veliTel
+    });
+
+    hideLoading();
+    showToast("✅ Bildirim gönderildi. Okul yönetimi en kısa sürede teyit edecek.");
+    // Ekranı yenile
+    setTimeout(function(){ goToOdemeBilgileri(); }, 1000);
+  } catch(e) {
+    hideLoading();
+    console.error("Bildirim gönderme hatası:", e);
+    showToast("⚠️ Bildirim gönderilemedi: " + (e.message||e));
+  }
+}
+
+// IBAN kopyala
+function kopyalaIBAN() {
+  var iban = document.getElementById("vob-iban").textContent.replace(/\s/g,"");
+  if(navigator.clipboard) {
+    navigator.clipboard.writeText(iban).then(function(){
+      showToast("✅ IBAN kopyalandı: " + iban);
+    }).catch(function(){
+      kopyalaFallback(iban);
+    });
+  } else {
+    kopyalaFallback(iban);
+  }
+}
+
+function kopyalaAciklama() {
+  var aciklama = document.getElementById("vob-aciklama").textContent;
+  if(navigator.clipboard) {
+    navigator.clipboard.writeText(aciklama).then(function(){
+      showToast("✅ Açıklama kopyalandı");
+    }).catch(function(){
+      kopyalaFallback(aciklama);
+    });
+  } else {
+    kopyalaFallback(aciklama);
+  }
+}
+
+function kopyalaFallback(text) {
+  var ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); showToast("✅ Kopyalandı"); }
+  catch(e) { showToast("⚠️ Kopyalama başarısız"); }
+  document.body.removeChild(ta);
 }
 
 // ═══ 8. FORM LOGIC ═══
