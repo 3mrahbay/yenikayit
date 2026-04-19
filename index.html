@@ -1586,6 +1586,7 @@ const FIREBASE_CONFIG = {
 };
 const EMAILJS_CONFIG = { serviceId:"BirCicek_Mail", templateId:"template_7bi65w8", publicKey:"_VnABdAj03KuoOHYM" };
 const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
+const BREVO_PROXY_URL = "https://script.google.com/macros/s/AKfycbwUNvVhTCvxUKOMtbFJ4_UASBo8-sgT13qT_9tWeYKZR3IYaYKUhGdSaGgGaaqMaZLf/exec";
 const DEADLINE = new Date("2026-05-10T23:59:59");
 const RANDEVU_LINKS = {
   online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
@@ -1825,6 +1826,97 @@ function checkBasvuruDurumu(uid) {
 }
 
 // ═══ ÖDEME BİLGİLERİM SİSTEMİ ═══
+
+/**
+ * Brevo üzerinden mail gönderen ana fonksiyon (Apps Script proxy ile).
+ * Brevo başarısız olursa EmailJS'e otomatik fallback yapar.
+ *
+ * @param {Object} opts - to, subject, htmlContent, textContent, replyTo, toName
+ * @returns {Promise<Object>} - {success, provider}
+ */
+async function brevoMail(opts) {
+  if(!opts || !opts.to || !opts.subject || !opts.htmlContent) {
+    throw new Error("brevoMail: to, subject, htmlContent zorunlu");
+  }
+
+  // 1. Brevo proxy'yi dene
+  try {
+    var payload = {
+      origin: (typeof location !== "undefined" && location.hostname) ? location.hostname : "bircicekkoleji.com",
+      to: opts.to,
+      toName: opts.toName || "",
+      subject: opts.subject,
+      htmlContent: opts.htmlContent,
+      textContent: opts.textContent || opts.htmlContent.replace(/<[^>]+>/g, "").trim(),
+      senderName: opts.senderName || "Bir Çiçek Koleji Anaokulu",
+      senderEmail: opts.senderEmail || SCHOOL_EMAIL
+    };
+    if(opts.replyTo) payload.replyTo = opts.replyTo;
+    if(opts.cc) payload.cc = opts.cc;
+    if(opts.bcc) payload.bcc = opts.bcc;
+
+    var res = await fetch(BREVO_PROXY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+      redirect: "follow"
+    });
+    var data = await res.json();
+    if(data && data.success) {
+      console.log("✉️ Brevo ile gönderildi:", opts.subject);
+      return { success: true, provider: "brevo", messageId: data.messageId };
+    }
+    console.warn("Brevo başarısız, EmailJS'e geçiliyor:", data);
+  } catch(brevoErr) {
+    console.warn("Brevo proxy hatası, EmailJS'e geçiliyor:", brevoErr);
+  }
+
+  // 2. Fallback: EmailJS
+  try {
+    if(typeof emailjs === "undefined") throw new Error("EmailJS yüklü değil");
+    emailjs.init(EMAILJS_CONFIG.publicKey);
+    // EmailJS template değişkenlerine dönüştür
+    var textBody = opts.textContent || opts.htmlContent.replace(/<[^>]+>/g, "").trim();
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+      to_email: opts.to,
+      cocuk_adi: opts.subject,
+      mesaj: textBody
+    });
+    console.log("✉️ EmailJS (fallback) ile gönderildi:", opts.subject);
+    return { success: true, provider: "emailjs" };
+  } catch(emailErr) {
+    console.error("Hem Brevo hem EmailJS başarısız:", emailErr);
+    throw emailErr;
+  }
+}
+
+/**
+ * Basit HTML şablonu — tüm sistem mailleri için tutarlı görünüm
+ */
+function mailSablon(baslik, icerik, altNot) {
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{margin:0;padding:0;background:#FAFAF7;font-family:Arial,Helvetica,sans-serif;color:#1A1A1A;}</style></head><body>' +
+    '<div style="max-width:600px;margin:0 auto;background:#FFFFFF;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(61,107,79,0.1);">' +
+      '<div style="background:linear-gradient(135deg,#3D6B4F,#2A4D38);color:#FFFFFF;padding:28px 24px;text-align:center;">' +
+        '<div style="font-size:32px;margin-bottom:8px;">🌸</div>' +
+        '<div style="font-size:22px;font-weight:700;letter-spacing:0.5px;">Bir Çiçek Koleji Anaokulu</div>' +
+        '<div style="font-size:13px;opacity:0.85;margin-top:4px;">Montessori &amp; Orman Okulu</div>' +
+      '</div>' +
+      '<div style="padding:32px 28px;">' +
+        '<h2 style="color:#2A4D38;font-size:20px;margin:0 0 18px 0;font-weight:600;">' + baslik + '</h2>' +
+        '<div style="color:#4A4A4A;font-size:14px;line-height:1.7;">' + icerik + '</div>' +
+        (altNot ? '<div style="margin-top:24px;padding:16px;background:#FBF6E9;border-left:3px solid #B8962E;border-radius:8px;font-size:13px;color:#6B4F3A;">' + altNot + '</div>' : '') +
+      '</div>' +
+      '<div style="background:#F5F0E8;padding:20px 24px;text-align:center;border-top:1px solid #DDD8CC;">' +
+        '<div style="font-size:12px;color:#888;line-height:1.6;">' +
+          'Aydınlı Mah. Bahçeler Sk. No:45 Tuzla/İstanbul<br>' +
+          '📞 0216 393 54 57 &nbsp;·&nbsp; 💬 0555 103 54 57<br>' +
+          '<a href="https://bircicekkoleji.com" style="color:#3D6B4F;text-decoration:none;">bircicekkoleji.com</a> &nbsp;·&nbsp; ' +
+          '<a href="https://instagram.com/bircicekkoleji" style="color:#3D6B4F;text-decoration:none;">@bircicekkoleji</a>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</body></html>';
+}
 
 function fmtTL(n) {
   n = Math.round(Number(n)||0);
@@ -2084,25 +2176,33 @@ async function odemeBildirimGonder(taksitId, taksitAd, tutar) {
     });
     await odemeRef.set({ bildirimler: bildirimler, sonBildirim: new Date().toISOString() }, { merge: true });
 
-    // 3. EmailJS ile okula bildirim maili
-    emailjs.init(EMAILJS_CONFIG.publicKey);
-    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-      to_email: SCHOOL_EMAIL,
-      cocuk_adi: cocukAdi + " — 💰 ÖDEME BİLDİRİMİ",
-      mesaj:
-        "Merhaba,\n\n" +
-        "Aşağıdaki veli ödeme yaptığını bildirdi:\n\n" +
-        "👤 Veli: " + (currentUser.displayName||"—") + "\n" +
-        "📧 E-posta: " + currentUser.email + "\n" +
-        "📞 Telefon: " + veliTel + "\n" +
-        "👶 Öğrenci: " + cocukAdi + "\n\n" +
-        "💳 Ödeme:\n" +
-        "  • Taksit: " + taksitAd + "\n" +
-        "  • Tutar: " + fmtTL(tutar) + "\n\n" +
-        "Lütfen Kuveyt Türk hesabınızı kontrol ederek ödemeyi teyit edin.\n\n" +
-        "— Bir Çiçek Koleji Yeni Kayıt Sistemi",
-      veli_email: currentUser.email,
-      veli_tel: veliTel
+    // 3. Brevo proxy ile okula bildirim maili (fallback olarak EmailJS)
+    var bildirimHTML =
+      '<p style="font-size:15px;">Merhaba,</p>' +
+      '<p>Aşağıdaki veli <strong style="color:#3D6B4F;">ödeme yaptığını bildirdi</strong>. Lütfen Kuveyt Türk hesabınızı kontrol ederek teyit edin.</p>' +
+      '<div style="background:#EDF5F0;border-left:3px solid #3D6B4F;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
+        '<div style="font-size:12px;color:#2A4D38;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">👤 Veli Bilgileri</div>' +
+        '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
+          '<tr><td style="padding:4px 0;color:#888;width:100px;">Ad Soyad:</td><td style="padding:4px 0;font-weight:600;">' + (currentUser.displayName||"—") + '</td></tr>' +
+          '<tr><td style="padding:4px 0;color:#888;">E-posta:</td><td style="padding:4px 0;font-weight:600;">' + currentUser.email + '</td></tr>' +
+          '<tr><td style="padding:4px 0;color:#888;">Telefon:</td><td style="padding:4px 0;font-weight:600;">' + veliTel + '</td></tr>' +
+          '<tr><td style="padding:4px 0;color:#888;">Öğrenci:</td><td style="padding:4px 0;font-weight:600;">' + cocukAdi + '</td></tr>' +
+        '</table>' +
+      '</div>' +
+      '<div style="background:#FBF6E9;border-left:3px solid #B8962E;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
+        '<div style="font-size:12px;color:#B8962E;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">💳 Ödeme Bilgileri</div>' +
+        '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
+          '<tr><td style="padding:4px 0;color:#888;width:100px;">Taksit:</td><td style="padding:4px 0;font-weight:600;">' + taksitAd + '</td></tr>' +
+          '<tr><td style="padding:4px 0;color:#888;">Tutar:</td><td style="padding:4px 0;font-weight:700;color:#6B4F3A;font-size:18px;">' + fmtTL(tutar) + '</td></tr>' +
+          '<tr><td style="padding:4px 0;color:#888;">Bildirim Zamanı:</td><td style="padding:4px 0;font-weight:600;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
+        '</table>' +
+      '</div>';
+    await brevoMail({
+      to: SCHOOL_EMAIL,
+      toName: "Bir Çiçek Koleji",
+      replyTo: { email: currentUser.email, name: currentUser.displayName || "Veli" },
+      subject: "💰 Ödeme Bildirimi — " + cocukAdi + " (" + fmtTL(tutar) + ")",
+      htmlContent: mailSablon("💰 Yeni Ödeme Bildirimi", bildirimHTML, "Bu bildirim <strong>otomatik</strong> oluşturulmuştur. Veliyi aramak için üstteki bilgileri kullanabilirsiniz.")
     });
 
     hideLoading();
@@ -2296,13 +2396,11 @@ function copyRefKod() {
 // ═══ 12. GİRİŞ TAKİBİ ═══
 async function logGiris2(u) {
   try {
+    // Giriş kaydını Firestore'a al (mail değil, spam önleme)
     await db.collection("girisler").add({ email:u.email, displayName:u.displayName||"", girisZamani:new Date().toISOString(), uid:u.uid, sistem:"yenikayit" });
-    emailjs.init(EMAILJS_CONFIG.publicKey);
-    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-      to_email: SCHOOL_EMAIL, cocuk_adi: "Yeni Kayıt Sistem Girişi",
-      mesaj: "YENİ KAYIT SİSTEM GİRİŞİ\nMail: "+u.email+"\nAd: "+(u.displayName||"–")+"\nZaman: "+new Date().toLocaleString("tr-TR")
-    });
-  } catch(e) { console.log(e); }
+    // Not: Her login'de mail atmıyoruz — Firestore'dan takip edilebilir.
+    // İleride "günlük özet mail" için tetikleyici eklenebilir.
+  } catch(e) { console.log("Giriş log hatası:", e); }
 }
 
 // ═══ 13. KAYDET ═══
@@ -2330,29 +2428,117 @@ async function kaydet2() {
     await db.collection("yenikayit").doc(currentUser.uid).set(data);
     var refGiris=data.refKoduKullanildi;
     if(refGiris&&refGiris.startsWith("BCK-")) {
-      var q=await db.collection("referanslar").where("kod","==",refGiris).get();
-      if(!q.empty) await q.docs[0].ref.update({ kayitSayisi:(q.docs[0].data().kayitSayisi||0)+1 });
+      try {
+        var q=await db.collection("referanslar").where("kod","==",refGiris).get();
+        if(!q.empty) await q.docs[0].ref.update({ kayitSayisi:(q.docs[0].data().kayitSayisi||0)+1 });
+      } catch(refErr) { console.warn("Referans güncellenemedi:", refErr); }
     }
-    await sendEmail2(data);
+    // Email göndermeyi try-catch içine al — email başarısız olsa bile başvuru kaydedilmiş sayılsın
+    try {
+      await sendEmail2(data);
+    } catch(emailErr) {
+      console.warn("Email gönderilemedi ama başvuru kaydedildi:", emailErr);
+    }
     hideLoading(); goToScreen("screen-done");
   } catch(e) {
-    hideLoading(); showToast("⚠️ Hata: "+e.message);
+    hideLoading();
+    // Gerçek hatayı konsola yaz
+    console.error("❌ Başvuru kaydetme hatası:", e);
+    console.error("Hata detayı:", { message:e.message, code:e.code, text:e.text, stack:e.stack, raw:e });
+    // Farklı hata tiplerinden anlamlı mesaj çıkar
+    var hataMsg = "";
+    if(e && e.message) hataMsg = e.message;
+    else if(e && e.code) hataMsg = "Kod: " + e.code;
+    else if(e && e.text) hataMsg = e.text;
+    else if(typeof e === "string") hataMsg = e;
+    else { try { hataMsg = JSON.stringify(e); } catch(x) { hataMsg = "Bilinmeyen hata"; } }
+    showToast("⚠️ Hata: " + hataMsg);
     if(btn) { btn.disabled=false; btn.textContent="🌸 Başvuruyu Gönder"; }
   }
 }
 async function sendEmail2(data) {
-  emailjs.init(EMAILJS_CONFIG.publicKey);
-  var h=appState2.hesap;
-  var progLabel=data.program==="tam"?"Tam Gün":"Yarım Gün";
-  var tablo="ÖDEME TABLOSU - "+data.childAd+" "+data.childSoyad+"\n"+"=".repeat(40)+"\nKayıt Türü: "+(data.kayitTur==="onkayit"?"Avantajlı Ön Kayıt":data.kayitTur==="erken"?"Erken Kayıt":"Normal Kayıt")+"\nI. Dönem Aylık: "+fmt(data.iAylik)+" TL\nII. Dönem Aylık: "+fmt(data.iiAylik)+" TL\nÖn Ödeme: "+fmt(data.onOdeme)+" TL\nÖdeme Tercihi: "+data.odemeTercihi+"\nFatura: "+(data.faturaIstegi?"Evet":"Hayır");
-  await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email:SCHOOL_EMAIL, cocuk_adi:data.childAd+" — YENİ KAYIT BAŞVURUSU",
-    mesaj:"🌸 YENİ KAYIT BAŞVURUSU!\n\nVeli: "+data.veliAd+" "+data.veliSoyad+"\nEmail: "+data.email+"\nTel: "+data.phone+"\n\nÇocuk: "+data.childAd+" "+data.childSoyad+"\nDoğum: "+data.childDogum+"\n\n"+tablo+"\n\nRef Kodu: "+data.refKodu+"\nRef Kullanıldı: "+(data.refKoduKullanildi||"Yok")+"\nTarih: "+new Date().toLocaleString("tr-TR")
-  });
-  await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email:data.email, cocuk_adi:data.childAd+" "+data.childSoyad,
-    mesaj:"Sayın "+data.veliAd+" "+data.veliSoyad+",\n\n"+data.childAd+"'in başvurusu alındı. En kısa sürede sizi arayacağız.\n\n"+tablo+"\n\nREFERANS KODUNUZ: "+data.refKodu+"\n\n1. Kayıt → I. Dönem Orman Okulu Servis ücreti — alınmaz!\n2. Kayıt → II. Dönem Orman Okulu Servis ücreti — alınmaz!\n3. Kayıt → Eğitim Materyallerinin %50si — alınmaz!\n\nSevgilerimizle,\nBir Çiçek Koleji Anaokulu"
-  });
+  var progLabel = data.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
+  var kayitTurLabel = data.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : data.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
+
+  // Ödeme tablosu (her iki mailde de kullanılır)
+  var odemeTablosu =
+    '<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">' +
+      '<tr style="background:#EDF5F0;"><td style="padding:10px 14px;color:#2A4D38;font-weight:600;">Kayıt Türü</td><td style="padding:10px 14px;text-align:right;">' + kayitTurLabel + '</td></tr>' +
+      '<tr><td style="padding:10px 14px;color:#888;">Program</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + progLabel + '</td></tr>' +
+      '<tr style="background:#FAFAF7;"><td style="padding:10px 14px;color:#888;">Aylık Ücret</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.aylikUcret) + ' TL</td></tr>' +
+      '<tr><td style="padding:10px 14px;color:#888;">Ön Ödeme</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.onOdeme) + ' TL</td></tr>' +
+      '<tr style="background:#FAFAF7;"><td style="padding:10px 14px;color:#888;">I. Dönem Aylık (5 ay)</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.iAylik) + ' TL</td></tr>' +
+      '<tr><td style="padding:10px 14px;color:#888;">II. Dönem Aylık (5 ay)</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.iiAylik) + ' TL</td></tr>' +
+      '<tr style="background:#FBF6E9;border-top:2px solid #B8962E;"><td style="padding:12px 14px;color:#6B4F3A;font-weight:700;">Yıllık Toplam</td><td style="padding:12px 14px;text-align:right;font-weight:700;color:#6B4F3A;font-size:16px;">' + fmt(data.yillik) + ' TL</td></tr>' +
+    '</table>';
+
+  // 1️⃣ Okula bildirim maili
+  var okulHTML =
+    '<p style="font-size:15px;">Yeni bir <strong style="color:#3D6B4F;">ön kayıt başvurusu</strong> alındı.</p>' +
+    '<div style="background:#EDF5F0;border-left:3px solid #3D6B4F;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
+      '<div style="font-size:12px;color:#2A4D38;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">👤 Veli Bilgileri</div>' +
+      '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
+        '<tr><td style="padding:4px 0;color:#888;width:100px;">Ad Soyad:</td><td style="padding:4px 0;font-weight:600;">' + data.veliAd + ' ' + data.veliSoyad + '</td></tr>' +
+        '<tr><td style="padding:4px 0;color:#888;">E-posta:</td><td style="padding:4px 0;font-weight:600;">' + data.email + '</td></tr>' +
+        '<tr><td style="padding:4px 0;color:#888;">Telefon:</td><td style="padding:4px 0;font-weight:600;">' + data.phone + '</td></tr>' +
+      '</table>' +
+    '</div>' +
+    '<div style="background:#FBF6E9;border-left:3px solid #B8962E;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
+      '<div style="font-size:12px;color:#B8962E;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">👶 Öğrenci Bilgileri</div>' +
+      '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
+        '<tr><td style="padding:4px 0;color:#888;width:100px;">Ad Soyad:</td><td style="padding:4px 0;font-weight:600;">' + data.childAd + ' ' + data.childSoyad + '</td></tr>' +
+        '<tr><td style="padding:4px 0;color:#888;">Doğum:</td><td style="padding:4px 0;font-weight:600;">' + (data.childDogum||"—") + '</td></tr>' +
+        '<tr><td style="padding:4px 0;color:#888;">Cinsiyet:</td><td style="padding:4px 0;font-weight:600;">' + (data.childCinsiyet||"—") + '</td></tr>' +
+      '</table>' +
+    '</div>' +
+    '<div style="font-size:13px;color:#2A4D38;font-weight:700;margin-top:24px;margin-bottom:8px;">💰 Ödeme Planı</div>' +
+    odemeTablosu +
+    '<div style="background:#F5F0E8;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px;">' +
+      '<strong>Referans Kodu:</strong> ' + (data.refKodu||"—") + '<br>' +
+      '<strong>Kullanılan Referans:</strong> ' + (data.refKoduKullanildi||"Yok") + '<br>' +
+      '<strong>Ödeme Tercihi:</strong> ' + (data.odemeTercihi||"Belirtilmedi") + '<br>' +
+      '<strong>Fatura İsteği:</strong> ' + (data.faturaIstegi?"Evet":"Hayır") + '<br>' +
+      '<strong>Tarih:</strong> ' + new Date().toLocaleString("tr-TR") +
+    '</div>';
+
+  try {
+    await brevoMail({
+      to: SCHOOL_EMAIL,
+      toName: "Bir Çiçek Koleji",
+      replyTo: { email: data.email, name: data.veliAd + " " + data.veliSoyad },
+      subject: "🌸 Yeni Kayıt Başvurusu — " + data.childAd + " " + data.childSoyad,
+      htmlContent: mailSablon("🌸 Yeni Kayıt Başvurusu Alındı", okulHTML, "Veliyi aramak için üstteki telefon/mail bilgilerini kullanabilirsiniz.")
+    });
+  } catch(e) { console.warn("Okul maili gönderilemedi:", e); }
+
+  // 2️⃣ Veliye teyit maili
+  var veliHTML =
+    '<p style="font-size:15px;">Sayın <strong>' + data.veliAd + ' ' + data.veliSoyad + '</strong>,</p>' +
+    '<p><strong style="color:#3D6B4F;">' + data.childAd + '</strong> için yaptığınız ön kayıt başvurusu tarafımıza ulaşmıştır. En kısa sürede sizinle iletişime geçeceğiz. 🌸</p>' +
+    '<div style="font-size:13px;color:#2A4D38;font-weight:700;margin-top:24px;margin-bottom:8px;">📋 Başvuru Özeti</div>' +
+    odemeTablosu +
+    (data.refKodu ?
+      '<div style="background:linear-gradient(135deg,#FBF6E9,#F5F0E8);border:2px dashed #B8962E;border-radius:12px;padding:20px;margin:24px 0;text-align:center;">' +
+        '<div style="font-size:12px;color:#B8962E;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:6px;">🎁 Size Özel Referans Kodunuz</div>' +
+        '<div style="font-size:24px;font-weight:700;color:#6B4F3A;font-family:monospace;letter-spacing:2px;">' + data.refKodu + '</div>' +
+        '<div style="font-size:12px;color:#888;margin-top:8px;">Bu kodu yakınlarınızla paylaşarak indirimlerden yararlanabilirsiniz.</div>' +
+      '</div>' +
+      '<div style="background:#EDF5F0;border-radius:8px;padding:16px 18px;font-size:13px;line-height:1.8;">' +
+        '<strong style="color:#2A4D38;">🎁 Referans Avantajları:</strong><br>' +
+        '• <strong>1. Kayıt</strong> → I. Dönem Orman Okulu Servisi <em>ücretsiz</em><br>' +
+        '• <strong>2. Kayıt</strong> → II. Dönem Orman Okulu Servisi <em>ücretsiz</em><br>' +
+        '• <strong>3. Kayıt</strong> → Eğitim Materyallerinin %50\'si <em>ücretsiz</em>' +
+      '</div>' : '') +
+    '<p style="margin-top:28px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
+
+  try {
+    await brevoMail({
+      to: data.email,
+      toName: data.veliAd + " " + data.veliSoyad,
+      subject: "🌸 Başvurunuz Alındı — " + data.childAd + " " + data.childSoyad,
+      htmlContent: mailSablon("Başvurunuz Alındı 🌸", veliHTML, "Sorularınız için: <strong>0216 393 54 57</strong> &nbsp;·&nbsp; <strong>WhatsApp: 0555 103 54 57</strong>")
+    });
+  } catch(e) { console.warn("Veli maili gönderilemedi:", e); }
 }
 
 // ═══ 14. RANDEVU ═══
