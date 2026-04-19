@@ -1531,7 +1531,8 @@ img, video, iframe {
 
         <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
           <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Hesap Sahibi</div>
-          <div style="font-size:15px; font-weight:600;">Bir Çiçek Koleji Anaokulu</div>
+          <div style="font-size:15px; font-weight:600;">Emrah Bay</div>
+          <div style="font-size:11px; opacity:0.7; margin-top:4px;">Bir Çiçek Koleji Anaokulu Kurucu Müdürü</div>
         </div>
 
         <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
@@ -1839,6 +1840,8 @@ async function brevoMail(opts) {
     throw new Error("brevoMail: to, subject, htmlContent zorunlu");
   }
 
+  console.log("📧 brevoMail çağrıldı → konu:", opts.subject, "→ alıcı:", opts.to);
+
   // 1. Brevo proxy'yi dene
   try {
     var payload = {
@@ -1855,37 +1858,51 @@ async function brevoMail(opts) {
     if(opts.cc) payload.cc = opts.cc;
     if(opts.bcc) payload.bcc = opts.bcc;
 
+    console.log("→ Brevo proxy'ye istek gönderiliyor...");
     var res = await fetch(BREVO_PROXY_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
-      redirect: "follow"
+      redirect: "follow",
+      mode: "cors"
     });
-    var data = await res.json();
+    console.log("→ Brevo yanıtı alındı, HTTP status:", res.status);
+
+    var rawText = await res.text();
+    console.log("→ Brevo ham yanıt:", rawText.substring(0, 500));
+
+    var data;
+    try { data = JSON.parse(rawText); }
+    catch(parseErr) {
+      console.warn("Brevo yanıtı JSON değil:", rawText.substring(0, 200));
+      throw new Error("Geçersiz yanıt: " + rawText.substring(0, 100));
+    }
+
     if(data && data.success) {
-      console.log("✉️ Brevo ile gönderildi:", opts.subject);
+      console.log("✅ Brevo ile gönderildi:", opts.subject);
       return { success: true, provider: "brevo", messageId: data.messageId };
     }
-    console.warn("Brevo başarısız, EmailJS'e geçiliyor:", data);
+    console.warn("⚠️ Brevo başarısız:", data);
+    throw new Error(data.error || data.detail || "Bilinmeyen Brevo hatası");
   } catch(brevoErr) {
-    console.warn("Brevo proxy hatası, EmailJS'e geçiliyor:", brevoErr);
+    console.warn("⚠️ Brevo proxy hatası, EmailJS fallback'e geçiliyor:", brevoErr.message || brevoErr);
   }
 
   // 2. Fallback: EmailJS
   try {
     if(typeof emailjs === "undefined") throw new Error("EmailJS yüklü değil");
+    console.log("→ EmailJS fallback deneniyor...");
     emailjs.init(EMAILJS_CONFIG.publicKey);
-    // EmailJS template değişkenlerine dönüştür
     var textBody = opts.textContent || opts.htmlContent.replace(/<[^>]+>/g, "").trim();
     await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
       to_email: opts.to,
       cocuk_adi: opts.subject,
       mesaj: textBody
     });
-    console.log("✉️ EmailJS (fallback) ile gönderildi:", opts.subject);
+    console.log("✅ EmailJS (fallback) ile gönderildi:", opts.subject);
     return { success: true, provider: "emailjs" };
   } catch(emailErr) {
-    console.error("Hem Brevo hem EmailJS başarısız:", emailErr);
+    console.error("❌ Hem Brevo hem EmailJS başarısız:", emailErr);
     throw emailErr;
   }
 }
@@ -2426,6 +2443,74 @@ async function kaydet2() {
       kayitTarihi:new Date().toISOString(), durum:"beklemede", sistem:"yenikayit"
     };
     await db.collection("yenikayit").doc(currentUser.uid).set(data);
+
+    // 🎯 KRİTİK: Ödeme planını odemeler koleksiyonuna otomatik oluştur
+    // Böylece veli "Ödeme Bilgilerim" sekmesinde kendi planını görebilir
+    try {
+      var cocukTamAd = (data.childAd + " " + data.childSoyad).trim();
+      // Taksit planını oluştur (Ön Ödeme + I. Dönem 5 ay + II. Dönem 5 ay)
+      var planList = [];
+      planList.push({
+        id: "on_odeme",
+        ay: "Kayıt Ön Ödemesi",
+        aciklama: "Kayıt günü ödenir",
+        tutar: h.onOdeme,
+        sonTarih: "Kayıt günü"
+      });
+      var iAylar = ["Eylül 2026","Ekim 2026","Kasım 2026","Aralık 2026","Ocak 2027"];
+      iAylar.forEach(function(ay, idx){
+        planList.push({
+          id: "i_" + (idx+1),
+          ay: ay + " taksiti",
+          aciklama: "I. Dönem - " + ay,
+          tutar: h.iAylik,
+          sonTarih: "5 " + ay
+        });
+      });
+      var iiAylar = ["Şubat 2027","Mart 2027","Nisan 2027","Mayıs 2027","Haziran 2027"];
+      iiAylar.forEach(function(ay, idx){
+        // Son ay: kalanın kusur olarak eklenmesi (yuvarlama farkını telafi eder)
+        var tutar = (idx === 4) ? (h.kalan - h.iAylik*5 - h.iiAylik*4) : h.iiAylik;
+        planList.push({
+          id: "ii_" + (idx+1),
+          ay: ay + " taksiti",
+          aciklama: "II. Dönem - " + ay,
+          tutar: tutar,
+          sonTarih: "5 " + ay
+        });
+      });
+
+      // Havale açıklaması: "Ad Soyad - Okul Ödemesi"
+      var aciklamaMetni = cocukTamAd + " - Okul Ödemesi";
+
+      var odemeDoc = {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        cocukAdi: cocukTamAd,
+        veliAd: data.veliAd + " " + data.veliSoyad,
+        veliTel: data.phone,
+        program: data.program,
+        kayitTur: data.kayitTur,
+        toplam: h.yillik,
+        aylikUcret: h.aylik,
+        onOdeme: h.onOdeme,
+        plan: planList,
+        odemeler: [],       // yapılan ödemeler boş başlar
+        digerOdemeler: [],  // materyal/servis vs. - admin ekleyebilir
+        bildirimler: [],    // veli bildirimleri
+        iban: "TR62 0020 5000 0969 5703 5000 02", // Emrah Bay - Kuveyt Türk
+        aciklama: aciklamaMetni,
+        sistem: "yenikayit",
+        olusturuldu: new Date().toISOString(),
+        faturaIstegi: data.faturaIstegi || false,
+        faturaEmail: data.faturaIstegi ? data.email : ""
+      };
+      await db.collection("odemeler").doc(currentUser.uid).set(odemeDoc, { merge: true });
+      console.log("✅ Ödeme planı otomatik oluşturuldu");
+    } catch(odemeErr) {
+      console.warn("⚠️ Ödeme planı oluşturulamadı ama başvuru kaydedildi:", odemeErr);
+    }
+
     var refGiris=data.refKoduKullanildi;
     if(refGiris&&refGiris.startsWith("BCK-")) {
       try {
@@ -2461,15 +2546,30 @@ async function sendEmail2(data) {
   var kayitTurLabel = data.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : data.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
 
   // Ödeme tablosu (her iki mailde de kullanılır)
+  // Ay adları ve tutarları (hesaplaYeni'den alınmış iRows ve iiRows)
+  var iRows = (appState2.hesap && appState2.hesap.iRows) || [];
+  var iiRows = (appState2.hesap && appState2.hesap.iiRows) || [];
+
+  // Ay satırları HTML üretici
+  var aySatirlari = function(rows, altBg) {
+    return rows.map(function(row, idx){
+      var bg = (idx % 2 === 0) ? altBg : '#FFFFFF';
+      return '<tr style="background:' + bg + ';"><td style="padding:8px 14px;color:#4A4A4A;padding-left:28px;">' + row.ay + ' taksiti</td><td style="padding:8px 14px;text-align:right;color:#2A4D38;font-weight:600;">' + fmt(row.tutar) + ' TL</td></tr>';
+    }).join('');
+  };
+
   var odemeTablosu =
     '<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">' +
       '<tr style="background:#EDF5F0;"><td style="padding:10px 14px;color:#2A4D38;font-weight:600;">Kayıt Türü</td><td style="padding:10px 14px;text-align:right;">' + kayitTurLabel + '</td></tr>' +
       '<tr><td style="padding:10px 14px;color:#888;">Program</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + progLabel + '</td></tr>' +
-      '<tr style="background:#FAFAF7;"><td style="padding:10px 14px;color:#888;">Aylık Ücret</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.aylikUcret) + ' TL</td></tr>' +
-      '<tr><td style="padding:10px 14px;color:#888;">Ön Ödeme</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.onOdeme) + ' TL</td></tr>' +
-      '<tr style="background:#FAFAF7;"><td style="padding:10px 14px;color:#888;">I. Dönem Aylık (5 ay)</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.iAylik) + ' TL</td></tr>' +
-      '<tr><td style="padding:10px 14px;color:#888;">II. Dönem Aylık (5 ay)</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + fmt(data.iiAylik) + ' TL</td></tr>' +
-      '<tr style="background:#FBF6E9;border-top:2px solid #B8962E;"><td style="padding:12px 14px;color:#6B4F3A;font-weight:700;">Yıllık Toplam</td><td style="padding:12px 14px;text-align:right;font-weight:700;color:#6B4F3A;font-size:16px;">' + fmt(data.yillik) + ' TL</td></tr>' +
+      // Ön Ödeme satırı
+      '<tr style="background:#FBF6E9;border-top:2px solid #B8962E;"><td style="padding:14px;color:#6B4F3A;font-weight:700;">🔑 Ön Ödeme <span style="font-weight:400;color:#888;">(Kayıt günü)</span></td><td style="padding:14px;text-align:right;font-weight:700;color:#6B4F3A;font-size:15px;">' + fmt(data.onOdeme) + ' TL</td></tr>' +
+      // I. Dönem başlık
+      '<tr style="background:#F5F0E8;"><td colspan="2" style="padding:12px 14px;font-size:12px;color:#6B4F3A;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">I. DÖNEM — EYLÜL · EKİM · KASIM · ARALIK · OCAK</td></tr>' +
+      aySatirlari(iRows, '#FAFAF7') +
+      // II. Dönem başlık
+      '<tr style="background:#F5F0E8;"><td colspan="2" style="padding:12px 14px;font-size:12px;color:#6B4F3A;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">II. DÖNEM — ŞUBAT · MART · NİSAN · MAYIS · HAZİRAN</td></tr>' +
+      aySatirlari(iiRows, '#FAFAF7') +
     '</table>';
 
   // 1️⃣ Okula bildirim maili
@@ -2529,6 +2629,15 @@ async function sendEmail2(data) {
         '• <strong>2. Kayıt</strong> → II. Dönem Orman Okulu Servisi <em>ücretsiz</em><br>' +
         '• <strong>3. Kayıt</strong> → Eğitim Materyallerinin %50\'si <em>ücretsiz</em>' +
       '</div>' : '') +
+    (data.faturaIstegi ?
+      '<div style="background:#FFF5E6;border:1px solid #FFD4A3;border-radius:8px;padding:14px 18px;margin:20px 0;font-size:13px;color:#7A4E00;">' +
+        '🧾 <strong>Fatura Talebi Alındı</strong><br>' +
+        'Faturalarınız ödeme yapıldıktan sonra <strong>' + data.email + '</strong> adresine otomatik olarak gönderilecektir.' +
+      '</div>' : '') +
+    '<div style="background:#EDF5F0;border-radius:8px;padding:16px 18px;margin:20px 0;font-size:13px;">' +
+      '🔐 <strong>Kayıt sonrası ödeme takibi:</strong><br>' +
+      '<a href="https://yenikayit.bircicekkoleji.com" style="color:#3D6B4F;text-decoration:none;font-weight:600;">yenikayit.bircicekkoleji.com</a> adresinden giriş yaparak <strong>"Ödeme Bilgilerim"</strong> bölümünden ödeme planınızı, taksit durumunuzu ve banka bilgilerini görüntüleyebilirsiniz.' +
+    '</div>' +
     '<p style="margin-top:28px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
 
   try {
