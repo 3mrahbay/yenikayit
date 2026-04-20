@@ -1588,6 +1588,7 @@ const FIREBASE_CONFIG = {
 const EMAILJS_CONFIG = { serviceId:"BirCicek_Mail", templateId:"template_7bi65w8", publicKey:"_VnABdAj03KuoOHYM" };
 const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
 const BREVO_PROXY_URL = "https://script.google.com/macros/s/AKfycbwUNvVhTCvxUKOMtbFJ4_UASBo8-sgT13qT_9tWeYKZR3IYaYKUhGdSaGgGaaqMaZLf/exec";
+const OKUL_LOGO_URL = "https://yenikayit.bircicekkoleji.com/okul_logo.png";
 const DEADLINE = new Date("2026-05-10T23:59:59");
 const RANDEVU_LINKS = {
   online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
@@ -1883,7 +1884,14 @@ async function brevoMail(opts) {
       return { success: true, provider: "brevo", messageId: data.messageId };
     }
     console.warn("⚠️ Brevo başarısız:", data);
-    throw new Error(data.error || data.detail || "Bilinmeyen Brevo hatası");
+    // Hata mesajını string yap
+    var errMsg;
+    if(typeof data.error === "string") errMsg = data.error;
+    else if(typeof data.detail === "string") errMsg = data.detail;
+    else if(data.error && typeof data.error === "object") errMsg = JSON.stringify(data.error);
+    else if(data.detail && typeof data.detail === "object") errMsg = JSON.stringify(data.detail);
+    else errMsg = "Brevo hatası (detay için konsol)";
+    throw new Error(errMsg);
   } catch(brevoErr) {
     console.warn("⚠️ Brevo proxy hatası, EmailJS fallback'e geçiliyor:", brevoErr.message || brevoErr);
   }
@@ -1913,8 +1921,8 @@ async function brevoMail(opts) {
 function mailSablon(baslik, icerik, altNot) {
   return '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{margin:0;padding:0;background:#FAFAF7;font-family:Arial,Helvetica,sans-serif;color:#1A1A1A;}</style></head><body>' +
     '<div style="max-width:600px;margin:0 auto;background:#FFFFFF;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(61,107,79,0.1);">' +
-      '<div style="background:linear-gradient(135deg,#3D6B4F,#2A4D38);color:#FFFFFF;padding:28px 24px;text-align:center;">' +
-        '<div style="font-size:32px;margin-bottom:8px;">🌸</div>' +
+      '<div style="background:linear-gradient(135deg,#3D6B4F,#2A4D38);color:#FFFFFF;padding:32px 24px 28px;text-align:center;">' +
+        '<img src="' + OKUL_LOGO_URL + '" alt="Bir Çiçek Koleji" width="80" height="80" style="width:80px;height:80px;border-radius:50%;background:#FFFFFF;padding:6px;margin:0 auto 14px;display:block;">' +
         '<div style="font-size:22px;font-weight:700;letter-spacing:0.5px;">Bir Çiçek Koleji Anaokulu</div>' +
         '<div style="font-size:13px;opacity:0.85;margin-top:4px;">Montessori &amp; Orman Okulu</div>' +
       '</div>' +
@@ -2170,6 +2178,7 @@ async function odemeBildirimGonder(taksitId, taksitAd, tutar) {
   if(!currentUser) { showToast("⚠️ Giriş yapmanız gerekiyor"); return; }
   if(!confirm("'" + taksitAd + "' taksiti için " + fmtTL(tutar) + " tutarında ödeme yaptığınızı okula bildirmek istiyor musunuz?\n\nOkul yönetimi ödemenizi bankadan kontrol ettikten sonra onaylayacaktır.")) return;
 
+  console.log("🔔 Ödeme bildirimi başlatıldı:", { taksitId: taksitId, taksitAd: taksitAd, tutar: tutar });
   showLoading();
   try {
     // 1. Başvuru bilgilerini çek
@@ -2214,22 +2223,45 @@ async function odemeBildirimGonder(taksitId, taksitAd, tutar) {
           '<tr><td style="padding:4px 0;color:#888;">Bildirim Zamanı:</td><td style="padding:4px 0;font-weight:600;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
         '</table>' +
       '</div>';
-    await brevoMail({
-      to: SCHOOL_EMAIL,
-      toName: "Bir Çiçek Koleji",
-      replyTo: { email: currentUser.email, name: currentUser.displayName || "Veli" },
-      subject: "💰 Ödeme Bildirimi — " + cocukAdi + " (" + fmtTL(tutar) + ")",
-      htmlContent: mailSablon("💰 Yeni Ödeme Bildirimi", bildirimHTML, "Bu bildirim <strong>otomatik</strong> oluşturulmuştur. Veliyi aramak için üstteki bilgileri kullanabilirsiniz.")
-    });
+
+    // Mail gönderimini dene ama başarısız olsa da kullanıcıyı durdurmayalım
+    // (Firestore'a kayıt zaten gitti, veli tekrar bildirmeye zorlanmasın)
+    var mailBasarili = false;
+    try {
+      await brevoMail({
+        to: SCHOOL_EMAIL,
+        toName: "Bir Çiçek Koleji",
+        replyTo: { email: currentUser.email, name: currentUser.displayName || "Veli" },
+        subject: "💰 Ödeme Bildirimi — " + cocukAdi + " (" + fmtTL(tutar) + ")",
+        htmlContent: mailSablon("💰 Yeni Ödeme Bildirimi", bildirimHTML, "Bu bildirim <strong>otomatik</strong> oluşturulmuştur. Veliyi aramak için üstteki bilgileri kullanabilirsiniz.")
+      });
+      mailBasarili = true;
+      console.log("✅ Bildirim maili okula gönderildi");
+    } catch(mailErr) {
+      console.warn("⚠️ Mail gönderilemedi ama bildirim Firestore'a kaydedildi:", mailErr);
+    }
 
     hideLoading();
-    showToast("✅ Bildirim gönderildi. Okul yönetimi en kısa sürede teyit edecek.");
+    if(mailBasarili) {
+      showToast("✅ Bildirim gönderildi. Okul yönetimi en kısa sürede teyit edecek.");
+    } else {
+      // Mail gitmedi ama kayıt var — veli için yine başarı
+      showToast("✅ Bildiriminiz kaydedildi. Okul yönetimi en kısa sürede teyit edecek.");
+    }
     // Ekranı yenile
     setTimeout(function(){ goToOdemeBilgileri(); }, 1000);
   } catch(e) {
     hideLoading();
     console.error("Bildirim gönderme hatası:", e);
-    showToast("⚠️ Bildirim gönderilemedi: " + (e.message||e));
+    // Hatayı düzgün şekilde string'e çevir ([object Object] olmasın diye)
+    var hataMsg = "";
+    if(e && typeof e === "string") hataMsg = e;
+    else if(e && e.message) hataMsg = e.message;
+    else if(e && e.error) hataMsg = typeof e.error === "string" ? e.error : JSON.stringify(e.error);
+    else if(e && e.detail) hataMsg = typeof e.detail === "string" ? e.detail : JSON.stringify(e.detail);
+    else if(e && e.code) hataMsg = "Kod: " + e.code;
+    else { try { hataMsg = JSON.stringify(e); } catch(x) { hataMsg = "Bilinmeyen hata"; } }
+    showToast("⚠️ Bildirim gönderilemedi: " + hataMsg);
   }
 }
 
