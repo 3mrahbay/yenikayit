@@ -1850,13 +1850,12 @@ async function brevoMail(opts) {
     return emailRegex.test(String(e).trim());
   };
 
-  // replyTo kontrolü — geçersizse at
+  // replyTo geçici olarak devre dışı — Brevo'da email validation çok sıkı
+  // ve Google Auth'tan gelen email bazen Brevo'yu tetikliyor.
+  // Veli email zaten mail body'sinde görünüyor, oradan bakabiliriz.
   if(opts.replyTo) {
-    var rtEmail = (typeof opts.replyTo === "string") ? opts.replyTo : opts.replyTo.email;
-    if(!geciliEmail(rtEmail)) {
-      console.warn("⚠️ Geçersiz replyTo email, kaldırılıyor:", rtEmail);
-      delete opts.replyTo;
-    }
+    console.log("ℹ️ replyTo atlanıyor (Brevo uyumluluk):", opts.replyTo);
+    delete opts.replyTo;
   }
 
   // to kontrolü
