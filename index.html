@@ -1843,6 +1843,27 @@ async function brevoMail(opts) {
 
   console.log("📧 brevoMail çağrıldı → konu:", opts.subject, "→ alıcı:", opts.to);
 
+  // Email format kontrolü — basit regex
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var geciliEmail = function(e) {
+    if(!e) return false;
+    return emailRegex.test(String(e).trim());
+  };
+
+  // replyTo kontrolü — geçersizse at
+  if(opts.replyTo) {
+    var rtEmail = (typeof opts.replyTo === "string") ? opts.replyTo : opts.replyTo.email;
+    if(!geciliEmail(rtEmail)) {
+      console.warn("⚠️ Geçersiz replyTo email, kaldırılıyor:", rtEmail);
+      delete opts.replyTo;
+    }
+  }
+
+  // to kontrolü
+  if(!geciliEmail(opts.to)) {
+    throw new Error("Geçersiz alıcı email: " + opts.to);
+  }
+
   // 1. Brevo proxy'yi dene
   try {
     var payload = {
@@ -1893,25 +1914,10 @@ async function brevoMail(opts) {
     else errMsg = "Brevo hatası (detay için konsol)";
     throw new Error(errMsg);
   } catch(brevoErr) {
-    console.warn("⚠️ Brevo proxy hatası, EmailJS fallback'e geçiliyor:", brevoErr.message || brevoErr);
-  }
-
-  // 2. Fallback: EmailJS
-  try {
-    if(typeof emailjs === "undefined") throw new Error("EmailJS yüklü değil");
-    console.log("→ EmailJS fallback deneniyor...");
-    emailjs.init(EMAILJS_CONFIG.publicKey);
-    var textBody = opts.textContent || opts.htmlContent.replace(/<[^>]+>/g, "").trim();
-    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-      to_email: opts.to,
-      cocuk_adi: opts.subject,
-      mesaj: textBody
-    });
-    console.log("✅ EmailJS (fallback) ile gönderildi:", opts.subject);
-    return { success: true, provider: "emailjs" };
-  } catch(emailErr) {
-    console.error("❌ Hem Brevo hem EmailJS başarısız:", emailErr);
-    throw emailErr;
+    console.warn("⚠️ Brevo proxy hatası:", brevoErr.message || brevoErr);
+    // Not: EmailJS fallback kaldırıldı (ücretsiz kotası dolmuş durumda).
+    // Brevo hatası varsa kullanıcıya gösteriyoruz, Firestore'a kayıt zaten gidiyor.
+    throw brevoErr;
   }
 }
 
@@ -2065,7 +2071,7 @@ function renderOdemeBilgileri(kayitData, o) {
     '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Eğitim Dönemi</div><div style="font-size:14px; font-weight:700;">2026-2027</div></div>';
 
   // Ödeme planı tablosu
-  renderPlanTablo(plan, odemeler);
+  renderPlanTablo(plan, odemeler, o.bildirimler || []);
 
   // Yapılan ödemeler listesi
   if(odemeler.length > 0) {
@@ -2076,7 +2082,7 @@ function renderOdemeBilgileri(kayitData, o) {
   // Diğer ödemeler
   if(digerOdemeler.length > 0) {
     document.getElementById("vob-diger-kutu").style.display = "block";
-    renderDigerOdemeler(digerOdemeler, odemeler);
+    renderDigerOdemeler(digerOdemeler, odemeler, o.bildirimler || []);
   }
 
   // Banka bilgileri
@@ -2086,7 +2092,8 @@ function renderOdemeBilgileri(kayitData, o) {
   document.getElementById("vob-aciklama").textContent = aciklama;
 }
 
-function renderPlanTablo(plan, odemeler) {
+function renderPlanTablo(plan, odemeler, bildirimler) {
+  bildirimler = bildirimler || [];
   var h = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:13px;">';
   h += '<thead><tr style="background:var(--sage-pale); color:var(--sage-dark);">';
   h += '<th style="padding:12px 10px; text-align:left; font-weight:700; border-radius:8px 0 0 8px;">Ay / Taksit</th>';
@@ -2097,22 +2104,32 @@ function renderPlanTablo(plan, odemeler) {
 
   plan.forEach(function(taksit, i) {
     var taksitId = taksit.id || ("t"+i);
-    // Bu taksite ait ödeme var mı?
+    // Bu taksite ait onaylanmış ödeme var mı? (admin onaylı)
     var ilgiliOdeme = odemeler.find(function(o){ return o && o.taksitId === taksitId && o.tip !== "serbest"; });
     var odendi = !!ilgiliOdeme;
-    var bildirimGonderilmis = ilgiliOdeme && ilgiliOdeme.bildirimGonderildi;
+
+    // Bu taksite ait bekleyen bildirim var mı?
+    var bekleyenBildirim = bildirimler.find(function(b){
+      return b && b.taksitId === taksitId && b.durum === "beklemede";
+    });
+    var bildirimGonderildi = !!bekleyenBildirim;
 
     var durumBadge, islemButton;
     if(odendi) {
+      // ✅ Admin onayladı
       durumBadge = '<span style="background:#E8F5EE; color:#1F5233; padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">✅ Ödendi</span>';
-      islemButton = '<span style="color:var(--text-light); font-size:11px;">—</span>';
+      islemButton = '<span style="color:var(--sage); font-size:11px;">✓</span>';
+    } else if(bildirimGonderildi) {
+      // 📬 Veli bildirdi, admin onayı bekleniyor
+      durumBadge = '<span style="background:#FFF5E6; color:#B8860B; padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Onay Bekliyor</span>';
+      islemButton = '<div style="display:flex; flex-direction:column; align-items:center; gap:3px;">' +
+        '<span style="color:var(--sage); font-size:11px; font-weight:600;">📬 Bildirim Gönderildi</span>' +
+        '<span style="color:var(--text-light); font-size:10px;">' + (bekleyenBildirim.gonderildi ? new Date(bekleyenBildirim.gonderildi).toLocaleDateString("tr-TR") : "") + '</span>' +
+      '</div>';
     } else {
+      // ⏳ Bekliyor, veli henüz bildirmemiş
       durumBadge = '<span style="background:var(--gold-pale); color:var(--gold); padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Bekliyor</span>';
-      if(bildirimGonderilmis) {
-        islemButton = '<span style="color:var(--sage); font-size:11px; font-weight:600;">📬 Bildirim Gönderildi</span>';
-      } else {
-        islemButton = '<button onclick="odemeBildirimGonder(\'' + taksitId + '\', \'' + (taksit.ay||taksit.aciklama||"Taksit").replace(/'/g,"") + '\', ' + (Number(taksit.tutar)||0) + ')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
-      }
+      islemButton = '<button onclick="odemeBildirimGonder(\'' + taksitId + '\', \'' + (taksit.ay||taksit.aciklama||"Taksit").replace(/'/g,"") + '\', ' + (Number(taksit.tutar)||0) + ')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
     }
 
     h += '<tr style="border-bottom:1px solid var(--border);">';
@@ -2146,13 +2163,20 @@ function renderYapilanOdemeler(odemeler) {
   document.getElementById("vob-odenenler-liste").innerHTML = h || '<div style="color:var(--text-light); font-size:13px;">Henüz ödeme yapılmamış.</div>';
 }
 
-function renderDigerOdemeler(digerOdemeler, odemeler) {
+function renderDigerOdemeler(digerOdemeler, odemeler, bildirimler) {
+  bildirimler = bildirimler || [];
   var h = '';
   digerOdemeler.forEach(function(d, i) {
     var digerId = d.id || ("d"+i);
+    var bildirimTaksitId = "diger_" + digerId;
+    // Admin onaylı ödeme var mı?
     var ilgiliOdeme = (odemeler||[]).find(function(o){ return o && o.digerId === digerId; });
     var odendi = !!ilgiliOdeme;
-    var bildirimGonderilmis = ilgiliOdeme && ilgiliOdeme.bildirimGonderildi;
+    // Bekleyen bildirim var mı?
+    var bekleyenBildirim = bildirimler.find(function(b){
+      return b && b.taksitId === bildirimTaksitId && b.durum === "beklemede";
+    });
+    var bildirimGonderildi = !!bekleyenBildirim;
 
     h += '<div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); gap:12px; flex-wrap:wrap;">';
     h += '<div style="flex:1; min-width:160px;">';
@@ -2162,11 +2186,17 @@ function renderDigerOdemeler(digerOdemeler, odemeler) {
     h += '</div>';
     h += '<div style="font-size:15px; font-weight:700; color:var(--earth); font-family:Cormorant Garamond,serif;">' + fmtTL(d.tutar||0) + '</div>';
     if(odendi) {
+      // ✅ Admin onayladı
       h += '<div style="background:#E8F5EE; color:#1F5233; padding:5px 12px; border-radius:50px; font-size:11px; font-weight:700;">✅ Ödendi</div>';
-    } else if(bildirimGonderilmis) {
-      h += '<div style="color:var(--sage); font-size:11px; font-weight:600;">📬 Bildirim Gönderildi</div>';
+    } else if(bildirimGonderildi) {
+      // 📬 Bildirim var, onay bekliyor
+      h += '<div style="display:flex; flex-direction:column; align-items:center; gap:3px;">' +
+        '<div style="background:#FFF5E6; color:#B8860B; padding:5px 12px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Onay Bekliyor</div>' +
+        '<div style="color:var(--sage); font-size:10px; font-weight:600;">📬 Bildirim gönderildi</div>' +
+      '</div>';
     } else {
-      h += '<button onclick="odemeBildirimGonder(\'diger_' + digerId + '\', \'' + (d.ad||"Diğer").replace(/'/g,"") + '\', ' + (Number(d.tutar)||0) + ')" style="background:var(--earth); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
+      // ⏳ Henüz bildirim yok
+      h += '<button onclick="odemeBildirimGonder(\'' + bildirimTaksitId + '\', \'' + (d.ad||"Diğer").replace(/'/g,"") + '\', ' + (Number(d.tutar)||0) + ')" style="background:var(--earth); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
     }
     h += '</div>';
   });
