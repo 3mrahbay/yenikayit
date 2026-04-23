@@ -2877,8 +2877,8 @@ async function sendEmail2(data) {
         'Faturalarınız ödeme yapıldıktan sonra <strong>' + data.email + '</strong> adresine otomatik olarak gönderilecektir.' +
       '</div>' : '') +
     '<div style="background:#EDF5F0;border-radius:8px;padding:16px 18px;margin:20px 0;font-size:13px;">' +
-      '🔐 <strong>Kayıt sonrası ödeme takibi:</strong><br>' +
-      '<a href="https://yenikayit.bircicekkoleji.com" style="color:#3D6B4F;text-decoration:none;font-weight:600;">yenikayit.bircicekkoleji.com</a> adresinden giriş yaparak <strong>"Ödeme Bilgilerim"</strong> bölümünden ödeme planınızı, taksit durumunuzu ve banka bilgilerini görüntüleyebilirsiniz.' +
+      '🌸 <strong>Veli Portalımıza Hoş Geldiniz!</strong><br>' +
+      '<a href="https://portal.bircicekkoleji.com" style="color:#3D6B4F;text-decoration:none;font-weight:600;">portal.bircicekkoleji.com</a> adresinden <strong>Google hesabınızla</strong> giriş yapabilirsiniz. Portal üzerinden ödeme planınızı, sözleşmenizi, güncel duyurularımızı ve öğrenci bilgilerinizi tek adresten takip edebilirsiniz.' +
     '</div>' +
     '<p style="margin-top:28px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
 
@@ -3212,7 +3212,7 @@ async function adminBildirimOnayla(uid, bildirimIdx) {
             '<tr><td style="padding:4px 0; color:#888;">Onay Tarihi:</td><td style="padding:4px 0; font-weight:600;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
           '</table>' +
         '</div>' +
-        '<p>Ödeme durumunuzu istediğiniz zaman <a href="https://yenikayit.bircicekkoleji.com" style="color:#3D6B4F; text-decoration:none; font-weight:600;">yenikayit.bircicekkoleji.com</a> adresinden <strong>"Ödeme Bilgilerim"</strong> sayfasından takip edebilirsiniz.</p>' +
+        '<p>Ödeme durumunuzu ve tüm okul bilgilerinizi <a href="https://portal.bircicekkoleji.com" style="color:#3D6B4F; text-decoration:none; font-weight:600;">portal.bircicekkoleji.com</a> adresinden Google hesabınızla giriş yaparak takip edebilirsiniz.</p>' +
         '<p style="margin-top:28px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
 
       var toEmail = odemeDoc.email || bildirim.veliEmail;
