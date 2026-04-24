@@ -1389,6 +1389,35 @@ const FIREBASE_CONFIG = {
 };
 const EMAILJS_CONFIG = { serviceId:"BirCicek_Mail", templateId:"template_7bi65w8", publicKey:"_VnABdAj03KuoOHYM" };
 const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
+
+// ═══ BREVO MAIL PROXY (Apps Script → Brevo) ═══
+const BREVO_PROXY_URL = "https://script.google.com/macros/s/AKfycbwUNvVhTCvxUKOMtbFJ4_UASBo8-sgT13qT_9tWeYKZR3IYaYKUhGdSaGgGaaqMaZLf/exec";
+
+async function brevoMail(opts) {
+  if(!opts.to || !opts.subject || !opts.htmlContent) {
+    console.warn("brevoMail: to, subject, htmlContent zorunlu");
+    return { success: false };
+  }
+  try {
+    await fetch(BREVO_PROXY_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({
+        action: "sendMail",
+        to: opts.to,
+        toName: opts.toName || "",
+        subject: opts.subject,
+        htmlContent: opts.htmlContent,
+        replyTo: opts.replyTo || SCHOOL_EMAIL
+      })
+    });
+    return { success: true };
+  } catch(e) {
+    console.error("brevoMail hatası:", e);
+    return { success: false, error: e.message };
+  }
+}
 const DEADLINE = new Date("2026-04-30T23:59:59");
 const RANDEVU_LINKS = {
   online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
@@ -1769,13 +1798,9 @@ function copyRefKod() {
 // ═══ 12. GİRİŞ TAKİBİ ═══
 async function logGiris2(u) {
   try {
-    await db.collection("girisler").add({ email:u.email, displayName:u.displayName||"", girisZamani:new Date().toISOString(), uid:u.uid, sistem:"yenikayit" });
-    emailjs.init(EMAILJS_CONFIG.publicKey);
-    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-      to_email: SCHOOL_EMAIL, cocuk_adi: "Yeni Kayıt Sistem Girişi",
-      mesaj: "YENİ KAYIT SİSTEM GİRİŞİ\nMail: "+u.email+"\nAd: "+(u.displayName||"–")+"\nZaman: "+new Date().toLocaleString("tr-TR")
-    });
-  } catch(e) { console.log(e); }
+    await db.collection("girisler").add({ email:u.email, displayName:u.displayName||"", girisZamani:new Date().toISOString(), sistem:"yenikayit" });
+  } catch(e) { console.log("logGiris2:", e); }
+  // Sistem girişi mail bildirimi gönderilmez (sessiz log)
 }
 
 // ═══ 13. KAYDET ═══
@@ -1842,77 +1867,133 @@ async function kaydet2() {
   }
 }
 async function sendEmail2(data) {
-  emailjs.init(EMAILJS_CONFIG.publicKey);
   var progLabel = data.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
   var kayitTurAd = data.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : data.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
-  var tablo = "ÖDEME TABLOSU - " + data.childAd + " " + data.childSoyad + "\n" +
-    "================================================\n" +
-    "Kayıt Türü: " + kayitTurAd + "\n" +
-    "Program: " + progLabel + "\n" +
-    "Aylık Ücret: " + fmt(data.aylikUcret) + " TL\n" +
-    "Ön Ödeme: " + fmt(data.onOdeme) + " TL (Kayıt gününde)\n" +
-    "I. Dönem (Eylül-Ocak): " + fmt(data.iAylik) + " TL/ay × 5 ay\n" +
-    "II. Dönem (Şubat-Haziran): " + fmt(data.iiAylik) + " TL/ay × 5 ay\n" +
-    "YILLIK TOPLAM: " + fmt(data.yillik) + " TL\n\n" +
-    "Ödeme Tercihi: " + data.odemeTercihi + "\n" +
-    "Fatura İsteği: " + (data.faturaIstegi ? "Evet" : "Hayır");
 
-  // 1) OKUL YÖNETİMİNE BAŞVURU MAİLİ
-  await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email: SCHOOL_EMAIL,
-    cocuk_adi: data.childAd + " " + data.childSoyad + " — YENİ KAYIT BAŞVURUSU",
-    mesaj: "🌸 YENİ KAYIT BAŞVURUSU ALINDI!\n\n" +
-      "═══════════════════════════════\n" +
-      "VELİ BİLGİLERİ\n" +
-      "═══════════════════════════════\n" +
-      "Ad Soyad: " + data.veliAd + " " + data.veliSoyad + "\n" +
-      "E-posta: " + data.email + "\n" +
-      "Telefon: " + data.phone + "\n\n" +
-      "═══════════════════════════════\n" +
-      "ÖĞRENCİ BİLGİLERİ\n" +
-      "═══════════════════════════════\n" +
-      "Ad Soyad: " + data.childAd + " " + data.childSoyad + "\n" +
-      "Doğum Tarihi: " + data.childDogum + "\n" +
-      "Cinsiyet: " + (data.childCinsiyet || "-") + "\n\n" +
-      "═══════════════════════════════\n" +
-      tablo + "\n\n" +
-      "═══════════════════════════════\n" +
-      "REFERANS BİLGİLERİ\n" +
-      "═══════════════════════════════\n" +
-      "Kendi Referans Kodu: " + data.refKodu + "\n" +
-      "Kullandığı Referans: " + (data.refKoduKullanildi || "Yok") + "\n" +
-      "Kıyafet Ücretsiz: " + (data.refliGeliyor ? "EVET" : "Hayır") + "\n\n" +
-      "Başvuru Tarihi: " + new Date().toLocaleString("tr-TR") + "\n\n" +
-      "⚠️ ONAY İÇİN: https://kayityenileme.bircicekkoleji.com/admin"
+  // Ödeme tablosu HTML
+  var odemeTablosuHtml =
+    '<table style="width:100%;border-collapse:collapse;margin:16px 0;font-family:Arial,sans-serif;font-size:13px;">' +
+    '<tr style="background:#2A4D38;color:white;"><th style="padding:10px;text-align:left;">Kalem</th><th style="padding:10px;text-align:right;">Tutar</th></tr>' +
+    '<tr><td style="padding:8px;border-bottom:1px solid #ddd;">Kayıt Türü</td><td style="padding:8px;border-bottom:1px solid #ddd;text-align:right;font-weight:600;">' + kayitTurAd + '</td></tr>' +
+    '<tr><td style="padding:8px;border-bottom:1px solid #ddd;">Program</td><td style="padding:8px;border-bottom:1px solid #ddd;text-align:right;font-weight:600;">' + progLabel + '</td></tr>' +
+    '<tr><td style="padding:8px;border-bottom:1px solid #ddd;">Aylık Ücret</td><td style="padding:8px;border-bottom:1px solid #ddd;text-align:right;font-weight:700;color:#2A4D38;">' + fmt(data.aylikUcret) + ' TL</td></tr>' +
+    '<tr><td style="padding:8px;border-bottom:1px solid #ddd;">Ön Ödeme (Kayıt gününde)</td><td style="padding:8px;border-bottom:1px solid #ddd;text-align:right;">' + fmt(data.onOdeme) + ' TL</td></tr>' +
+    '<tr><td style="padding:8px;border-bottom:1px solid #ddd;">I. Dönem (Eylül-Ocak) 5 ay</td><td style="padding:8px;border-bottom:1px solid #ddd;text-align:right;">' + fmt(data.iAylik) + ' TL/ay</td></tr>' +
+    '<tr><td style="padding:8px;border-bottom:1px solid #ddd;">II. Dönem (Şubat-Haziran) 5 ay</td><td style="padding:8px;border-bottom:1px solid #ddd;text-align:right;">' + fmt(data.iiAylik) + ' TL/ay</td></tr>' +
+    '<tr style="background:#EDF5F0;"><td style="padding:12px;font-weight:700;color:#2A4D38;">YILLIK TOPLAM</td><td style="padding:12px;text-align:right;font-weight:700;color:#2A4D38;font-size:16px;">' + fmt(data.yillik) + ' TL</td></tr>' +
+    '</table>';
+
+  // ── 1) OKUL YÖNETİMİNE BAŞVURU MAİLİ ──
+  var okulHtml =
+    '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">' +
+      '<div style="background:#2A4D38;color:white;padding:20px;border-radius:10px 10px 0 0;">' +
+        '<h1 style="margin:0;font-size:20px;">🌸 YENİ KAYIT BAŞVURUSU</h1>' +
+        '<p style="margin:5px 0 0;opacity:0.85;font-size:13px;">Bir Çiçek Koleji Anaokulu — Ön Kayıt Sistemi</p>' +
+      '</div>' +
+      '<div style="padding:24px;background:white;border:1px solid #ddd;border-top:none;">' +
+        '<h2 style="color:#2A4D38;font-size:16px;border-bottom:2px solid #8EBB9E;padding-bottom:6px;">👤 Veli Bilgileri</h2>' +
+        '<p style="line-height:1.8;"><strong>Ad Soyad:</strong> ' + data.veliAd + ' ' + data.veliSoyad + '<br>' +
+        '<strong>E-posta:</strong> ' + data.email + '<br>' +
+        '<strong>Telefon:</strong> ' + data.phone + '</p>' +
+        '<h2 style="color:#2A4D38;font-size:16px;border-bottom:2px solid #8EBB9E;padding-bottom:6px;margin-top:20px;">👶 Öğrenci Bilgileri</h2>' +
+        '<p style="line-height:1.8;"><strong>Ad Soyad:</strong> ' + data.childAd + ' ' + data.childSoyad + '<br>' +
+        '<strong>Doğum Tarihi:</strong> ' + data.childDogum + '<br>' +
+        '<strong>Cinsiyet:</strong> ' + (data.childCinsiyet || '-') + '</p>' +
+        '<h2 style="color:#2A4D38;font-size:16px;border-bottom:2px solid #8EBB9E;padding-bottom:6px;margin-top:20px;">💰 Ödeme Bilgileri</h2>' +
+        odemeTablosuHtml +
+        '<p style="line-height:1.8;"><strong>Ödeme Tercihi:</strong> ' + data.odemeTercihi + '<br>' +
+        '<strong>Fatura İsteği:</strong> ' + (data.faturaIstegi ? 'Evet' : 'Hayır') + '</p>' +
+        '<h2 style="color:#2A4D38;font-size:16px;border-bottom:2px solid #8EBB9E;padding-bottom:6px;margin-top:20px;">🎁 Referans</h2>' +
+        '<p style="line-height:1.8;"><strong>Kendi Referans Kodu:</strong> ' + data.refKodu + '<br>' +
+        '<strong>Kullandığı Referans:</strong> ' + (data.refKoduKullanildi || 'Yok') + '<br>' +
+        '<strong>Kıyafet Ücretsiz:</strong> ' + (data.refliGeliyor ? 'EVET ✓' : 'Hayır') + '</p>' +
+        '<div style="background:#FBF6E9;border-left:4px solid #B8962E;padding:12px 16px;margin-top:24px;border-radius:6px;">' +
+          '<strong>⚠️ ONAY İÇİN:</strong> <a href="https://kayityenileme.bircicekkoleji.com/admin" style="color:#2A4D38;">Admin paneline git</a>' +
+        '</div>' +
+        '<p style="font-size:12px;color:#888;margin-top:20px;">Başvuru Tarihi: ' + new Date().toLocaleString("tr-TR") + '</p>' +
+      '</div>' +
+    '</div>';
+
+  // ── 2) VELİYE TEŞEKKÜR MAİLİ ──
+  var veliHtml =
+    '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">' +
+      '<div style="background:linear-gradient(135deg,#2A4D38,#3D6B4F);color:white;padding:28px;border-radius:10px 10px 0 0;text-align:center;">' +
+        '<h1 style="margin:0;font-family:Georgia,serif;font-size:26px;">🌸 Bir Çiçek Koleji Ailesine Hoş Geldiniz!</h1>' +
+      '</div>' +
+      '<div style="padding:28px;background:white;border:1px solid #ddd;border-top:none;">' +
+        '<p style="font-size:15px;line-height:1.7;">Sayın <strong>' + data.veliAd + ' ' + data.veliSoyad + '</strong>,</p>' +
+        '<p style="line-height:1.7;"><strong>' + data.childAd + '</strong> için ön kayıt başvurunuz tarafımıza ulaşmıştır. Okul yönetimimiz başvurunuzu inceleyerek <strong>1-2 iş günü içinde</strong> sizi arayacaktır.</p>' +
+        '<h2 style="color:#2A4D38;font-size:17px;margin-top:24px;">📋 Başvuru Özetiniz</h2>' +
+        odemeTablosuHtml +
+        '<div style="background:linear-gradient(135deg,#FBF6E9,#FEF9E8);border:1.5px solid #B8962E;border-radius:12px;padding:20px;margin:24px 0;text-align:center;">' +
+          '<div style="font-size:12px;color:#8B7020;text-transform:uppercase;letter-spacing:1px;font-weight:700;">🎁 REFERANS KODUNUZ</div>' +
+          '<div style="font-family:Georgia,serif;font-size:28px;color:#2A4D38;font-weight:700;margin:8px 0;">' + data.refKodu + '</div>' +
+          '<div style="font-size:13px;color:#6B5520;">Bu kodu tanıdıklarınızla paylaşın, sürpriz avantajlar kazanın!</div>' +
+        '</div>' +
+        '<h3 style="color:#2A4D38;font-size:14px;">Her yeni kayıtta:</h3>' +
+        '<ul style="line-height:1.9;color:#555;padding-left:20px;">' +
+          '<li><strong>1. Kayıt →</strong> I. Dönem Orman Okulu Servis ücreti — alınmaz!</li>' +
+          '<li><strong>2. Kayıt →</strong> II. Dönem Orman Okulu Servis ücreti — alınmaz!</li>' +
+          '<li><strong>3. Kayıt →</strong> Okul Kıyafeti ücreti — alınmaz!</li>' +
+        '</ul>' +
+        '<div style="background:#EDF5F0;border-radius:10px;padding:16px;margin-top:24px;">' +
+          '<div style="font-weight:700;color:#2A4D38;margin-bottom:6px;">📱 Başvurunuzu Takip Edin</div>' +
+          '<p style="margin:0;font-size:13px;line-height:1.6;">Başvurunuzun durumunu <a href="https://yenikayit.bircicekkoleji.com" style="color:#2A4D38;font-weight:600;">yenikayit.bircicekkoleji.com</a> adresinden Google hesabınızla giriş yaparak her an takip edebilirsiniz.</p>' +
+        '</div>' +
+
+        '<div style="background:linear-gradient(135deg,#2A4D38,#3D6B4F);color:white;border-radius:14px;padding:24px;margin-top:24px;">' +
+          '<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;opacity:0.7;margin-bottom:6px;">🌐 Okul Aile Platformu</div>' +
+          '<div style="font-family:Georgia,serif;font-size:22px;font-weight:700;margin-bottom:10px;">portal.bircicekkoleji.com</div>' +
+          '<div style="font-size:13.5px;line-height:1.75;opacity:0.92;">' +
+            'Sevgili ebeveynimiz, okul yönetimimiz başvurunuzu inceledikten ve onayladıktan sonra süreç, <strong style="color:#F0D490;">portal.bircicekkoleji.com</strong> üzerinden devam edecektir.' +
+          '</div>' +
+          '<div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:14px 16px;margin-top:14px;">' +
+            '<div style="font-weight:700;font-size:13px;margin-bottom:8px;color:#F0D490;">✨ Portal&apos;da Sizi Neler Bekliyor?</div>' +
+            '<div style="font-size:12.5px;line-height:1.9;opacity:0.95;">' +
+              '💳 <strong>Ödeme Takibi</strong> — Tüm taksitlerin durumu, ödeme bildirimi ve makbuzlar<br>' +
+              '🌱 <strong>Gelişim Raporları</strong> — Montessori · Orman Okulu · Değerler Eğitimi süreçleri ve haftalık değerlendirmeler<br>' +
+              '🍽️ <strong>Yemek Menüsü</strong> — Haftalık beslenme programı<br>' +
+              '📸 <strong>Fotoğraf & Video Galerisi</strong> — Orman okulu, etkinlikler, atölyeler<br>' +
+              '📅 <strong>Takvim & Duyurular</strong> — Önemli tarihler ve okul iletişimi<br>' +
+              '🎨 <strong>Günlük Etkinlikler</strong> — Çocuğunuzun o günkü deneyimleri' +
+            '</div>' +
+          '</div>' +
+          '<div style="background:#F0D490;color:#2A4D38;border-radius:10px;padding:12px 16px;margin-top:14px;font-size:12.5px;line-height:1.6;font-weight:600;">' +
+            '🔐 Başvurunuz onaylandığında bu e-posta adresi <strong>(' + data.email + ')</strong> portal sistemine otomatik olarak tanımlanacaktır. Ardından aynı Google hesabınızla <strong>portal.bircicekkoleji.com</strong> üzerinden güvenli şekilde giriş yapabilirsiniz.' +
+          '</div>' +
+          '<div style="font-size:11.5px;line-height:1.65;margin-top:14px;opacity:0.75;font-style:italic;">' +
+            'Bir Çiçek Koleji Okul Aile Platformu; çocuğunuzun tüm finansal ve eğitimsel süreçlerini tek bir yerden şeffaf, güvenli ve modern bir şekilde takip etmenizi sağlayan özel olarak geliştirilmiş dijital bir platformdur.' +
+          '</div>' +
+        '</div>' +
+        '<hr style="border:none;border-top:1px solid #ddd;margin:24px 0;">' +
+        '<p style="font-size:13px;color:#666;line-height:1.8;">' +
+          '<strong>📞 İletişim</strong><br>' +
+          'Telefon: 0216 393 54 57<br>' +
+          'WhatsApp: 0555 103 54 57<br>' +
+          'E-posta: eposta@bircicekkoleji.com<br>' +
+          'Adres: Aydınlı Mah. Bahçeler Sk. No:45 Tuzla/İstanbul' +
+        '</p>' +
+        '<p style="text-align:center;font-family:Georgia,serif;font-style:italic;color:#2A4D38;margin-top:24px;">' +
+          'Sevgilerimizle,<br>' +
+          '<strong>Bir Çiçek Koleji Anaokulu</strong>' +
+        '</p>' +
+      '</div>' +
+    '</div>';
+
+  // Her iki maili de Brevo üzerinden gönder
+  await brevoMail({
+    to: SCHOOL_EMAIL,
+    toName: "Bir Çiçek Koleji Yönetim",
+    subject: "🌸 Yeni Kayıt Başvurusu — " + data.childAd + " " + data.childSoyad,
+    htmlContent: okulHtml,
+    replyTo: data.email
   });
 
-  // 2) VELİYE TEŞEKKÜR MAİLİ
-  await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email: data.email,
-    cocuk_adi: data.childAd + " " + data.childSoyad,
-    mesaj: "Sayın " + data.veliAd + " " + data.veliSoyad + ",\n\n" +
-      "Bir Çiçek Koleji ailesine hoş geldiniz! 🌸\n\n" +
-      data.childAd + " için ön kayıt başvurunuz tarafımıza ulaşmıştır. " +
-      "Okul yönetimimiz başvurunuzu inceleyerek 1-2 iş günü içinde sizi arayacaktır.\n\n" +
-      tablo + "\n\n" +
-      "═══════════════════════════════\n" +
-      "🎁 REFERANS KODUNUZ: " + data.refKodu + "\n" +
-      "═══════════════════════════════\n" +
-      "Bu kodu tanıdıklarınızla paylaşın, her yeni kayıtta sürpriz avantajlar kazanın:\n\n" +
-      "• 1. Kayıt → I. Dönem Orman Okulu Servis ücreti — alınmaz!\n" +
-      "• 2. Kayıt → II. Dönem Orman Okulu Servis ücreti — alınmaz!\n" +
-      "• 3. Kayıt → Okul Kıyafeti ücreti — alınmaz!\n\n" +
-      "═══════════════════════════════\n" +
-      "📱 BAŞVURUNUZU TAKİP EDİN\n" +
-      "═══════════════════════════════\n" +
-      "Başvurunuzun durumunu https://yenikayit.bircicekkoleji.com adresinden Google hesabınızla giriş yaparak her an takip edebilirsiniz.\n\n" +
-      "İletişim:\n" +
-      "📞 0216 393 54 57\n" +
-      "💬 WhatsApp: 0555 103 54 57\n" +
-      "✉️ eposta@bircicekkoleji.com\n\n" +
-      "Sevgilerimizle,\n" +
-      "Bir Çiçek Koleji Anaokulu\n" +
-      "Tuzla / İstanbul"
+  await brevoMail({
+    to: data.email,
+    toName: data.veliAd + " " + data.veliSoyad,
+    subject: "🌸 Bir Çiçek Koleji Ön Kayıt Başvurunuz Alındı",
+    htmlContent: veliHtml
   });
 }
 
