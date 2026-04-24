@@ -53,12 +53,6 @@ body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--tex
   font-family:'Outfit',sans-serif; transition:all 0.2s; display:flex; align-items:center; gap:8px;
 }
 .nav-cta:hover { background:var(--sage-dark); transform:translateY(-1px); }
-.nav-login {
-  background:transparent; color:var(--sage-dark); border:1.5px solid var(--sage-light); border-radius:50px;
-  padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer;
-  font-family:'Outfit',sans-serif; transition:all 0.2s; display:flex; align-items:center; gap:7px;
-}
-.nav-login:hover { background:var(--sage-pale); border-color:var(--sage); color:var(--sage-dark); }
 .user-pill {
   display:flex; align-items:center; gap:8px;
   background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2);
@@ -507,6 +501,10 @@ html, body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+* {
+  max-width: 100%;
+  box-sizing: border-box;
+}
 img, video, iframe {
   max-width: 100%;
   height: auto;
@@ -514,140 +512,59 @@ img, video, iframe {
 .hero-section {
   overflow: hidden;
 }
-#sliderWrapper {
+#yorumSlider {
   overflow: hidden;
+}
+
+.slider-card {
+  min-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+#yorumSlider {
+  overflow: visible;
 }
 .yorum-card {
   box-sizing: border-box;
 }
-
-/* ══ RESPONSIVE: TABLET ══ */
-@media (max-width:768px) {
-  /* Navbar */
-  .navbar { padding:10px 14px; gap:8px; }
-  .nav-logo img { width:32px; height:32px; }
-  .nav-brand { font-size:13px; }
-  .nav-sub { font-size:10px; }
-  .nav-cta { padding:8px 14px; font-size:12px; gap:6px; white-space:nowrap; }
-  .nav-cta svg { width:14px; height:14px; }
-  .nav-login { padding:7px 12px; font-size:12px; gap:5px; white-space:nowrap; }
-  .nav-login svg { width:13px; height:13px; }
-
-  /* Hero */
-  .hero-section { grid-template-columns:1fr; gap:24px; padding:24px 16px !important; }
-  .hero-title { font-size:32px !important; }
-  .hero-lead { font-size:15px; margin-bottom:20px; }
-  .hero-eyebrow { font-size:12px; padding:6px 14px; margin-bottom:20px; }
-  .hero-actions { flex-direction:column; gap:10px; }
-  .hero-actions .btn-primary { width:100%; justify-content:center; padding:14px 20px; font-size:15px; }
-  .hero-actions .btn-outline { width:100%; text-align:center; justify-content:center; padding:12px 20px; font-size:14px; }
-
-  /* Hero right — mobilden GÖSTERİLSİN ama kompakt */
-  .hero-right { display:block !important; }
-  .price-showcase { padding:20px 16px !important; border-radius:20px; }
-  .price-badge { font-size:11px; padding:6px 14px; margin-bottom:16px; }
-  .price-deadline { padding:12px 14px; border-radius:12px; flex-direction:column; gap:10px; align-items:flex-start; }
-  .price-deadline-val { font-size:18px; }
-  .price-countdown { gap:8px; }
-  .price-cd-item { padding:6px 10px; }
-  .price-cd-num { font-size:20px !important; }
-  .price-option { padding:14px 16px; border-radius:12px; }
-  .price-option-name { font-size:13px; }
-  .price-option-tag { font-size:9px; }
-
-  /* Sections */
-  .section { padding:36px 16px !important; }
-  .section-inner { padding:0 !important; }
-  .section-title { font-size:28px !important; }
-
-  /* Montessori kartları */
-  .philosophy-grid { grid-template-columns:1fr !important; gap:14px; }
-
-  /* Orman Okulu */
-  .orman-section { grid-template-columns:1fr !important; padding:28px 16px !important; gap:24px !important; }
-  .orman-title { font-size:28px !important; }
-
-  /* Yorum Slider */
-  .yorum-section { padding:32px 16px !important; }
-
-  /* Kayıt CTA */
-  .kayit-cta { padding:32px 16px !important; }
-  .kayit-cta h2 { font-size:26px !important; }
-
-  /* Referans section — 2 kolon → 1 kolon */
-  .ref-grid-2col {
-    grid-template-columns:1fr !important;
-    gap:24px !important;
-  }
-
-  /* İletişim grid — 4 kolon → 2 kolon */
-  .iletisim-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
-  .iletisim-grid a { padding:20px 12px !important; border-radius:14px !important; }
-  .iletisim-grid a div:first-child { width:44px !important; height:44px !important; font-size:20px !important; }
-
-  /* Harita */
-  .harita-grid { grid-template-columns:1fr !important; gap:24px !important; padding:32px 16px !important; }
-  .harita-grid h2 { font-size:28px !important; }
-  .harita-iframe-wrap { height:240px !important; }
-  .harita-iframe-wrap iframe { height:240px !important; }
-
-  /* Stat strip */
-  .stat-strip { grid-template-columns:1fr 1fr; padding:20px 16px; gap:14px; }
-
-  /* Form */
-  .field-row { grid-template-columns:1fr; }
-  .form-wrap { padding:28px 16px !important; }
-
-  /* Done screen */
-  .done-wrap { padding:40px 16px !important; }
-  .ref-box { padding:20px 16px !important; }
-
-  /* İletişim üst bölüm */
-  .iletisim-section { padding:36px 16px !important; }
-  .iletisim-section h2 { font-size:28px !important; }
+@media (max-width: 768px) {
+  .iletisim-grid { grid-template-columns: 1fr 1fr !important; gap:12px !important; }
 }
-
-/* ══ RESPONSIVE: KÜÇÜK TELEFON ══ */
+/* Responsive */
+@media (max-width:768px) {
+  .harita-grid { grid-template-columns:1fr !important; gap:24px !important; padding:32px 16px !important; }
+  .harita-iframe-wrap { height:260px !important; }
+  .harita-iframe-wrap iframe { height:260px !important; }
+  .hero-section { grid-template-columns:1fr; gap:32px; padding:28px 20px !important; }
+  .hero-right { display:none; }
+  .hero-title { font-size:36px !important; }
+  .philosophy-grid { grid-template-columns:1fr; gap:16px; }
+  .yorum-grid { grid-template-columns:1fr; }
+  .orman-section { grid-template-columns:1fr !important; padding:32px 24px !important; gap:28px !important; }
+  .stat-strip { grid-template-columns:1fr 1fr; padding:24px; gap:16px; }
+  .field-row { grid-template-columns:1fr; }
+  .navbar { padding:12px 16px; }
+  .nav-brand { font-size:14px; }
+  .section { padding:40px 16px !important; }
+  .section-inner { padding:0 !important; }
+  .kayit-cta { padding:36px 20px !important; }
+  .kayit-cta h2 { font-size:30px !important; }
+  .form-wrap { padding:32px 16px !important; }
+  .price-showcase { padding:24px 20px !important; }
+  .yorum-section { padding:36px 20px !important; }
+  .ref-box { padding:24px 20px !important; }
+  .orman-title { font-size:32px !important; }
+  .done-wrap { padding:48px 20px !important; }
+}
 @media (max-width:480px) {
-  .hero-title { font-size:26px !important; }
-  .hero-lead { font-size:14px; }
-  .section-title { font-size:24px !important; }
-  .orman-title { font-size:24px !important; }
+  .hero-title { font-size:30px !important; }
+  .section-title { font-size:26px !important; }
+  .orman-title { font-size:26px !important; }
   .stat-strip { grid-template-columns:1fr; }
   .price-cd-num { font-size:18px !important; }
   .price-countdown { gap:6px !important; }
-  .price-cd-item { padding:5px 8px !important; }
-  .price-deadline-val { font-size:16px; }
-  .kayit-cta h2 { font-size:22px !important; }
-  .iletisim-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
-  .iletisim-grid a { padding:16px 10px !important; }
-  .iletisim-grid a div:first-child { width:40px !important; height:40px !important; }
-  .harita-grid h2 { font-size:24px !important; }
-
-  /* Referans gold kutusu */
-  .ref-gold-box { padding:28px 16px !important; border-radius:18px !important; }
-  .ref-gold-box div[style*="font-size:28px"] { font-size:22px !important; }
+  .price-cd-item { padding:6px 8px !important; }
 }
-
-/* ══ RESPONSIVE: ÇOK KÜÇÜK EKRAN ══ */
-@media (max-width:360px) {
-  .navbar { padding:8px 10px; }
-  .nav-logo img { width:28px; height:28px; }
-  .nav-brand { font-size:12px; }
-  .nav-cta { padding:7px 10px; font-size:11px; }
-  .nav-login { display:none !important; }
-  .hero-title { font-size:22px !important; }
-  .hero-section { padding:20px 12px !important; }
-  .section { padding:28px 12px !important; }
-  .form-wrap { padding:24px 12px !important; }
-  .price-showcase { padding:16px 12px !important; }
-}
-
-/* Randevu modal mobil */
-@media (max-width:480px) {
-  #randevuModal > div { padding:28px 20px !important; border-radius:18px !important; }
-}
-@keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -700,15 +617,10 @@ img, video, iframe {
         <div class="nav-sub">Montessori & Orman Okulu</div>
       </div>
     </div>
-    <div style="display:flex; align-items:center; gap:10px;">
-      <button class="nav-login" onclick="signInWithGoogle()">
-        <svg width="16" height="16" viewBox="0 0 24 24" style="flex-shrink:0;"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Giriş Yap
-      </button>
-      <button class="nav-cta" onclick="signInWithGoogle()">
-        🌸 Başvuru Yap
-      </button>
-    </div>
+    <button class="nav-cta" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Başvuru Yap
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -749,7 +661,7 @@ img, video, iframe {
         <div class="price-deadline">
           <div>
             <div class="price-deadline-label">Avantajlı Ön Kayıt Son Gün</div>
-            <div class="price-deadline-val">10 Mayıs 2026</div>
+            <div class="price-deadline-val">30 Nisan 2026</div>
           </div>
           <div class="price-countdown">
             <div class="price-cd-item"><div class="price-cd-num" id="cd2Days">00</div><div class="price-cd-lbl">Gün</div></div>
@@ -763,7 +675,7 @@ img, video, iframe {
           <div class="price-option gold-card" style="background:var(--gold-pale); border-color:rgba(184,150,46,0.4);">
             <div class="price-option-left">
               <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
-              <div class="price-option-name">– 10 Mayıs 2026</div>
+              <div class="price-option-name">– 30 Nisan 2026</div>
             </div>
             <div id="cd-onkayit" style="font-size:11px; color:var(--gold); font-weight:700; text-align:right;"></div>
           </div>
@@ -771,7 +683,7 @@ img, video, iframe {
           <div class="price-option featured">
             <div class="price-option-left">
               <div class="price-option-tag">Erken Kayıt</div>
-              <div class="price-option-name">11 Mayıs – 30 Mayıs 2026</div>
+              <div class="price-option-name">01 Mayıs – 30 Mayıs 2026</div>
             </div>
             <div id="cd-erken" style="font-size:11px; color:var(--sage); font-weight:700; text-align:right;"></div>
           </div>
@@ -859,7 +771,7 @@ img, video, iframe {
             Çamurda oynamak, risk almak, ateş yakmak — bunlar eğitimin tam kendisi.
           </p>
           <p class="orman-text">
-            Okulumuzdan 15 dakika mesafedeki orman alanımızda, çocuklar her hava koşulunda mutlaka ormanda eğitim alır.
+            Okulumuzdan 15 dakika mesafedeki orman alanımızda, çocuklar her hava koşulunda en az 2 saat eğitim alır.
           </p>
           <button class="btn-gold" onclick="signInWithGoogle()" style="margin-top:28px;">
             🌲 Başvuruya Başla
@@ -962,36 +874,32 @@ img, video, iframe {
   <!-- REFERANS SECTION -->
   <div class="section" style="background:var(--gold-pale); border-top:1px solid rgba(184,150,46,0.2);">
     <div class="section-inner">
-      <div class="ref-grid-2col" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
         <div>
-          <div class="section-tag" style="color:var(--gold);">🎁 Bir Çiçek Referans Programı</div>
-          <h2 class="section-title">Sevdiklerinize referans olun —<br>birlikte yararlanın!</h2>
+          <div class="section-tag" style="color:var(--gold);">🎁 Referans Avantajı</div>
+          <h2 class="section-title">Tanıdıklarınıza referans olun,<br>birlikte kazanın!</h2>
           <p style="font-size:16px; line-height:1.75; color:var(--text-mid); margin-bottom:24px;">
-            Sevdiklerinize referans olun — hem Bir Çiçekli olun hem de referans avantajından birlikte yararlanın. <strong>Not:</strong> Mevcut velilerimizin ücret avantajının kabul edilmesi için referans oldukları kayıtlarda okulumuza ilk defa kayıt olunması şartı vardır.
+            Tanıdıklarınıza referans olun — hem siz hem de referansınızla birlikte kayıt olan ebeveynler ücret avantajından yararlanın! <strong>Not:</strong> Mevcut velilerimizin ücret avantajının kabul edilmesi için referans oldukları kayıtlarda okulumuza ilk defa kayıt olunması şartı vardır.
           </p>
-          <div id="refAvantajKartlar" style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">1</div>
-              <div><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
+              <div id="ref1Text"><strong>1. Kayıt:</strong> I. Dönem Orman Okulu Servis ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
             </div>
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">2</div>
-              <div><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
+              <div id="ref2Text"><strong>2. Kayıt:</strong> II. Dönem Orman Okulu Servis ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
             </div>
             <div style="display:flex; align-items:center; gap:14px; background:white; border-radius:14px; padding:16px 20px; border:1px solid rgba(184,150,46,0.2);">
               <div style="width:32px; height:32px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">3</div>
-              <div><strong>3. Kayıt:</strong> Eğitim Materyalleri.. — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">%50'si alınmaz!</span></div>
-            </div>
-            <div class="ref-gizli" style="margin-top:8px; background:rgba(184,150,46,0.1); border:1px dashed var(--gold); border-radius:12px; padding:12px 16px; text-align:center;">
-              <span style="font-size:13px; color:var(--gold); font-weight:600;">🔒 Avantaj detaylarını görmek için giriş yapın</span>
-              <button onclick="signInWithGoogle()" style="display:block; margin:10px auto 0; background:var(--gold); color:white; border:none; border-radius:50px; padding:10px 24px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">Google ile Giriş Yap</button>
+              <div id="ref3Text"><strong>3. Kayıt:</strong> Okul Kıyafeti ücreti — <span class="ref-gizli">***</span><span class="ref-acik" style="display:none;">alınmaz!</span></div>
             </div>
           </div>
           <div style="margin-top:16px; font-size:12px; color:var(--text-light); font-style:italic; line-height:1.6;">
             * Ekim ayına kadar referanslı gelen kayıtlarda indirim kabul edilir. Ayrıca referans kodu ile başvuran yeni ailelerin Orman Okulu kıyafeti ücretsiz sağlanır.
           </div>
         </div>
-        <div class="ref-gold-box" style="background:linear-gradient(135deg, var(--gold) 0%, #C8A835 100%); border-radius:24px; padding:40px; color:white; text-align:center;">
+        <div style="background:linear-gradient(135deg, var(--gold) 0%, #C8A835 100%); border-radius:24px; padding:40px; color:white; text-align:center;">
           <div style="font-size:13px; opacity:0.8; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Başvurunuzu Tamamlayın</div>
           <div style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; margin-bottom:16px; line-height:1.2;">Referans kodunuz<br>otomatik oluşturulur</div>
           <div style="font-size:14px; opacity:0.85; line-height:1.65; margin-bottom:28px;">Google hesabınızla giriş yapın, başvurunuzu tamamlayın. Sisteme girişin ardından size özel BCK-XXXX formatında referans kodunuz anında aktif olur.</div>
@@ -1001,7 +909,8 @@ img, video, iframe {
     </div>
   </div>
 
-  <div class="iletisim-section" style="background:var(--sage-dark); padding:56px 40px;">
+  <!-- İLETİŞİM / SORULAR -->
+  <div style="background:var(--sage-dark); padding:56px 40px;">
     <div style="max-width:900px; margin:0 auto; text-align:center;">
       <div style="font-size:12px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.5); margin-bottom:12px; font-weight:700;">İletişim</div>
       <h2 style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:white; margin-bottom:8px;">Sorularınız mı var?</h2>
@@ -1149,7 +1058,7 @@ img, video, iframe {
       <div style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; margin-bottom:8px;">Hoş geldiniz! 🌸</div>
       <div style="color:rgba(255,255,255,0.75); font-size:14px;" id="portalEmail">–</div>
       <div style="margin-top:16px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:rgba(255,255,255,0.88); line-height:1.65;">
-        ⭐ <strong>10 Mayıs'a kadar</strong> avantajlı ön kayıt fırsatı. Ücret bilgisi için randevu alın.
+        ⭐ <strong>30 Nisan'a kadar</strong> avantajlı ön kayıt fırsatı. Ücret bilgisi için randevu alın.
       </div>
     </div>
     <div id="portalKartlar" style="display:flex; flex-direction:column; gap:14px;">
@@ -1178,14 +1087,14 @@ img, video, iframe {
         <div class="kayit-type-card gold-card selected" onclick="selectKayitType('onkayit', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">⭐ Avantajlı Ön Kayıt</div>
-            <div class="kayit-desc">10 Mayıs 2026'ya kadar · Özel erken başvuru fırsatı</div>
+            <div class="kayit-desc">30 Nisan 2026'ya kadar · Özel erken başvuru fırsatı</div>
           </div>
           <div style="font-size:12px; color:var(--gold); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
         <div class="kayit-type-card" onclick="selectKayitType('erken', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">Erken Kayıt</div>
-            <div class="kayit-desc">11 Mayıs – 30 Mayıs 2026</div>
+            <div class="kayit-desc">01 Mayıs – 30 Mayıs 2026</div>
           </div>
           <div style="font-size:12px; color:var(--sage); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
@@ -1258,8 +1167,10 @@ img, video, iframe {
     <div class="hesap-summary">
       <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.6); margin-bottom:16px;">Özet</div>
       <div class="hesap-row"><span>Kayıt Türü</span><span class="hesap-val" id="kayitTurDisplay">–</span></div>
-      <div class="hesap-row"><span>I. Dönem Aylık (5 ay)</span><span class="hesap-val" id="iAylikDisplay">–</span></div>
-      <div class="hesap-row"><span>II. Dönem Aylık (5 ay)</span><span class="hesap-val" id="iiAylikDisplay">–</span></div>
+      <div class="hesap-row"><span>Aylık Baz Ücret</span><span class="hesap-val" id="aylikDisplay">–</span></div>
+      <div class="hesap-row"><span>Eğitim Ücreti</span><span class="hesap-val" id="egitimDisplay">–</span></div>
+      <div class="hesap-row"><span>Yemek Ücreti</span><span class="hesap-val" id="yemekDisplay">–</span></div>
+      <div class="hesap-row hesap-row-total"><span>Yıllık Toplam</span><span class="hesap-val" style="font-size:24px;" id="yillikDisplay">–</span></div>
     </div>
 
     <!-- Ödeme tablosu tabs -->
@@ -1280,64 +1191,15 @@ img, video, iframe {
     </div>
 
     <div id="tab-diger" style="display:none;">
-      <div style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:6px; text-align:center;">Ek Ödemeler Takvimi</div>
-        <div style="font-size:13px; color:var(--text-light); text-align:center; margin-bottom:20px;">Eğitim dışı ek kalemler, ödeme tarihleri ve tutarlar</div>
-        <div style="display:flex; flex-direction:column; gap:0; border:1px solid var(--border); border-radius:14px; overflow:hidden;">
-          <!-- Başlık -->
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:14px 18px; background:var(--sage-dark); color:white;">
-            <span style="font-size:13px; font-weight:700;">Kalem</span>
-            <span style="font-size:13px; font-weight:700; text-align:center;">Ödeme Tarihi</span>
-            <span style="font-size:13px; font-weight:700; text-align:right;">Tutar</span>
-          </div>
-          <!-- Eğitim Materyalleri -->
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); background:white;">
-            <span style="font-size:14px; color:var(--text);">📚 Eğitim Materyalleri</span>
-            <span style="font-size:12px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px; white-space:nowrap;">5 Temmuz 2026</span>
-            <span style="font-size:14px; font-weight:700; color:var(--sage-dark); text-align:right;">36.000 TL</span>
-          </div>
-          <!-- Bir Çiçek Koleji Okul Kıyafeti -->
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:start; padding:13px 18px; border-bottom:1px solid var(--border); background:var(--cream);">
-            <div>
-              <span style="font-size:14px; color:var(--text);">👔 Bir Çiçek Koleji Okul Kıyafeti</span>
-              <div style="margin-top:8px; font-size:12px; color:var(--text-light); line-height:1.6;">
-                • Eşofman Takımı Uzun Kol Kapişonlu (2 alt+1 üst)<br>
-                • Pamuk Dokuma Sweet Uzun Kollu (1 adet)<br>
-                • Lakos Polo Yaka T-Shirt (1 adet)<br>
-                • Penye T-Shirt Kısa Kollu (1 adet)<br>
-                • Şort + T-Shirt Takımı (1 adet)<br>
-                • Su Geçirmez Yağmurluk (1 adet)<br>
-                • Orman Okulu Kirli Çantası (1 adet)
-              </div>
-              <div style="margin-top:8px; background:var(--gold-pale); border:1px solid rgba(184,150,46,0.3); border-radius:8px; padding:8px 12px; font-size:12px; color:var(--gold); font-weight:600;">
-                ⭐ Avantajlı Ön Kayıt'a özel Bir Çiçek Desteği ile %35 indirim — 9.555 TL
-              </div>
-            </div>
-            <span style="font-size:12px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px; white-space:nowrap;">5 Ağustos 2026</span>
-            <span style="font-size:14px; font-weight:700; color:var(--sage-dark); text-align:right;"><s style="color:var(--text-light); font-weight:400;">14.700 TL</s> <span style="color:var(--gold); font-weight:800;">9.555 TL</span></span>
-          </div>
-          <!-- Orman Okulu Kıyafeti -->
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); background:white;">
-            <span style="font-size:14px; color:var(--text);">🌲 Orman Okulu Kıyafeti</span>
-            <span style="font-size:12px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px; white-space:nowrap;">5 Eylül 2026</span>
-            <span style="font-size:13px; color:var(--text-light); text-align:right; font-style:italic;">Eylül başında ilan edilecek</span>
-          </div>
-          <!-- Orman Okulu I. Dönem Servis -->
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); background:var(--cream);">
-            <span style="font-size:14px; color:var(--text);">🚌 Orman Okulu I. Dönem Servisi</span>
-            <span style="font-size:12px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px; white-space:nowrap;">5 Ekim 2026</span>
-            <span style="font-size:13px; color:var(--text-light); text-align:right; font-style:italic;">Ekim başında ilan edilecek</span>
-          </div>
-          <!-- Orman Okulu II. Dönem Servis -->
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:13px 18px; background:white;">
-            <span style="font-size:14px; color:var(--text);">🚌 Orman Okulu II. Dönem Servisi</span>
-            <span style="font-size:12px; font-weight:600; color:var(--sage-dark); background:var(--sage-pale); padding:4px 12px; border-radius:50px; white-space:nowrap;">5 Şubat 2027</span>
-            <span style="font-size:13px; color:var(--text-light); text-align:right; font-style:italic;">Şubat başında ilan edilecek</span>
-          </div>
-        </div>
-        <div style="margin-top:16px; background:var(--sage-pale); border-radius:12px; padding:14px 18px; font-size:12px; color:var(--sage-dark); line-height:1.65;">
-          ℹ️ "İlan edilecek" olarak belirtilen ücretler ilgili dönem başlamadan önce ayrıca bildirilecektir.
-        </div>
+      <div class="odeme-tablo">
+        <div style="background:var(--cream-warm); padding:14px 20px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--earth); font-weight:700; border-bottom:1px solid var(--border);">Ek Ödemeler</div>
+        <div class="odeme-row"><div><div style="font-weight:600;">Eğitim Materyalleri</div><div style="font-size:12px; color:var(--text-light);">5 Temmuz 2026</div></div><div></div><div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
+        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu I. Dönem Servis</div><div style="font-size:12px; color:var(--text-light);">5 Eylül 2026</div></div><div></div><div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
+        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu Kıyafeti</div><div style="font-size:12px; color:var(--text-light);">5 Eylül 2026</div></div><div></div><div id="kiyafetDisplay" style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
+        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu II. Dönem Servis</div><div style="font-size:12px; color:var(--text-light);">5 Şubat 2027</div></div><div></div><div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
+      </div>
+      <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:var(--sage-dark); line-height:1.6; margin-top:12px;">
+        📅 Yukarıdaki ek ödemeler, belirtilen tarihlerden <strong>15 gün önce</strong> ücretleriyle birlikte ayrıca tarafınıza bildirilecektir.
       </div>
     </div>
 
@@ -1353,11 +1215,11 @@ img, video, iframe {
         </div>
         <div class="ot-card" id="ot-kredi" onclick="setOdemeTip2('kredi')">
           <div class="ot-radio" id="or-kredi"><div class="ot-dot"></div></div>
-          <div><div class="ot-title" style="color:white;">💳 Kredi Kartı ile Ödeme</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Sanal Pos — Ücretsiz 3-5-8 taksit imkânı. (Taksit süreci için bankanızdan bilgi alınız.)</div></div>
+          <div><div class="ot-title" style="color:white;">💳 Kredi Kartı ile Ödeme</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Sanal Pos — ücretsiz 3-5-8 taksit imkânı. (Bankanızla teyit alınız.)</div></div>
         </div>
         <div class="ot-card" id="ot-vinov" onclick="setOdemeTip2('vinov')">
           <div class="ot-radio" id="or-vinov"><div class="ot-dot"></div></div>
-          <div><div class="ot-title" style="color:white;">⭐ Vakıfbank VİNOV</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Toplam ödemenizden <strong style="color:#F0D490;">5.000 TL daha az</strong> ödersiniz. Vakıfbank uygulamasından ücretsiz hesap açılır, sözleşmede limit tanımlanır, ödemeler otomatik aktarılır.</div></div>
+          <div><div class="ot-title" style="color:white;">⭐ Vakıfbank VİNOV</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Toplam ödemenizden <strong style="color:#F0D490;">10.000 TL daha az</strong> ödersiniz. Vakıfbank uygulamasından ücretsiz hesap açılır, sözleşmede limit tanımlanır, ödemeler otomatik aktarılır.</div></div>
         </div>
       </div>
     </div>
@@ -1367,7 +1229,7 @@ img, video, iframe {
       <div style="font-size:14px; font-weight:700; color:var(--sage-dark); margin-bottom:12px;">📧 Fatura Tercihi</div>
       <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer; font-weight:400;">
         <input type="checkbox" id="faturaCheck2" style="width:18px; height:18px; margin-top:2px; accent-color:var(--sage); flex-shrink:0;">
-        <span style="font-size:13px; color:var(--text-mid); line-height:1.6;">Fatura mükellefiyim ve/veya yıl sonu gider göstereceğim, faturalarımın düzenli olarak mail adresime gönderilmesini rica ediyorum.</span>
+        <span style="font-size:13px; color:var(--text-mid); line-height:1.6;">Yıllık gider planlamam için faturalarımın düzenli olarak mail adresime gönderilmesini rica ediyorum.</span>
       </label>
     </div>
 
@@ -1376,7 +1238,7 @@ img, video, iframe {
     <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:14px; padding:18px 20px; margin-top:16px;">
       <div id="gecerlilikYazisi" style="font-size:13px; color:var(--sage-dark); line-height:1.7; margin-bottom:12px;"></div>
       <div style="font-size:13px; color:var(--text-mid); line-height:1.7; padding-top:12px; border-top:1px solid rgba(61,107,79,0.15);">
-        📅 <strong>Ek Ödemeler:</strong> Orman Okulu servisi, kıyafet ve eğitim materyali ücretleri "Diğer Ödemeler" sekmesinde belirtilen aylarda ayrıca bildirilecektir.
+        📅 <strong>Ek Ödemeler:</strong> Orman Okulu servis ücreti, kıyafet ve eğitim materyali ücretleri, ilgili ödeme tarihinden <strong>15 gün önce</strong> ayrıca tarafınıza bildirilecektir.
       </div>
     </div>
 
@@ -1420,293 +1282,6 @@ img, video, iframe {
   </div>
 </div>
 
-<!-- ════════════════════════════════════ -->
-<!-- SCREEN: ÖDEME BİLGİLERİM -->
-<!-- ════════════════════════════════════ -->
-<div id="screen-odeme-bilgileri" class="screen">
-  <nav class="navbar">
-    <div class="nav-logo">
-      <img src="data:image/png;base64,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" alt="Logo">
-      <div><div class="nav-brand">Bir Çiçek Koleji</div><div class="nav-sub">Ödeme Bilgilerim</div></div>
-    </div>
-    <div class="user-pill" onclick="signOut()">
-      <div class="user-avatar" id="userInitial4">?</div>
-      <span id="userName4">Veli</span>
-      <span style="color:var(--text-light); font-size:12px;">· Çıkış</span>
-    </div>
-  </nav>
-
-  <div style="max-width:900px; margin:0 auto; padding:48px 24px 64px;">
-
-    <!-- Geri butonu -->
-    <button onclick="goToScreen('screen-portal')" style="background:transparent; border:1.5px solid var(--border); color:var(--text-mid); border-radius:50px; padding:10px 20px; font-size:13px; font-weight:500; cursor:pointer; font-family:'Outfit',sans-serif; margin-bottom:24px;">← Portale Dön</button>
-
-    <!-- Başlık -->
-    <div style="margin-bottom:28px;">
-      <div style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:var(--sage-dark); margin-bottom:6px;">Ödeme Bilgilerim</div>
-      <div style="color:var(--text-light); font-size:14px;">Ödeme planınızı ve ödeme durumunuzu buradan takip edebilirsiniz.</div>
-    </div>
-
-    <!-- Loading -->
-    <div id="vob-loading" style="text-align:center; padding:60px 20px;">
-      <div style="display:inline-block; width:40px; height:40px; border:4px solid var(--sage-pale); border-top:4px solid var(--sage); border-radius:50%; animation:spin 1s linear infinite;"></div>
-      <div style="margin-top:16px; color:var(--text-light); font-size:14px;">Ödeme bilgileriniz yükleniyor...</div>
-    </div>
-
-    <!-- Boş durum -->
-    <div id="vob-bos" style="display:none; background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:48px 32px; text-align:center;">
-      <div style="font-size:48px; margin-bottom:16px;">📋</div>
-      <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:12px;">Henüz Ödeme Planınız Oluşturulmamış</div>
-      <div style="color:var(--text-mid); font-size:14px; line-height:1.6; max-width:480px; margin:0 auto 24px;">
-        Başvurunuz onaylandıktan sonra ödeme planınız okul yönetimi tarafından oluşturulacak ve bu sayfada görüntülenebilecektir.
-        <br><br>
-        Sorularınız için bize ulaşabilirsiniz.
-      </div>
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-        <a href="tel:+902163935457" style="background:var(--sage); color:white; text-decoration:none; border-radius:50px; padding:12px 22px; font-size:13px; font-weight:600;">📞 0216 393 54 57</a>
-        <a href="https://wa.me/905551035457" target="_blank" style="background:#25D366; color:white; text-decoration:none; border-radius:50px; padding:12px 22px; font-size:13px; font-weight:600;">💬 WhatsApp</a>
-      </div>
-    </div>
-
-    <!-- İçerik -->
-    <div id="vob-icerik" style="display:none;">
-
-      <!-- Özet Kartları -->
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:24px;">
-        <div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); color:white; border-radius:var(--radius); padding:22px;">
-          <div style="font-size:11px; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:8px;">Toplam Tutar</div>
-          <div id="vob-toplam" style="font-size:26px; font-weight:700; font-family:'Cormorant Garamond',serif;">–</div>
-        </div>
-        <div style="background:#E8F5EE; border:1px solid #B8D8C5; border-radius:var(--radius); padding:22px;">
-          <div style="font-size:11px; color:#2A6A43; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:8px;">Ödenen</div>
-          <div id="vob-odenen" style="font-size:26px; font-weight:700; color:#1F5233; font-family:'Cormorant Garamond',serif;">–</div>
-        </div>
-        <div style="background:var(--gold-pale); border:1px solid rgba(184,150,46,0.3); border-radius:var(--radius); padding:22px;">
-          <div style="font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:8px;">Kalan Tutar</div>
-          <div id="vob-kalan" style="font-size:26px; font-weight:700; color:var(--earth); font-family:'Cormorant Garamond',serif;">–</div>
-        </div>
-      </div>
-
-      <!-- İlerleme Çubuğu -->
-      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; margin-bottom:24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <div style="font-size:13px; font-weight:600; color:var(--sage-dark);">Ödeme İlerlemesi</div>
-          <div id="vob-yuzde" style="font-size:14px; font-weight:700; color:var(--sage);">0%</div>
-        </div>
-        <div style="background:var(--sage-pale); border-radius:50px; height:10px; overflow:hidden;">
-          <div id="vob-bar" style="background:linear-gradient(90deg, var(--sage), var(--sage-mid)); height:100%; width:0%; transition:width 0.6s ease;"></div>
-        </div>
-      </div>
-
-      <!-- Öğrenci/Program bilgisi -->
-      <div id="vob-bilgi" style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; margin-bottom:24px; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px;"></div>
-
-      <!-- Ödeme Planı Tablosu -->
-      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:16px;">📋 Ödeme Planı</div>
-        <div id="vob-plan-tablo"></div>
-      </div>
-
-      <!-- Yapılan Ödemeler -->
-      <div id="vob-odenenler-kutu" style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px; display:none;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:16px;">✅ Yapılan Ödemeler</div>
-        <div id="vob-odenenler-liste"></div>
-      </div>
-
-      <!-- Diğer Ödemeler -->
-      <div id="vob-diger-kutu" style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px; display:none;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--sage-dark); margin-bottom:16px;">➕ Diğer Ödemeler</div>
-        <div id="vob-diger-liste"></div>
-      </div>
-
-      <!-- Banka Bilgileri -->
-      <div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); color:white; border-radius:var(--radius); padding:26px 24px; margin-bottom:24px;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; margin-bottom:6px;">🏦 Banka Hesap Bilgileri</div>
-        <div style="font-size:13px; opacity:0.85; margin-bottom:18px;">Ödemelerinizi aşağıdaki hesaba havale/EFT ile yapabilirsiniz.</div>
-
-        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
-          <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Banka</div>
-          <div style="font-size:16px; font-weight:600;">Kuveyt Türk Katılım Bankası</div>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
-          <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Hesap Sahibi</div>
-          <div style="font-size:15px; font-weight:600;">Emrah Bay</div>
-          <div style="font-size:11px; opacity:0.7; margin-top:4px;">Bir Çiçek Koleji Anaokulu Kurucu Müdürü</div>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px; margin-bottom:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
-            <div style="flex:1; min-width:0;">
-              <div style="font-size:11px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">IBAN</div>
-              <div id="vob-iban" style="font-size:15px; font-weight:600; font-family:monospace; word-break:break-all;">TR00 0000 0000 0000 0000 0000 00</div>
-            </div>
-            <button onclick="kopyalaIBAN()" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">📋 Kopyala</button>
-          </div>
-        </div>
-
-        <div id="vob-aciklama-kutu" style="background:rgba(255,255,255,0.15); border:1px dashed rgba(255,255,255,0.4); border-radius:12px; padding:16px; margin-top:14px;">
-          <div style="font-size:11px; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-weight:600;">⚠️ Havale Açıklaması (Mutlaka yazınız)</div>
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-            <div id="vob-aciklama" style="font-size:14px; font-weight:600; word-break:break-all;">–</div>
-            <button onclick="kopyalaAciklama()" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:6px 12px; font-size:11px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">📋 Kopyala</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Destek Kutusu -->
-      <div style="background:var(--cream-warm); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; text-align:center;">
-        <div style="font-size:13px; color:var(--text-mid); margin-bottom:12px;">Sorularınız mı var? Bize ulaşın:</div>
-        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-          <a href="tel:+902163935457" style="background:var(--sage); color:white; text-decoration:none; border-radius:50px; padding:10px 18px; font-size:12px; font-weight:600;">📞 0216 393 54 57</a>
-          <a href="https://wa.me/905551035457" target="_blank" style="background:#25D366; color:white; text-decoration:none; border-radius:50px; padding:10px 18px; font-size:12px; font-weight:600;">💬 WhatsApp</a>
-          <a href="mailto:eposta@bircicekkoleji.com" style="background:var(--white); color:var(--sage-dark); text-decoration:none; border:1px solid var(--border); border-radius:50px; padding:10px 18px; font-size:12px; font-weight:600;">✉️ E-posta</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- ADMIN PANEL — Aşama 1                                      -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div id="screen-admin" class="screen" style="display:none;">
-  <div style="max-width:1280px; margin:0 auto; padding:20px; font-family:'Outfit',sans-serif;">
-
-    <!-- Header -->
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
-      <div>
-        <h1 style="margin:0; font-family:'Cormorant Garamond',serif; color:var(--sage-dark); font-size:32px;">🌸 Admin Panel</h1>
-        <div style="font-size:13px; color:var(--text-light); margin-top:4px;">Bir Çiçek Koleji Anaokulu · Yeni Kayıt Yönetim Sistemi</div>
-      </div>
-      <div style="display:flex; gap:8px; align-items:center;">
-        <button onclick="adminYenile()" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">🔄 Yenile</button>
-        <button onclick="goToScreen('screen-portal')" style="background:white; color:var(--text); border:1px solid var(--border); border-radius:50px; padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">← Portal</button>
-      </div>
-    </div>
-
-    <!-- Yetkisiz uyarısı (emrahby dışı herkese) -->
-    <div id="admin-yetkisiz" style="display:none; background:#FEE; border:2px solid #E74C3C; border-radius:16px; padding:40px; text-align:center;">
-      <div style="font-size:48px; margin-bottom:12px;">🚫</div>
-      <h2 style="color:#C0392B; margin:0 0 8px 0;">Yetkisiz Erişim</h2>
-      <p style="color:#888; margin:0;">Bu sayfayı görüntüleme yetkiniz bulunmamaktadır. Sadece sistem yöneticisi bu panele erişebilir.</p>
-      <button onclick="goToScreen('screen-portal')" style="margin-top:20px; background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 24px; font-size:14px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">← Ana Sayfaya Dön</button>
-    </div>
-
-    <!-- Admin içeriği (yetkiliyse görünür) -->
-    <div id="admin-icerik">
-
-      <!-- DASHBOARD SAYACLAR -->
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:24px;">
-
-        <div style="background:linear-gradient(135deg, #3D6B4F, #2A4D38); color:white; border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8;">Toplam Kayıt</div>
-          <div id="m-toplam-kayit" style="font-size:32px; font-weight:700; margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-toplam-kayit-alt" style="font-size:11px; opacity:0.75; margin-top:2px;">yüklüyor...</div>
-        </div>
-
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-light);">Aktif Veli</div>
-          <div id="m-aktif-veli" style="font-size:32px; font-weight:700; color:var(--sage-dark); margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-aktif-veli-alt" style="font-size:11px; color:var(--text-light); margin-top:2px;">son 30 günde giriş yapan</div>
-        </div>
-
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-light);">Ödeme Yapan</div>
-          <div id="m-odeme-yapan" style="font-size:32px; font-weight:700; color:#1F5233; margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-odeme-yapan-alt" style="font-size:11px; color:var(--text-light); margin-top:2px;">en az 1 onaylı ödeme</div>
-        </div>
-
-        <div style="background:#FFF5E6; border:1px solid #FFD4A3; border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#B8860B;">⏳ Bekleyen Bildirim</div>
-          <div id="m-bekleyen" style="font-size:32px; font-weight:700; color:#B8860B; margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-bekleyen-alt" style="font-size:11px; color:#888; margin-top:2px;">onay bekliyor</div>
-        </div>
-
-        <div style="background:#FEE; border:1px solid #F5B7B1; border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#C0392B;">🔴 Gecikmiş</div>
-          <div id="m-gecikmis" style="font-size:32px; font-weight:700; color:#C0392B; margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-gecikmis-alt" style="font-size:11px; color:#888; margin-top:2px;">son tarihi geçmiş</div>
-        </div>
-
-        <div style="background:linear-gradient(135deg, #FBF6E9, #F5E9C7); border:1px solid #B8962E; border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#6B4F3A;">💰 Bu Ay Tahsilat</div>
-          <div id="m-tahsilat" style="font-size:26px; font-weight:700; color:#6B4F3A; margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-tahsilat-alt" style="font-size:11px; color:#888; margin-top:2px;">onaylanmış ödemeler</div>
-        </div>
-
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-light);">🕐 Son Bildirim</div>
-          <div id="m-son-bildirim" style="font-size:16px; font-weight:700; color:var(--text); margin-top:4px;">—</div>
-          <div id="m-son-bildirim-alt" style="font-size:11px; color:var(--text-light); margin-top:2px;">en son ödeme bildirimi</div>
-        </div>
-
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-light);">🎁 Referans Kullanan</div>
-          <div id="m-referans" style="font-size:32px; font-weight:700; color:var(--earth); margin-top:4px; font-family:Cormorant Garamond,serif;">—</div>
-          <div id="m-referans-alt" style="font-size:11px; color:var(--text-light); margin-top:2px;">BCK-kodu ile gelen</div>
-        </div>
-
-      </div>
-
-      <!-- BEKLEYEN BİLDİRİMLER -->
-      <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h2 style="margin:0; font-family:Cormorant Garamond,serif; color:var(--sage-dark); font-size:22px;">📬 Bekleyen Ödeme Bildirimleri</h2>
-          <span id="bekleyen-sayac" style="background:var(--gold-pale); color:var(--gold); padding:4px 10px; border-radius:50px; font-size:12px; font-weight:700;">—</span>
-        </div>
-        <div id="bekleyen-liste" style="display:flex; flex-direction:column; gap:12px;">
-          <div style="text-align:center; padding:30px; color:var(--text-light);">Yükleniyor...</div>
-        </div>
-      </div>
-
-      <!-- TÜM VELİLER -->
-      <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-          <h2 style="margin:0; font-family:Cormorant Garamond,serif; color:var(--sage-dark); font-size:22px;">👨‍👩‍👧 Tüm Veliler</h2>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <input type="text" id="admin-arama" placeholder="🔍 Ad, öğrenci veya telefon ara..." oninput="adminVeliFiltrele()" style="padding:8px 14px; border:1px solid var(--border); border-radius:50px; font-size:13px; font-family:Outfit,sans-serif; min-width:220px;">
-            <select id="admin-filtre-durum" onchange="adminVeliFiltrele()" style="padding:8px 14px; border:1px solid var(--border); border-radius:50px; font-size:13px; font-family:Outfit,sans-serif;">
-              <option value="">Tüm Durumlar</option>
-              <option value="odeme_var">Ödemesi Olan</option>
-              <option value="bildirim_var">Bildirimi Olan</option>
-              <option value="hic_yok">Hiç Ödemesi Yok</option>
-              <option value="gecikmis">Gecikmesi Olan</option>
-            </select>
-          </div>
-        </div>
-        <div id="veli-liste-durum" style="font-size:12px; color:var(--text-light); margin-bottom:10px;">—</div>
-        <div style="overflow-x:auto;">
-          <table id="admin-veli-tablo" style="width:100%; border-collapse:collapse; font-size:13px;">
-            <thead>
-              <tr style="background:var(--sage-pale); color:var(--sage-dark);">
-                <th style="padding:12px 10px; text-align:left; font-weight:700; border-radius:8px 0 0 0;">Öğrenci</th>
-                <th style="padding:12px 10px; text-align:left; font-weight:700;">Veli</th>
-                <th style="padding:12px 10px; text-align:left; font-weight:700;">İletişim</th>
-                <th style="padding:12px 10px; text-align:center; font-weight:700;">Durum</th>
-                <th style="padding:12px 10px; text-align:right; font-weight:700;">Bakiye</th>
-                <th style="padding:12px 10px; text-align:center; font-weight:700; border-radius:0 8px 0 0;">İşlem</th>
-              </tr>
-            </thead>
-            <tbody id="admin-veli-tbody">
-              <tr><td colspan="6" style="text-align:center; padding:30px; color:var(--text-light);">Yükleniyor...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- VELİ DETAY MODAL -->
-<div id="admin-detay-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99998; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:white; border-radius:16px; max-width:800px; width:100%; max-height:90vh; overflow-y:auto; padding:28px; position:relative;">
-    <button onclick="adminDetayKapat()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-light);">×</button>
-    <div id="admin-detay-icerik">Yükleniyor...</div>
-  </div>
-</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -1726,9 +1301,7 @@ const FIREBASE_CONFIG = {
 };
 const EMAILJS_CONFIG = { serviceId:"BirCicek_Mail", templateId:"template_7bi65w8", publicKey:"_VnABdAj03KuoOHYM" };
 const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
-const BREVO_PROXY_URL = "https://script.google.com/macros/s/AKfycbwUNvVhTCvxUKOMtbFJ4_UASBo8-sgT13qT_9tWeYKZR3IYaYKUhGdSaGgGaaqMaZLf/exec";
-const OKUL_LOGO_URL = "https://yenikayit.bircicekkoleji.com/okul_logo.png";
-const DEADLINE = new Date("2026-05-10T23:59:59");
+const DEADLINE = new Date("2026-04-30T23:59:59");
 const RANDEVU_LINKS = {
   online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
   yuzyuze: "https://calendar.app.google/ocKandk7qZfSnYkPA"
@@ -1781,14 +1354,6 @@ function initFirebase() {
           if(pendingKod) { localStorage.removeItem("pendingRefKod"); appState2._pendingRefKod = pendingKod; }
         } catch(ex){}
         onLogin(u);
-        // URL /admin veya ?admin içeriyorsa admin paneline git
-        var urlAdmin = window.location.pathname.indexOf("/admin") !== -1 ||
-                       window.location.search.indexOf("admin") !== -1 ||
-                       window.location.hash === "#admin";
-        if(urlAdmin) {
-          setTimeout(function(){ goToScreen("screen-admin"); }, 600);
-          return;
-        }
         if(appState2._pendingRefKod) {
           setTimeout(function(){
             var el = document.getElementById("refKodGiris");
@@ -1819,8 +1384,8 @@ setInterval(updateCD, 1000); updateCD();
 
 // ═══ 5. DÖNEM SAYAÇLARI ═══
 var PERIODS = [
-  { id:"cd-onkayit", end:new Date("2026-05-10T23:59:59") },
-  { id:"cd-erken",   end:new Date("2026-05-30T23:59:59"), start:new Date("2026-05-11") },
+  { id:"cd-onkayit", end:new Date("2026-04-30T23:59:59") },
+  { id:"cd-erken",   end:new Date("2026-05-30T23:59:59"), start:new Date("2026-05-01") },
   { id:"cd-normal",  end:new Date("2026-09-30T23:59:59"), start:new Date("2026-06-01") }
 ];
 function updatePeriodCountdowns() {
@@ -1847,34 +1412,8 @@ updatePeriodCountdowns();
 // ═══ 6. SCREEN NAV ═══
 function goToScreen(id) {
   document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
-
-  // Admin screen özel işlem (class="screen" ama aslında inline style kullanıyor)
-  var adminEl = document.getElementById("screen-admin");
-  if(id === "screen-admin") {
-    // Diğer ekranları gizle
-    document.querySelectorAll(".screen").forEach(function(s){
-      if(s.id !== "screen-admin") s.style.display = "none";
-    });
-    adminEl.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    // Admin içeriğini yükle
-    adminYukle();
-    return;
-  } else if(adminEl) {
-    adminEl.style.display = "none";
-    // Diğer screen'lerin display'ini temizle (yeniden aktif edilebilsin)
-    document.querySelectorAll(".screen").forEach(function(s){
-      if(s.id !== "screen-admin") s.style.display = "";
-    });
-  }
-
   var el = document.getElementById(id);
-  if(el) {
-    el.classList.add("active");
-    var navbar = document.querySelector(".navbar");
-    var navH = navbar ? navbar.offsetHeight : 70;
-    window.scrollTo({ top: Math.max(0, el.offsetTop - navH), behavior: "smooth" });
-  }
+  if(el) { el.classList.add("active"); window.scrollTo(0,0); }
 }
 function scrollTo(id) { document.getElementById(id) && document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
 
@@ -1901,40 +1440,35 @@ function signInWithGoogle() {
     });
 }
 function signOut() {
-  auth.signOut().then(function(){ currentUser=null; goToScreen("screen-hero"); });
+  auth.signOut().then(function(){
+    currentUser=null;
+    document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="inline"; });
+    document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="none"; });
+    goToScreen("screen-hero");
+  });
 }
 function onLogin(u) {
   currentUser = u;
   logGiris2(u);
   var parts = (u.displayName||"").split(" ");
   var ini = (parts[0]||"?")[0].toUpperCase();
-  ["userInitial","userInitial2","userInitial3","userInitial4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=ini; });
-  ["userName","userName2","userName3","userName4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
+  ["userInitial","userInitial2","userInitial3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=ini; });
+  ["userName","userName2","userName3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
   var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
   getOrCreateRefKod2(u.uid, u.email);
-  // Referans avantaj detaylarını aç
-  document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="none"; });
-  document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="inline"; });
   goToScreen("screen-portal");
   // Başvuru durumunu kontrol et ve portal kartlarını güncelle
   checkBasvuruDurumu(u.uid);
+  // Giriş sonrası en üste scroll
+  setTimeout(function(){
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 150);
+  // Referans avantaj metinlerini aç (login olan görür)
+  document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="none"; });
+  document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="inline"; });
 }
 
 function checkBasvuruDurumu(uid) {
-  // Admin ise en üstte admin kartı göster
-  var adminBtn = '';
-  if(currentUser && currentUser.email === ADMIN_EMAIL) {
-    adminBtn =
-      '<div onclick="goToScreen(\'screen-admin\')" style="background:linear-gradient(135deg, #2A4D38, #3D6B4F); color:white; border-radius:var(--radius); padding:22px 26px; cursor:pointer; display:flex; align-items:center; gap:18px; transition:all 0.2s; margin-bottom:14px; box-shadow:0 4px 16px rgba(61,107,79,0.2);" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'none\'">' +
-        '<div style="font-size:36px;">🔐</div>' +
-        '<div style="flex:1;">' +
-          '<div style="font-family:Cormorant Garamond,serif; font-size:20px; font-weight:700; margin-bottom:2px;">Admin Panel</div>' +
-          '<div style="font-size:13px; opacity:0.85;">Tüm başvuruları, ödemeleri yönet · Bekleyen bildirimleri onayla</div>' +
-        '</div>' +
-        '<div style="color:white; font-size:22px;">→</div>' +
-      '</div>';
-  }
-
   db.collection("yenikayit").doc(uid).get().then(function(snap) {
     var kartlar = document.getElementById("portalKartlar");
     if(!kartlar) return;
@@ -1945,7 +1479,7 @@ function checkBasvuruDurumu(uid) {
       var durumYazi = d.durum === "onaylandi" ? "✅ Onaylandı" : d.durum === "reddedildi" ? "❌ Reddedildi" : "⏳ İnceleniyor";
       var cocukAdi = (d.childAd || "") + " " + (d.childSoyad || "");
       var program = d.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
-      kartlar.innerHTML = adminBtn + `
+      kartlar.innerHTML = `
         <div style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px;">
           <div style="display:flex; align-items:flex-start; gap:16px; margin-bottom:20px;">
             <div style="font-size:36px;">🌸</div>
@@ -1962,27 +1496,13 @@ function checkBasvuruDurumu(uid) {
             <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Durum</div><div style="font-size:14px; font-weight:700;" style="color:${durumRenk};">${durumYazi}</div></div>
           </div>
           <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-            <button onclick="goToScreen('screen-form')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">✏️ Başvuruyu Güncelle</button>
+            <button onclick="basvuruGuncelle()" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">📄 Ödeme Planımı Gör</button>
             <a href="https://wa.me/905551035457" target="_blank" style="background:var(--cream-warm); border:1px solid var(--border); color:var(--text-mid); border-radius:50px; padding:10px 20px; font-size:13px; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px;">💬 Okul ile İletişim</a>
           </div>
-        </div>
-
-        <!-- 💰 ÖDEME BİLGİLERİM KARTI -->
-        <div id="odemeCard" onclick="goToOdemeBilgileri()" style="background:var(--white); border:2px solid var(--gold-light); border-radius:var(--radius); padding:24px; cursor:pointer; display:flex; align-items:center; gap:18px; transition:all 0.2s; margin-top:14px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
-          <div style="font-size:36px;">💰</div>
-          <div style="flex:1;">
-            <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--earth); margin-bottom:4px;">Ödeme Bilgilerim</div>
-            <div style="font-size:13px; color:var(--text-light); margin-bottom:6px;">Ödeme planınızı, taksitlerinizi ve banka bilgilerini görüntüleyin.</div>
-            <div id="odemeCardOzet" style="font-size:12px; font-weight:600; color:var(--gold);"></div>
-          </div>
-          <div style="color:var(--gold); font-size:22px;">→</div>
         </div>`;
-
-      // Ödeme özetini getir
-      guncelleOdemeKartOzeti(uid);
     } else {
       // İlk kez başvuracak
-      kartlar.innerHTML = adminBtn + `
+      kartlar.innerHTML = `
         <div onclick="goToScreen('screen-form')" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer; display:flex; align-items:center; gap:20px; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
           <div style="font-size:36px;">📋</div>
           <div>
@@ -2006,512 +1526,6 @@ function checkBasvuruDurumu(uid) {
         <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
       </div>`;
   });
-}
-
-// ═══ ÖDEME BİLGİLERİM SİSTEMİ ═══
-
-/**
- * Brevo üzerinden mail gönderen ana fonksiyon (Apps Script proxy ile).
- * Brevo başarısız olursa EmailJS'e otomatik fallback yapar.
- *
- * @param {Object} opts - to, subject, htmlContent, textContent, replyTo, toName
- * @returns {Promise<Object>} - {success, provider}
- */
-async function brevoMail(opts) {
-  if(!opts || !opts.to || !opts.subject || !opts.htmlContent) {
-    throw new Error("brevoMail: to, subject, htmlContent zorunlu");
-  }
-
-  console.log("📧 brevoMail çağrıldı → konu:", opts.subject, "→ alıcı:", opts.to);
-
-  // Email format kontrolü — basit regex
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  var geciliEmail = function(e) {
-    if(!e) return false;
-    return emailRegex.test(String(e).trim());
-  };
-
-  // replyTo geçici olarak devre dışı — Brevo'da email validation çok sıkı
-  // ve Google Auth'tan gelen email bazen Brevo'yu tetikliyor.
-  // Veli email zaten mail body'sinde görünüyor, oradan bakabiliriz.
-  if(opts.replyTo) {
-    console.log("ℹ️ replyTo atlanıyor (Brevo uyumluluk):", opts.replyTo);
-    delete opts.replyTo;
-  }
-
-  // to kontrolü
-  if(!geciliEmail(opts.to)) {
-    throw new Error("Geçersiz alıcı email: " + opts.to);
-  }
-
-  // 1. Brevo proxy'yi dene
-  try {
-    var payload = {
-      origin: (typeof location !== "undefined" && location.hostname) ? location.hostname : "bircicekkoleji.com",
-      to: opts.to,
-      toName: opts.toName || "",
-      subject: opts.subject,
-      htmlContent: opts.htmlContent,
-      textContent: opts.textContent || opts.htmlContent.replace(/<[^>]+>/g, "").trim(),
-      senderName: opts.senderName || "Bir Çiçek Koleji Anaokulu",
-      senderEmail: opts.senderEmail || SCHOOL_EMAIL
-    };
-    if(opts.replyTo) payload.replyTo = opts.replyTo;
-    if(opts.cc) payload.cc = opts.cc;
-    if(opts.bcc) payload.bcc = opts.bcc;
-
-    console.log("→ Brevo proxy'ye istek gönderiliyor...");
-    var res = await fetch(BREVO_PROXY_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload),
-      redirect: "follow",
-      mode: "cors"
-    });
-    console.log("→ Brevo yanıtı alındı, HTTP status:", res.status);
-
-    var rawText = await res.text();
-    console.log("→ Brevo ham yanıt:", rawText.substring(0, 500));
-
-    var data;
-    try { data = JSON.parse(rawText); }
-    catch(parseErr) {
-      console.warn("Brevo yanıtı JSON değil:", rawText.substring(0, 200));
-      throw new Error("Geçersiz yanıt: " + rawText.substring(0, 100));
-    }
-
-    if(data && data.success) {
-      console.log("✅ Brevo ile gönderildi:", opts.subject);
-      return { success: true, provider: "brevo", messageId: data.messageId };
-    }
-    console.warn("⚠️ Brevo başarısız:", data);
-    // Hata mesajını string yap
-    var errMsg;
-    if(typeof data.error === "string") errMsg = data.error;
-    else if(typeof data.detail === "string") errMsg = data.detail;
-    else if(data.error && typeof data.error === "object") errMsg = JSON.stringify(data.error);
-    else if(data.detail && typeof data.detail === "object") errMsg = JSON.stringify(data.detail);
-    else errMsg = "Brevo hatası (detay için konsol)";
-    throw new Error(errMsg);
-  } catch(brevoErr) {
-    console.warn("⚠️ Brevo proxy hatası:", brevoErr.message || brevoErr);
-    // Not: EmailJS fallback kaldırıldı (ücretsiz kotası dolmuş durumda).
-    // Brevo hatası varsa kullanıcıya gösteriyoruz, Firestore'a kayıt zaten gidiyor.
-    throw brevoErr;
-  }
-}
-
-/**
- * Basit HTML şablonu — tüm sistem mailleri için tutarlı görünüm
- */
-function mailSablon(baslik, icerik, altNot) {
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{margin:0;padding:0;background:#FAFAF7;font-family:Arial,Helvetica,sans-serif;color:#1A1A1A;}</style></head><body>' +
-    '<div style="max-width:600px;margin:0 auto;background:#FFFFFF;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(61,107,79,0.1);">' +
-      '<div style="background:linear-gradient(135deg,#3D6B4F,#2A4D38);color:#FFFFFF;padding:32px 24px 28px;text-align:center;">' +
-        '<img src="' + OKUL_LOGO_URL + '" alt="Bir Çiçek Koleji" width="80" height="80" style="width:80px;height:80px;border-radius:50%;background:#FFFFFF;padding:6px;margin:0 auto 14px;display:block;">' +
-        '<div style="font-size:22px;font-weight:700;letter-spacing:0.5px;">Bir Çiçek Koleji Anaokulu</div>' +
-        '<div style="font-size:13px;opacity:0.85;margin-top:4px;">Montessori &amp; Orman Okulu</div>' +
-      '</div>' +
-      '<div style="padding:32px 28px;">' +
-        '<h2 style="color:#2A4D38;font-size:20px;margin:0 0 18px 0;font-weight:600;">' + baslik + '</h2>' +
-        '<div style="color:#4A4A4A;font-size:14px;line-height:1.7;">' + icerik + '</div>' +
-        (altNot ? '<div style="margin-top:24px;padding:16px;background:#FBF6E9;border-left:3px solid #B8962E;border-radius:8px;font-size:13px;color:#6B4F3A;">' + altNot + '</div>' : '') +
-      '</div>' +
-      '<div style="background:#F5F0E8;padding:20px 24px;text-align:center;border-top:1px solid #DDD8CC;">' +
-        '<div style="font-size:12px;color:#888;line-height:1.6;">' +
-          'Aydınlı Mah. Bahçeler Sk. No:45 Tuzla/İstanbul<br>' +
-          '📞 0216 393 54 57 &nbsp;·&nbsp; 💬 0555 103 54 57<br>' +
-          '<a href="https://bircicekkoleji.com" style="color:#3D6B4F;text-decoration:none;">bircicekkoleji.com</a> &nbsp;·&nbsp; ' +
-          '<a href="https://instagram.com/bircicekkoleji" style="color:#3D6B4F;text-decoration:none;">@bircicekkoleji</a>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</body></html>';
-}
-
-function fmtTL(n) {
-  n = Math.round(Number(n)||0);
-  return n.toLocaleString("tr-TR") + " ₺";
-}
-
-function parseAciklama(str) {
-  // "Kuveyt Türk Hesabına Havale/EFT" gibi yapılandır
-  return String(str||"").trim();
-}
-
-// Portal'daki Ödeme Bilgilerim kartında özet göster
-async function guncelleOdemeKartOzeti(uid) {
-  try {
-    var ozetEl = document.getElementById("odemeCardOzet");
-    if(!ozetEl) return;
-    var snap = await db.collection("odemeler").doc(uid).get();
-    if(!snap.exists) {
-      ozetEl.innerHTML = '<span style="color:var(--text-light);">Ödeme planınız henüz oluşturulmamış</span>';
-      return;
-    }
-    var d = snap.data() || {};
-    var toplam = Number(d.toplam)||0;
-    var odemeler = d.odemeler || [];
-    var odenen = odemeler.filter(function(o){ return o && o.tip !== "serbest"; })
-                         .reduce(function(t,o){ return t + (Number(o.tutar)||0); }, 0);
-    var kalan = toplam - odenen;
-    if(kalan <= 0 && toplam > 0) {
-      ozetEl.innerHTML = '<span style="color:var(--sage);">✅ Tüm ödemeler tamamlandı</span>';
-    } else if(toplam > 0) {
-      ozetEl.innerHTML = 'Kalan: <strong>' + fmtTL(kalan) + '</strong> / ' + fmtTL(toplam);
-    } else {
-      ozetEl.innerHTML = '<span style="color:var(--text-light);">Detayları görüntülemek için tıklayın</span>';
-    }
-  } catch(e) {
-    console.log("Ödeme özet hatası:", e);
-  }
-}
-
-// Ana fonksiyon — Ödeme Bilgilerim ekranına git ve verileri yükle
-async function goToOdemeBilgileri() {
-  goToScreen("screen-odeme-bilgileri");
-  var loading = document.getElementById("vob-loading");
-  var bos = document.getElementById("vob-bos");
-  var icerik = document.getElementById("vob-icerik");
-  loading.style.display = "block";
-  bos.style.display = "none";
-  icerik.style.display = "none";
-
-  if(!currentUser) {
-    loading.style.display = "none";
-    bos.style.display = "block";
-    return;
-  }
-
-  try {
-    // Başvuru bilgilerini çek
-    var kayitSnap = await db.collection("yenikayit").doc(currentUser.uid).get();
-    if(!kayitSnap.exists) {
-      loading.style.display = "none";
-      bos.style.display = "block";
-      return;
-    }
-    var kayitData = kayitSnap.data() || {};
-
-    // Ödeme bilgilerini çek
-    var odemeSnap = await db.collection("odemeler").doc(currentUser.uid).get();
-    if(!odemeSnap.exists) {
-      loading.style.display = "none";
-      bos.style.display = "block";
-      return;
-    }
-    var o = odemeSnap.data() || {};
-    var toplam = Number(o.toplam) || 0;
-    if(toplam <= 0 || !o.plan || !Array.isArray(o.plan) || o.plan.length === 0) {
-      loading.style.display = "none";
-      bos.style.display = "block";
-      return;
-    }
-
-    // İçeriği render et
-    renderOdemeBilgileri(kayitData, o);
-    loading.style.display = "none";
-    icerik.style.display = "block";
-  } catch(e) {
-    console.error("Ödeme bilgileri yükleme hatası:", e);
-    loading.style.display = "none";
-    bos.style.display = "block";
-  }
-}
-
-function renderOdemeBilgileri(kayitData, o) {
-  var toplam = Number(o.toplam) || 0;
-  var odemeler = o.odemeler || [];
-  var plan = o.plan || [];
-  var digerOdemeler = o.digerOdemeler || [];
-
-  // Taksit ödemeleri (serbest olmayanlar)
-  var taksitOdemeleri = odemeler.filter(function(x){ return x && x.tip !== "serbest"; });
-  var serbestOdemeler = odemeler.filter(function(x){ return x && x.tip === "serbest"; });
-  var odenen = taksitOdemeleri.reduce(function(t,x){ return t + (Number(x.tutar)||0); }, 0);
-  var kalan = toplam - odenen;
-  var yuzde = toplam > 0 ? Math.min(100, Math.round((odenen/toplam)*100)) : 0;
-
-  // Özet kartları
-  document.getElementById("vob-toplam").textContent = fmtTL(toplam);
-  document.getElementById("vob-odenen").textContent = fmtTL(odenen);
-  document.getElementById("vob-kalan").textContent = fmtTL(kalan);
-  document.getElementById("vob-yuzde").textContent = yuzde + "%";
-  document.getElementById("vob-bar").style.width = yuzde + "%";
-
-  // Öğrenci/program bilgisi
-  var cocukAdi = ((kayitData.childAd||"") + " " + (kayitData.childSoyad||"")).trim() || "—";
-  var program = kayitData.program === "tam" ? "Tam Gün" : kayitData.program === "yarim" ? "Yarım Gün" : "—";
-  var kayitTuru = kayitData.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" :
-                  kayitData.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
-  document.getElementById("vob-bilgi").innerHTML =
-    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Öğrenci</div><div style="font-size:14px; font-weight:700;">' + cocukAdi + '</div></div>' +
-    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Program</div><div style="font-size:14px; font-weight:700;">' + program + '</div></div>' +
-    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Kayıt Türü</div><div style="font-size:14px; font-weight:700;">' + kayitTuru + '</div></div>' +
-    '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.3px;">Eğitim Dönemi</div><div style="font-size:14px; font-weight:700;">2026-2027</div></div>';
-
-  // Ödeme planı tablosu
-  renderPlanTablo(plan, odemeler, o.bildirimler || []);
-
-  // Yapılan ödemeler listesi
-  if(odemeler.length > 0) {
-    document.getElementById("vob-odenenler-kutu").style.display = "block";
-    renderYapilanOdemeler(odemeler);
-  }
-
-  // Diğer ödemeler
-  if(digerOdemeler.length > 0) {
-    document.getElementById("vob-diger-kutu").style.display = "block";
-    renderDigerOdemeler(digerOdemeler, odemeler, o.bildirimler || []);
-  }
-
-  // Banka bilgileri
-  var iban = o.iban || "TR00 0000 0000 0000 0000 0000 00";
-  document.getElementById("vob-iban").textContent = iban;
-  var aciklama = o.aciklama || (cocukAdi + " - Okul Ödemesi");
-  document.getElementById("vob-aciklama").textContent = aciklama;
-}
-
-function renderPlanTablo(plan, odemeler, bildirimler) {
-  bildirimler = bildirimler || [];
-  var h = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:13px;">';
-  h += '<thead><tr style="background:var(--sage-pale); color:var(--sage-dark);">';
-  h += '<th style="padding:12px 10px; text-align:left; font-weight:700; border-radius:8px 0 0 8px;">Ay / Taksit</th>';
-  h += '<th style="padding:12px 10px; text-align:right; font-weight:700;">Tutar</th>';
-  h += '<th style="padding:12px 10px; text-align:center; font-weight:700;">Durum</th>';
-  h += '<th style="padding:12px 10px; text-align:center; font-weight:700; border-radius:0 8px 8px 0;">İşlem</th>';
-  h += '</tr></thead><tbody>';
-
-  plan.forEach(function(taksit, i) {
-    var taksitId = taksit.id || ("t"+i);
-    // Bu taksite ait onaylanmış ödeme var mı? (admin onaylı)
-    var ilgiliOdeme = odemeler.find(function(o){ return o && o.taksitId === taksitId && o.tip !== "serbest"; });
-    var odendi = !!ilgiliOdeme;
-
-    // Bu taksite ait bekleyen bildirim var mı?
-    var bekleyenBildirim = bildirimler.find(function(b){
-      return b && b.taksitId === taksitId && b.durum === "beklemede";
-    });
-    var bildirimGonderildi = !!bekleyenBildirim;
-
-    var durumBadge, islemButton;
-    if(odendi) {
-      // ✅ Admin onayladı
-      durumBadge = '<span style="background:#E8F5EE; color:#1F5233; padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">✅ Ödendi</span>';
-      islemButton = '<span style="color:var(--sage); font-size:11px;">✓</span>';
-    } else if(bildirimGonderildi) {
-      // 📬 Veli bildirdi, admin onayı bekleniyor
-      durumBadge = '<span style="background:#FFF5E6; color:#B8860B; padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Onay Bekliyor</span>';
-      islemButton = '<div style="display:flex; flex-direction:column; align-items:center; gap:3px;">' +
-        '<span style="color:var(--sage); font-size:11px; font-weight:600;">📬 Bildirim Gönderildi</span>' +
-        '<span style="color:var(--text-light); font-size:10px;">' + (bekleyenBildirim.gonderildi ? new Date(bekleyenBildirim.gonderildi).toLocaleDateString("tr-TR") : "") + '</span>' +
-      '</div>';
-    } else {
-      // ⏳ Bekliyor, veli henüz bildirmemiş
-      durumBadge = '<span style="background:var(--gold-pale); color:var(--gold); padding:4px 10px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Bekliyor</span>';
-      islemButton = '<button onclick="odemeBildirimGonder(\'' + taksitId + '\', \'' + (taksit.ay||taksit.aciklama||"Taksit").replace(/'/g,"") + '\', ' + (Number(taksit.tutar)||0) + ')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
-    }
-
-    h += '<tr style="border-bottom:1px solid var(--border);">';
-    h += '<td style="padding:14px 10px;"><strong>' + (taksit.ay || taksit.aciklama || ("Taksit "+(i+1))) + '</strong>';
-    if(taksit.sonTarih) {
-      h += '<div style="font-size:11px; color:var(--text-light); margin-top:2px;">Son: ' + taksit.sonTarih + '</div>';
-    }
-    h += '</td>';
-    h += '<td style="padding:14px 10px; text-align:right; font-weight:700; font-family:Cormorant Garamond,serif; font-size:15px;">' + fmtTL(taksit.tutar||0) + '</td>';
-    h += '<td style="padding:14px 10px; text-align:center;">' + durumBadge + '</td>';
-    h += '<td style="padding:14px 10px; text-align:center;">' + islemButton + '</td>';
-    h += '</tr>';
-  });
-  h += '</tbody></table></div>';
-  document.getElementById("vob-plan-tablo").innerHTML = h;
-}
-
-function renderYapilanOdemeler(odemeler) {
-  var h = '';
-  odemeler.forEach(function(o) {
-    var tarih = o.tarih ? o.tarih : (o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toLocaleDateString("tr-TR") : "—");
-    var aciklama = o.aciklama || o.taksitAd || "Ödeme";
-    h += '<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); gap:12px;">';
-    h += '<div style="flex:1;">';
-    h += '<div style="font-size:13px; font-weight:600; color:var(--text);">' + aciklama + '</div>';
-    h += '<div style="font-size:11px; color:var(--text-light); margin-top:2px;">' + tarih + (o.yontem ? ' · ' + o.yontem : '') + '</div>';
-    h += '</div>';
-    h += '<div style="font-size:14px; font-weight:700; color:var(--sage); font-family:Cormorant Garamond,serif;">' + fmtTL(o.tutar||0) + '</div>';
-    h += '</div>';
-  });
-  document.getElementById("vob-odenenler-liste").innerHTML = h || '<div style="color:var(--text-light); font-size:13px;">Henüz ödeme yapılmamış.</div>';
-}
-
-function renderDigerOdemeler(digerOdemeler, odemeler, bildirimler) {
-  bildirimler = bildirimler || [];
-  var h = '';
-  digerOdemeler.forEach(function(d, i) {
-    var digerId = d.id || ("d"+i);
-    var bildirimTaksitId = "diger_" + digerId;
-    // Admin onaylı ödeme var mı?
-    var ilgiliOdeme = (odemeler||[]).find(function(o){ return o && o.digerId === digerId; });
-    var odendi = !!ilgiliOdeme;
-    // Bekleyen bildirim var mı?
-    var bekleyenBildirim = bildirimler.find(function(b){
-      return b && b.taksitId === bildirimTaksitId && b.durum === "beklemede";
-    });
-    var bildirimGonderildi = !!bekleyenBildirim;
-
-    h += '<div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); gap:12px; flex-wrap:wrap;">';
-    h += '<div style="flex:1; min-width:160px;">';
-    h += '<div style="font-size:14px; font-weight:700; color:var(--text);">' + (d.ad || "Diğer Ödeme") + '</div>';
-    if(d.aciklama) h += '<div style="font-size:12px; color:var(--text-light); margin-top:3px;">' + d.aciklama + '</div>';
-    if(d.sonTarih) h += '<div style="font-size:11px; color:var(--text-light); margin-top:3px;">📅 Son ödeme: ' + d.sonTarih + '</div>';
-    h += '</div>';
-    h += '<div style="font-size:15px; font-weight:700; color:var(--earth); font-family:Cormorant Garamond,serif;">' + fmtTL(d.tutar||0) + '</div>';
-    if(odendi) {
-      // ✅ Admin onayladı
-      h += '<div style="background:#E8F5EE; color:#1F5233; padding:5px 12px; border-radius:50px; font-size:11px; font-weight:700;">✅ Ödendi</div>';
-    } else if(bildirimGonderildi) {
-      // 📬 Bildirim var, onay bekliyor
-      h += '<div style="display:flex; flex-direction:column; align-items:center; gap:3px;">' +
-        '<div style="background:#FFF5E6; color:#B8860B; padding:5px 12px; border-radius:50px; font-size:11px; font-weight:700;">⏳ Onay Bekliyor</div>' +
-        '<div style="color:var(--sage); font-size:10px; font-weight:600;">📬 Bildirim gönderildi</div>' +
-      '</div>';
-    } else {
-      // ⏳ Henüz bildirim yok
-      h += '<button onclick="odemeBildirimGonder(\'' + bildirimTaksitId + '\', \'' + (d.ad||"Diğer").replace(/'/g,"") + '\', ' + (Number(d.tutar)||0) + ')" style="background:var(--earth); color:white; border:none; border-radius:50px; padding:7px 14px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">💬 Ödedim, Bildir</button>';
-    }
-    h += '</div>';
-  });
-  document.getElementById("vob-diger-liste").innerHTML = h;
-}
-
-// Ödeme bildirimi gönder — EmailJS ile okula mail + Firestore'a kayıt
-async function odemeBildirimGonder(taksitId, taksitAd, tutar) {
-  if(!currentUser) { showToast("⚠️ Giriş yapmanız gerekiyor"); return; }
-  if(!confirm("'" + taksitAd + "' taksiti için " + fmtTL(tutar) + " tutarında ödeme yaptığınızı okula bildirmek istiyor musunuz?\n\nOkul yönetimi ödemenizi bankadan kontrol ettikten sonra onaylayacaktır.")) return;
-
-  console.log("🔔 Ödeme bildirimi başlatıldı:", { taksitId: taksitId, taksitAd: taksitAd, tutar: tutar });
-  showLoading();
-  try {
-    // 1. Başvuru bilgilerini çek
-    var kayitSnap = await db.collection("yenikayit").doc(currentUser.uid).get();
-    var kayitData = kayitSnap.exists ? kayitSnap.data() : {};
-    var cocukAdi = ((kayitData.childAd||"") + " " + (kayitData.childSoyad||"")).trim() || "—";
-    var veliTel = kayitData.veliTel || "—";
-
-    // 2. Firestore'a bildirim kaydı (odemeler koleksiyonuna bildirim notu)
-    var odemeRef = db.collection("odemeler").doc(currentUser.uid);
-    var odemeSnap = await odemeRef.get();
-    var bildirimler = odemeSnap.exists ? (odemeSnap.data().bildirimler || []) : [];
-    bildirimler.push({
-      taksitId: taksitId,
-      taksitAd: taksitAd,
-      tutar: Number(tutar)||0,
-      veliEmail: currentUser.email,
-      veliAd: currentUser.displayName || "—",
-      gonderildi: new Date().toISOString(),
-      durum: "beklemede"
-    });
-    await odemeRef.set({ bildirimler: bildirimler, sonBildirim: new Date().toISOString() }, { merge: true });
-
-    // 3. Brevo proxy ile okula bildirim maili (fallback olarak EmailJS)
-    var bildirimHTML =
-      '<p style="font-size:15px;">Merhaba,</p>' +
-      '<p>Aşağıdaki veli <strong style="color:#3D6B4F;">ödeme yaptığını bildirdi</strong>. Lütfen Kuveyt Türk hesabınızı kontrol ederek teyit edin.</p>' +
-      '<div style="background:#EDF5F0;border-left:3px solid #3D6B4F;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
-        '<div style="font-size:12px;color:#2A4D38;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">👤 Veli Bilgileri</div>' +
-        '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
-          '<tr><td style="padding:4px 0;color:#888;width:100px;">Ad Soyad:</td><td style="padding:4px 0;font-weight:600;">' + (currentUser.displayName||"—") + '</td></tr>' +
-          '<tr><td style="padding:4px 0;color:#888;">E-posta:</td><td style="padding:4px 0;font-weight:600;">' + currentUser.email + '</td></tr>' +
-          '<tr><td style="padding:4px 0;color:#888;">Telefon:</td><td style="padding:4px 0;font-weight:600;">' + veliTel + '</td></tr>' +
-          '<tr><td style="padding:4px 0;color:#888;">Öğrenci:</td><td style="padding:4px 0;font-weight:600;">' + cocukAdi + '</td></tr>' +
-        '</table>' +
-      '</div>' +
-      '<div style="background:#FBF6E9;border-left:3px solid #B8962E;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
-        '<div style="font-size:12px;color:#B8962E;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">💳 Ödeme Bilgileri</div>' +
-        '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
-          '<tr><td style="padding:4px 0;color:#888;width:100px;">Taksit:</td><td style="padding:4px 0;font-weight:600;">' + taksitAd + '</td></tr>' +
-          '<tr><td style="padding:4px 0;color:#888;">Tutar:</td><td style="padding:4px 0;font-weight:700;color:#6B4F3A;font-size:18px;">' + fmtTL(tutar) + '</td></tr>' +
-          '<tr><td style="padding:4px 0;color:#888;">Bildirim Zamanı:</td><td style="padding:4px 0;font-weight:600;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
-        '</table>' +
-      '</div>';
-
-    // Mail gönderimini dene ama başarısız olsa da kullanıcıyı durdurmayalım
-    // (Firestore'a kayıt zaten gitti, veli tekrar bildirmeye zorlanmasın)
-    var mailBasarili = false;
-    try {
-      await brevoMail({
-        to: SCHOOL_EMAIL,
-        toName: "Bir Çiçek Koleji",
-        replyTo: { email: currentUser.email, name: currentUser.displayName || "Veli" },
-        subject: "💰 Ödeme Bildirimi — " + cocukAdi + " (" + fmtTL(tutar) + ")",
-        htmlContent: mailSablon("💰 Yeni Ödeme Bildirimi", bildirimHTML, "Bu bildirim <strong>otomatik</strong> oluşturulmuştur. Veliyi aramak için üstteki bilgileri kullanabilirsiniz.")
-      });
-      mailBasarili = true;
-      console.log("✅ Bildirim maili okula gönderildi");
-    } catch(mailErr) {
-      console.warn("⚠️ Mail gönderilemedi ama bildirim Firestore'a kaydedildi:", mailErr);
-    }
-
-    hideLoading();
-    if(mailBasarili) {
-      showToast("✅ Bildirim gönderildi. Okul yönetimi en kısa sürede teyit edecek.");
-    } else {
-      // Mail gitmedi ama kayıt var — veli için yine başarı
-      showToast("✅ Bildiriminiz kaydedildi. Okul yönetimi en kısa sürede teyit edecek.");
-    }
-    // Ekranı yenile
-    setTimeout(function(){ goToOdemeBilgileri(); }, 1000);
-  } catch(e) {
-    hideLoading();
-    console.error("Bildirim gönderme hatası:", e);
-    // Hatayı düzgün şekilde string'e çevir ([object Object] olmasın diye)
-    var hataMsg = "";
-    if(e && typeof e === "string") hataMsg = e;
-    else if(e && e.message) hataMsg = e.message;
-    else if(e && e.error) hataMsg = typeof e.error === "string" ? e.error : JSON.stringify(e.error);
-    else if(e && e.detail) hataMsg = typeof e.detail === "string" ? e.detail : JSON.stringify(e.detail);
-    else if(e && e.code) hataMsg = "Kod: " + e.code;
-    else { try { hataMsg = JSON.stringify(e); } catch(x) { hataMsg = "Bilinmeyen hata"; } }
-    showToast("⚠️ Bildirim gönderilemedi: " + hataMsg);
-  }
-}
-
-// IBAN kopyala
-function kopyalaIBAN() {
-  var iban = document.getElementById("vob-iban").textContent.replace(/\s/g,"");
-  if(navigator.clipboard) {
-    navigator.clipboard.writeText(iban).then(function(){
-      showToast("✅ IBAN kopyalandı: " + iban);
-    }).catch(function(){
-      kopyalaFallback(iban);
-    });
-  } else {
-    kopyalaFallback(iban);
-  }
-}
-
-function kopyalaAciklama() {
-  var aciklama = document.getElementById("vob-aciklama").textContent;
-  if(navigator.clipboard) {
-    navigator.clipboard.writeText(aciklama).then(function(){
-      showToast("✅ Açıklama kopyalandı");
-    }).catch(function(){
-      kopyalaFallback(aciklama);
-    });
-  } else {
-    kopyalaFallback(aciklama);
-  }
-}
-
-function kopyalaFallback(text) {
-  var ta = document.createElement("textarea");
-  ta.value = text;
-  ta.style.position = "fixed";
-  ta.style.left = "-9999px";
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand("copy"); showToast("✅ Kopyalandı"); }
-  catch(e) { showToast("⚠️ Kopyalama başarısız"); }
-  document.body.removeChild(ta);
 }
 
 // ═══ 8. FORM LOGIC ═══
@@ -2574,12 +1588,12 @@ function renderHesaplama2() {
   var childAd = ((document.getElementById("childAd")||{}).value||"").trim();
   var childSoyad = ((document.getElementById("childSoyad")||{}).value||"").trim();
   if(s("childAdDisplay")) s("childAdDisplay").textContent = childAd+" "+childSoyad;
-  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (11 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
+  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
   if(s("kayitTurDisplay")) s("kayitTurDisplay").textContent = turLabel[appState2.kayitTur]||"–";
-  if(s("iAylikDisplay")) s("iAylikDisplay").textContent = fmt(h.iAylik)+" TL";
-  if(s("iiAylikDisplay")) s("iiAylikDisplay").textContent = fmt(h.iiAylik)+" TL";
+  if(s("aylikDisplay")) s("aylikDisplay").textContent = fmt(h.aylik)+" TL";
   if(s("egitimDisplay")) s("egitimDisplay").textContent = fmt(h.egitim)+" TL";
   if(s("yemekDisplay")) s("yemekDisplay").textContent = fmt(h.yemek)+" TL";
+  if(s("yillikDisplay")) s("yillikDisplay").textContent = fmt(h.yillik)+" TL";
   if(s("onOdemeDisplay")) s("onOdemeDisplay").innerHTML = '<span class="tutar-gold">'+fmt(h.onOdeme)+' TL</span>';
   function renderRows(containerId, rows) {
     var cont = s(containerId); if(!cont) return;
@@ -2599,9 +1613,9 @@ function renderHesaplama2() {
   // Geçerlilik yazısı
   var gecerlilik = s("gecerlilikYazisi");
   if(gecerlilik) {
-    var turSon = {onkayit:"10 Mayıs 2026", erken:"30 Mayıs 2026", normal:"30 Eylül 2026"};
+    var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayıs 2026", normal:"30 Eylül 2026"};
     var turAd = {onkayit:"Avantajlı Ön Kayıt", erken:"Erken Kayıt", normal:"Normal Kayıt"};
-    var son = turSon[appState2.kayitTur] || "10 Mayıs 2026";
+    var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
     var ad = turAd[appState2.kayitTur] || "Avantajlı Ön Kayıt";
     gecerlilik.innerHTML = "📋 Bu ödeme planı <strong>" + ad + "</strong> dönemi kapsamında hazırlanmıştır. " +
       "<strong>" + son + "</strong> tarihine kadar geçerlidir. Bu tarihten sonra yapılan başvurularda güncel ücretler uygulanır.";
@@ -2655,11 +1669,13 @@ function copyRefKod() {
 // ═══ 12. GİRİŞ TAKİBİ ═══
 async function logGiris2(u) {
   try {
-    // Giriş kaydını Firestore'a al (mail değil, spam önleme)
     await db.collection("girisler").add({ email:u.email, displayName:u.displayName||"", girisZamani:new Date().toISOString(), uid:u.uid, sistem:"yenikayit" });
-    // Not: Her login'de mail atmıyoruz — Firestore'dan takip edilebilir.
-    // İleride "günlük özet mail" için tetikleyici eklenebilir.
-  } catch(e) { console.log("Giriş log hatası:", e); }
+    emailjs.init(EMAILJS_CONFIG.publicKey);
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+      to_email: SCHOOL_EMAIL, cocuk_adi: "Yeni Kayıt Sistem Girişi",
+      mesaj: "YENİ KAYIT SİSTEM GİRİŞİ\nMail: "+u.email+"\nAd: "+(u.displayName||"–")+"\nZaman: "+new Date().toLocaleString("tr-TR")
+    });
+  } catch(e) { console.log(e); }
 }
 
 // ═══ 13. KAYDET ═══
@@ -2685,799 +1701,37 @@ async function kaydet2() {
       kayitTarihi:new Date().toISOString(), durum:"beklemede", sistem:"yenikayit"
     };
     await db.collection("yenikayit").doc(currentUser.uid).set(data);
-
-    // 🎯 KRİTİK: Ödeme planını odemeler koleksiyonuna otomatik oluştur
-    // Böylece veli "Ödeme Bilgilerim" sekmesinde kendi planını görebilir
-    try {
-      var cocukTamAd = (data.childAd + " " + data.childSoyad).trim();
-      // Taksit planını oluştur (Ön Ödeme + I. Dönem 5 ay + II. Dönem 5 ay)
-      var planList = [];
-      planList.push({
-        id: "on_odeme",
-        ay: "Kayıt Ön Ödemesi",
-        aciklama: "Kayıt günü ödenir",
-        tutar: h.onOdeme,
-        sonTarih: "Kayıt günü"
-      });
-      var iAylar = ["Eylül 2026","Ekim 2026","Kasım 2026","Aralık 2026","Ocak 2027"];
-      iAylar.forEach(function(ay, idx){
-        planList.push({
-          id: "i_" + (idx+1),
-          ay: ay + " taksiti",
-          aciklama: "I. Dönem - " + ay,
-          tutar: h.iAylik,
-          sonTarih: "5 " + ay
-        });
-      });
-      var iiAylar = ["Şubat 2027","Mart 2027","Nisan 2027","Mayıs 2027","Haziran 2027"];
-      iiAylar.forEach(function(ay, idx){
-        // Son ay: kalanın kusur olarak eklenmesi (yuvarlama farkını telafi eder)
-        var tutar = (idx === 4) ? (h.kalan - h.iAylik*5 - h.iiAylik*4) : h.iiAylik;
-        planList.push({
-          id: "ii_" + (idx+1),
-          ay: ay + " taksiti",
-          aciklama: "II. Dönem - " + ay,
-          tutar: tutar,
-          sonTarih: "5 " + ay
-        });
-      });
-
-      // Havale açıklaması: "Ad Soyad - Okul Ödemesi"
-      var aciklamaMetni = cocukTamAd + " - Okul Ödemesi";
-
-      var odemeDoc = {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        cocukAdi: cocukTamAd,
-        veliAd: data.veliAd + " " + data.veliSoyad,
-        veliTel: data.phone,
-        program: data.program,
-        kayitTur: data.kayitTur,
-        toplam: h.yillik,
-        aylikUcret: h.aylik,
-        onOdeme: h.onOdeme,
-        plan: planList,
-        odemeler: [],       // yapılan ödemeler boş başlar
-        digerOdemeler: [],  // materyal/servis vs. - admin ekleyebilir
-        bildirimler: [],    // veli bildirimleri
-        iban: "TR62 0020 5000 0969 5703 5000 02", // Emrah Bay - Kuveyt Türk
-        aciklama: aciklamaMetni,
-        sistem: "yenikayit",
-        olusturuldu: new Date().toISOString(),
-        faturaIstegi: data.faturaIstegi || false,
-        faturaEmail: data.faturaIstegi ? data.email : ""
-      };
-      await db.collection("odemeler").doc(currentUser.uid).set(odemeDoc, { merge: true });
-      console.log("✅ Ödeme planı otomatik oluşturuldu");
-    } catch(odemeErr) {
-      console.warn("⚠️ Ödeme planı oluşturulamadı ama başvuru kaydedildi:", odemeErr);
-    }
-
     var refGiris=data.refKoduKullanildi;
     if(refGiris&&refGiris.startsWith("BCK-")) {
-      try {
-        var q=await db.collection("referanslar").where("kod","==",refGiris).get();
-        if(!q.empty) await q.docs[0].ref.update({ kayitSayisi:(q.docs[0].data().kayitSayisi||0)+1 });
-      } catch(refErr) { console.warn("Referans güncellenemedi:", refErr); }
+      var q=await db.collection("referanslar").where("kod","==",refGiris).get();
+      if(!q.empty) await q.docs[0].ref.update({ kayitSayisi:(q.docs[0].data().kayitSayisi||0)+1 });
     }
-    // Email göndermeyi try-catch içine al — email başarısız olsa bile başvuru kaydedilmiş sayılsın
-    try {
-      await sendEmail2(data);
-    } catch(emailErr) {
-      console.warn("Email gönderilemedi ama başvuru kaydedildi:", emailErr);
-    }
+    await sendEmail2(data);
     hideLoading(); goToScreen("screen-done");
   } catch(e) {
-    hideLoading();
-    // Gerçek hatayı konsola yaz
-    console.error("❌ Başvuru kaydetme hatası:", e);
-    console.error("Hata detayı:", { message:e.message, code:e.code, text:e.text, stack:e.stack, raw:e });
-    // Farklı hata tiplerinden anlamlı mesaj çıkar
-    var hataMsg = "";
-    if(e && e.message) hataMsg = e.message;
-    else if(e && e.code) hataMsg = "Kod: " + e.code;
-    else if(e && e.text) hataMsg = e.text;
-    else if(typeof e === "string") hataMsg = e;
-    else { try { hataMsg = JSON.stringify(e); } catch(x) { hataMsg = "Bilinmeyen hata"; } }
-    showToast("⚠️ Hata: " + hataMsg);
+    hideLoading(); showToast("⚠️ Hata: "+e.message);
     if(btn) { btn.disabled=false; btn.textContent="🌸 Başvuruyu Gönder"; }
   }
 }
 async function sendEmail2(data) {
-  var progLabel = data.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
-  var kayitTurLabel = data.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : data.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
-
-  // Ödeme tablosu (her iki mailde de kullanılır)
-  // Ay adları ve tutarları (hesaplaYeni'den alınmış iRows ve iiRows)
-  var iRows = (appState2.hesap && appState2.hesap.iRows) || [];
-  var iiRows = (appState2.hesap && appState2.hesap.iiRows) || [];
-
-  // Ay satırları HTML üretici
-  var aySatirlari = function(rows, altBg) {
-    return rows.map(function(row, idx){
-      var bg = (idx % 2 === 0) ? altBg : '#FFFFFF';
-      return '<tr style="background:' + bg + ';"><td style="padding:8px 14px;color:#4A4A4A;padding-left:28px;">' + row.ay + ' taksiti</td><td style="padding:8px 14px;text-align:right;color:#2A4D38;font-weight:600;">' + fmt(row.tutar) + ' TL</td></tr>';
-    }).join('');
-  };
-
-  var odemeTablosu =
-    '<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">' +
-      '<tr style="background:#EDF5F0;"><td style="padding:10px 14px;color:#2A4D38;font-weight:600;">Kayıt Türü</td><td style="padding:10px 14px;text-align:right;">' + kayitTurLabel + '</td></tr>' +
-      '<tr><td style="padding:10px 14px;color:#888;">Program</td><td style="padding:10px 14px;text-align:right;font-weight:600;">' + progLabel + '</td></tr>' +
-      // Ön Ödeme satırı
-      '<tr style="background:#FBF6E9;border-top:2px solid #B8962E;"><td style="padding:14px;color:#6B4F3A;font-weight:700;">🔑 Ön Ödeme <span style="font-weight:400;color:#888;">(Kayıt günü)</span></td><td style="padding:14px;text-align:right;font-weight:700;color:#6B4F3A;font-size:15px;">' + fmt(data.onOdeme) + ' TL</td></tr>' +
-      // I. Dönem başlık
-      '<tr style="background:#F5F0E8;"><td colspan="2" style="padding:12px 14px;font-size:12px;color:#6B4F3A;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">I. DÖNEM — EYLÜL · EKİM · KASIM · ARALIK · OCAK</td></tr>' +
-      aySatirlari(iRows, '#FAFAF7') +
-      // II. Dönem başlık
-      '<tr style="background:#F5F0E8;"><td colspan="2" style="padding:12px 14px;font-size:12px;color:#6B4F3A;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">II. DÖNEM — ŞUBAT · MART · NİSAN · MAYIS · HAZİRAN</td></tr>' +
-      aySatirlari(iiRows, '#FAFAF7') +
-    '</table>';
-
-  // 1️⃣ Okula bildirim maili
-  var okulHTML =
-    '<p style="font-size:15px;">Yeni bir <strong style="color:#3D6B4F;">ön kayıt başvurusu</strong> alındı.</p>' +
-    '<div style="background:#EDF5F0;border-left:3px solid #3D6B4F;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
-      '<div style="font-size:12px;color:#2A4D38;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">👤 Veli Bilgileri</div>' +
-      '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
-        '<tr><td style="padding:4px 0;color:#888;width:100px;">Ad Soyad:</td><td style="padding:4px 0;font-weight:600;">' + data.veliAd + ' ' + data.veliSoyad + '</td></tr>' +
-        '<tr><td style="padding:4px 0;color:#888;">E-posta:</td><td style="padding:4px 0;font-weight:600;">' + data.email + '</td></tr>' +
-        '<tr><td style="padding:4px 0;color:#888;">Telefon:</td><td style="padding:4px 0;font-weight:600;">' + data.phone + '</td></tr>' +
-      '</table>' +
-    '</div>' +
-    '<div style="background:#FBF6E9;border-left:3px solid #B8962E;border-radius:8px;padding:18px 20px;margin:20px 0;">' +
-      '<div style="font-size:12px;color:#B8962E;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px;">👶 Öğrenci Bilgileri</div>' +
-      '<table style="width:100%;font-size:14px;border-collapse:collapse;">' +
-        '<tr><td style="padding:4px 0;color:#888;width:100px;">Ad Soyad:</td><td style="padding:4px 0;font-weight:600;">' + data.childAd + ' ' + data.childSoyad + '</td></tr>' +
-        '<tr><td style="padding:4px 0;color:#888;">Doğum:</td><td style="padding:4px 0;font-weight:600;">' + (data.childDogum||"—") + '</td></tr>' +
-        '<tr><td style="padding:4px 0;color:#888;">Cinsiyet:</td><td style="padding:4px 0;font-weight:600;">' + (data.childCinsiyet||"—") + '</td></tr>' +
-      '</table>' +
-    '</div>' +
-    '<div style="font-size:13px;color:#2A4D38;font-weight:700;margin-top:24px;margin-bottom:8px;">💰 Ödeme Planı</div>' +
-    odemeTablosu +
-    '<div style="background:#F5F0E8;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px;">' +
-      '<strong>Referans Kodu:</strong> ' + (data.refKodu||"—") + '<br>' +
-      '<strong>Kullanılan Referans:</strong> ' + (data.refKoduKullanildi||"Yok") + '<br>' +
-      '<strong>Ödeme Tercihi:</strong> ' + (data.odemeTercihi||"Belirtilmedi") + '<br>' +
-      '<strong>Fatura İsteği:</strong> ' + (data.faturaIstegi?"Evet":"Hayır") + '<br>' +
-      '<strong>Tarih:</strong> ' + new Date().toLocaleString("tr-TR") +
-    '</div>';
-
-  try {
-    await brevoMail({
-      to: SCHOOL_EMAIL,
-      toName: "Bir Çiçek Koleji",
-      replyTo: { email: data.email, name: data.veliAd + " " + data.veliSoyad },
-      subject: "🌸 Yeni Kayıt Başvurusu — " + data.childAd + " " + data.childSoyad,
-      htmlContent: mailSablon("🌸 Yeni Kayıt Başvurusu Alındı", okulHTML, "Veliyi aramak için üstteki telefon/mail bilgilerini kullanabilirsiniz.")
-    });
-  } catch(e) { console.warn("Okul maili gönderilemedi:", e); }
-
-  // 2️⃣ Veliye teyit maili
-  var veliHTML =
-    '<p style="font-size:15px;">Sayın <strong>' + data.veliAd + ' ' + data.veliSoyad + '</strong>,</p>' +
-    '<p><strong style="color:#3D6B4F;">' + data.childAd + '</strong> için yaptığınız ön kayıt başvurusu tarafımıza ulaşmıştır. En kısa sürede sizinle iletişime geçeceğiz. 🌸</p>' +
-    '<div style="font-size:13px;color:#2A4D38;font-weight:700;margin-top:24px;margin-bottom:8px;">📋 Başvuru Özeti</div>' +
-    odemeTablosu +
-    (data.refKodu ?
-      '<div style="background:linear-gradient(135deg,#FBF6E9,#F5F0E8);border:2px dashed #B8962E;border-radius:12px;padding:20px;margin:24px 0;text-align:center;">' +
-        '<div style="font-size:12px;color:#B8962E;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:6px;">🎁 Size Özel Referans Kodunuz</div>' +
-        '<div style="font-size:24px;font-weight:700;color:#6B4F3A;font-family:monospace;letter-spacing:2px;">' + data.refKodu + '</div>' +
-        '<div style="font-size:12px;color:#888;margin-top:8px;">Bu kodu yakınlarınızla paylaşarak indirimlerden yararlanabilirsiniz.</div>' +
-      '</div>' +
-      '<div style="background:#EDF5F0;border-radius:8px;padding:16px 18px;font-size:13px;line-height:1.8;">' +
-        '<strong style="color:#2A4D38;">🎁 Referans Avantajları:</strong><br>' +
-        '• <strong>1. Kayıt</strong> → I. Dönem Orman Okulu Servisi <em>ücretsiz</em><br>' +
-        '• <strong>2. Kayıt</strong> → II. Dönem Orman Okulu Servisi <em>ücretsiz</em><br>' +
-        '• <strong>3. Kayıt</strong> → Eğitim Materyallerinin %50\'si <em>ücretsiz</em>' +
-      '</div>' : '') +
-    (data.faturaIstegi ?
-      '<div style="background:#FFF5E6;border:1px solid #FFD4A3;border-radius:8px;padding:14px 18px;margin:20px 0;font-size:13px;color:#7A4E00;">' +
-        '🧾 <strong>Fatura Talebi Alındı</strong><br>' +
-        'Faturalarınız ödeme yapıldıktan sonra <strong>' + data.email + '</strong> adresine otomatik olarak gönderilecektir.' +
-      '</div>' : '') +
-    '<div style="background:#EDF5F0;border-radius:8px;padding:16px 18px;margin:20px 0;font-size:13px;">' +
-      '🌸 <strong>Veli Portalımıza Hoş Geldiniz!</strong><br>' +
-      '<a href="https://portal.bircicekkoleji.com" style="color:#3D6B4F;text-decoration:none;font-weight:600;">portal.bircicekkoleji.com</a> adresinden <strong>Google hesabınızla</strong> giriş yapabilirsiniz. Portal üzerinden ödeme planınızı, sözleşmenizi, güncel duyurularımızı ve öğrenci bilgilerinizi tek adresten takip edebilirsiniz.' +
-    '</div>' +
-    '<p style="margin-top:28px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
-
-  try {
-    await brevoMail({
-      to: data.email,
-      toName: data.veliAd + " " + data.veliSoyad,
-      subject: "🌸 Başvurunuz Alındı — " + data.childAd + " " + data.childSoyad,
-      htmlContent: mailSablon("Başvurunuz Alındı 🌸", veliHTML, "Sorularınız için: <strong>0216 393 54 57</strong> &nbsp;·&nbsp; <strong>WhatsApp: 0555 103 54 57</strong>")
-    });
-  } catch(e) { console.warn("Veli maili gönderilemedi:", e); }
+  emailjs.init(EMAILJS_CONFIG.publicKey);
+  var h=appState2.hesap;
+  var progLabel=data.program==="tam"?"Tam Gün":"Yarım Gün";
+  var tablo="ÖDEME TABLOSU - "+data.childAd+" "+data.childSoyad+"\n"+"=".repeat(40)+"\nKayıt Türü: "+(data.kayitTur==="onkayit"?"Avantajlı Ön Kayıt":data.kayitTur==="erken"?"Erken Kayıt":"Normal Kayıt")+"\nAylık Ücret: "+fmt(data.aylikUcret)+" TL ("+progLabel+")\nÖn Ödeme: "+fmt(data.onOdeme)+" TL\nI. Dönem: "+fmt(data.iAylik)+" TL/ay\nII. Dönem: "+fmt(data.iiAylik)+" TL/ay\nYıllık Toplam: "+fmt(data.yillik)+" TL\nÖdeme Tercihi: "+data.odemeTercihi+"\nFatura: "+(data.faturaIstegi?"Evet":"Hayır");
+  await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+    to_email:SCHOOL_EMAIL, cocuk_adi:data.childAd+" — YENİ KAYIT BAŞVURUSU",
+    mesaj:"🌸 YENİ KAYIT BAŞVURUSU!\n\nVeli: "+data.veliAd+" "+data.veliSoyad+"\nEmail: "+data.email+"\nTel: "+data.phone+"\n\nÇocuk: "+data.childAd+" "+data.childSoyad+"\nDoğum: "+data.childDogum+"\n\n"+tablo+"\n\nRef Kodu: "+data.refKodu+"\nRef Kullanıldı: "+(data.refKoduKullanildi||"Yok")+"\nTarih: "+new Date().toLocaleString("tr-TR")
+  });
+  await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+    to_email:data.email, cocuk_adi:data.childAd+" "+data.childSoyad,
+    mesaj:"Sayın "+data.veliAd+" "+data.veliSoyad+",\n\n"+data.childAd+"'in başvurusu alındı. En kısa sürede sizi arayacağız.\n\n"+tablo+"\n\nREFERANS KODUNUZ: "+data.refKodu+"\n\n1. Kayıt → I. Dönem Orman Okulu Servis ücreti — ***\n2. Kayıt → II. Dönem Orman Okulu Servis ücreti — ***\n3. Kayıt → Okul Kıyafeti ücreti — alınmaz!\n\nSevgilerimizle,\nBir Çiçek Koleji Anaokulu"
+  });
 }
 
 // ═══ 14. RANDEVU ═══
 function randevuAc(tip) {
   var link = RANDEVU_LINKS[tip];
   if(link) window.open(link, "_blank");
-}
-
-// ═══════════════════════════════════════════════════════════
-// ADMIN PANEL — Aşama 1
-// ═══════════════════════════════════════════════════════════
-
-var adminData = {
-  veliler: [],        // yenikayit koleksiyonundaki tüm kayıtlar
-  odemeler: [],       // odemeler koleksiyonundaki tüm dokümanlar
-  girisler: [],       // girisler koleksiyonu (aktif veli analizi için)
-  yuklendi: false,
-  sonYukleme: null
-};
-
-// Admin paneli ana yükleyici
-async function adminYukle() {
-  if(!currentUser) {
-    showToast("⚠️ Giriş yapmanız gerekiyor");
-    goToScreen("screen-hero");
-    return;
-  }
-  // Yetki kontrolü
-  if(currentUser.email !== ADMIN_EMAIL) {
-    document.getElementById("admin-yetkisiz").style.display = "block";
-    document.getElementById("admin-icerik").style.display = "none";
-    return;
-  }
-  document.getElementById("admin-yetkisiz").style.display = "none";
-  document.getElementById("admin-icerik").style.display = "block";
-
-  // Veriyi çek
-  if(!adminData.yuklendi) {
-    await adminVeriCek();
-  }
-  // Metrikleri hesapla ve göster
-  adminMetrikleriGoster();
-  // Bekleyen bildirimler
-  adminBekleyenleriGoster();
-  // Veli listesi
-  adminVeliListesiGoster();
-}
-
-// Firestore'dan tüm veriyi çek
-async function adminVeriCek() {
-  try {
-    showLoading("Veriler yükleniyor...");
-    console.log("🔄 Admin verisi çekiliyor...");
-
-    // Paralel çek
-    var [yenikayitSnap, odemelerSnap, girislerSnap] = await Promise.all([
-      db.collection("yenikayit").get(),
-      db.collection("odemeler").get(),
-      db.collection("girisler").orderBy("girisZamani", "desc").limit(500).get()
-    ]);
-
-    adminData.veliler = [];
-    yenikayitSnap.forEach(function(doc){
-      adminData.veliler.push(Object.assign({ _id: doc.id }, doc.data()));
-    });
-
-    adminData.odemeler = [];
-    odemelerSnap.forEach(function(doc){
-      adminData.odemeler.push(Object.assign({ _id: doc.id }, doc.data()));
-    });
-
-    adminData.girisler = [];
-    girislerSnap.forEach(function(doc){
-      adminData.girisler.push(Object.assign({ _id: doc.id }, doc.data()));
-    });
-
-    adminData.yuklendi = true;
-    adminData.sonYukleme = new Date();
-    console.log("✅ Admin verisi yüklendi:", {
-      veliler: adminData.veliler.length,
-      odemeler: adminData.odemeler.length,
-      girisler: adminData.girisler.length
-    });
-    hideLoading();
-  } catch(e) {
-    hideLoading();
-    console.error("Admin veri çekme hatası:", e);
-    showToast("⚠️ Veri yüklenemedi: " + (e.message || e));
-  }
-}
-
-// Yenile butonu
-async function adminYenile() {
-  adminData.yuklendi = false;
-  await adminYukle();
-  showToast("✅ Veriler güncellendi");
-}
-
-// Admin metriklerini hesapla ve ekrana yaz
-function adminMetrikleriGoster() {
-  var veliler = adminData.veliler;
-  var odemelerDoc = adminData.odemeler;
-  var girisler = adminData.girisler;
-
-  // Toplam kayıt
-  document.getElementById("m-toplam-kayit").textContent = veliler.length;
-  // Bu ay yeni kayıt
-  var buAy = new Date();
-  var buAyBasi = new Date(buAy.getFullYear(), buAy.getMonth(), 1);
-  var buAyKayit = veliler.filter(function(v){
-    return v.kayitTarihi && new Date(v.kayitTarihi) >= buAyBasi;
-  }).length;
-  document.getElementById("m-toplam-kayit-alt").textContent = "Bu ay: " + buAyKayit + " yeni kayıt";
-
-  // Aktif veli (son 30 gün içinde giriş yapan unique UID)
-  var otuzGunOnce = new Date(Date.now() - 30*24*60*60*1000);
-  var aktifUidler = new Set();
-  girisler.forEach(function(g){
-    if(g.girisZamani && new Date(g.girisZamani) >= otuzGunOnce) {
-      if(g.uid) aktifUidler.add(g.uid);
-    }
-  });
-  document.getElementById("m-aktif-veli").textContent = aktifUidler.size;
-
-  // Ödeme yapan (odemelerDoc'ta odemeler dizisi boş olmayan)
-  var odemeYapanSayi = odemelerDoc.filter(function(o){
-    return (o.odemeler || []).length > 0;
-  }).length;
-  document.getElementById("m-odeme-yapan").textContent = odemeYapanSayi;
-
-  // Bekleyen bildirim sayısı
-  var bekleyenler = [];
-  odemelerDoc.forEach(function(o){
-    (o.bildirimler || []).forEach(function(b){
-      if(b.durum === "beklemede") {
-        bekleyenler.push(Object.assign({}, b, { _ownerUid: o.uid, _cocukAdi: o.cocukAdi, _owner: o }));
-      }
-    });
-  });
-  document.getElementById("m-bekleyen").textContent = bekleyenler.length;
-
-  // Gecikmiş ödemeler (plandaki sonTarih geçmiş ve ne bildirim ne ödeme yok)
-  var bugun = new Date();
-  var gecikmeliSayi = 0;
-  odemelerDoc.forEach(function(o){
-    (o.plan || []).forEach(function(taksit){
-      // Taksit ödenmiş mi?
-      var odendi = (o.odemeler || []).some(function(od){ return od.taksitId === taksit.id; });
-      if(odendi) return;
-      // Bildirim var mı?
-      var bildirimVar = (o.bildirimler || []).some(function(b){ return b.taksitId === taksit.id && b.durum === "beklemede"; });
-      if(bildirimVar) return;
-      // Son tarihi geçmiş mi?
-      var sonTarih = adminTarihParse(taksit.sonTarih);
-      if(sonTarih && sonTarih < bugun) gecikmeliSayi++;
-    });
-  });
-  document.getElementById("m-gecikmis").textContent = gecikmeliSayi;
-
-  // Bu ay tahsilat (sadece admin onayladığı ödemeler)
-  var buAyTahsilat = 0;
-  odemelerDoc.forEach(function(o){
-    (o.odemeler || []).forEach(function(od){
-      var t = od.onayTarihi || od.tarih || od.createdAt;
-      if(t) {
-        var d = (t.toDate ? t.toDate() : new Date(t));
-        if(d >= buAyBasi) buAyTahsilat += Number(od.tutar) || 0;
-      }
-    });
-  });
-  document.getElementById("m-tahsilat").textContent = fmtTL(buAyTahsilat);
-
-  // Son bildirim zamanı
-  var sonBildirim = null;
-  odemelerDoc.forEach(function(o){
-    (o.bildirimler || []).forEach(function(b){
-      if(b.gonderildi) {
-        var d = new Date(b.gonderildi);
-        if(!sonBildirim || d > sonBildirim) sonBildirim = d;
-      }
-    });
-  });
-  if(sonBildirim) {
-    var fark = (Date.now() - sonBildirim.getTime()) / 60000;
-    var farkText = "";
-    if(fark < 60) farkText = Math.floor(fark) + " dk önce";
-    else if(fark < 60*24) farkText = Math.floor(fark/60) + " saat önce";
-    else farkText = Math.floor(fark/60/24) + " gün önce";
-    document.getElementById("m-son-bildirim").textContent = farkText;
-    document.getElementById("m-son-bildirim-alt").textContent = sonBildirim.toLocaleString("tr-TR");
-  } else {
-    document.getElementById("m-son-bildirim").textContent = "Yok";
-    document.getElementById("m-son-bildirim-alt").textContent = "henüz bildirim yok";
-  }
-
-  // Referans kullanan
-  var refKullanan = veliler.filter(function(v){
-    return v.refKoduKullanildi && v.refKoduKullanildi.startsWith("BCK-");
-  }).length;
-  document.getElementById("m-referans").textContent = refKullanan;
-}
-
-// Tarih string'i parse et ("5 Eylül 2026" gibi)
-function adminTarihParse(str) {
-  if(!str) return null;
-  var aylar = {
-    "ocak":0, "şubat":1, "subat":1, "mart":2, "nisan":3, "mayıs":4, "mayis":4,
-    "haziran":5, "temmuz":6, "ağustos":7, "agustos":7, "eylül":8, "eylul":8,
-    "ekim":9, "kasım":10, "kasim":10, "aralık":11, "aralik":11
-  };
-  var m = String(str).toLowerCase().match(/(\d+)\s+(\w+)\s+(\d{4})/);
-  if(!m) return null;
-  var gun = parseInt(m[1]);
-  var ay = aylar[m[2]];
-  var yil = parseInt(m[3]);
-  if(isNaN(gun) || ay === undefined || isNaN(yil)) return null;
-  return new Date(yil, ay, gun);
-}
-
-// Bekleyen bildirimleri listele
-function adminBekleyenleriGoster() {
-  var bekleyenler = [];
-  adminData.odemeler.forEach(function(o){
-    (o.bildirimler || []).forEach(function(b, idx){
-      if(b.durum === "beklemede") {
-        bekleyenler.push({
-          bildirim: b,
-          bildirimIdx: idx,
-          odemeDoc: o,
-          uid: o.uid
-        });
-      }
-    });
-  });
-  // En yeni önce
-  bekleyenler.sort(function(a,b){
-    return new Date(b.bildirim.gonderildi || 0) - new Date(a.bildirim.gonderildi || 0);
-  });
-
-  var sayac = document.getElementById("bekleyen-sayac");
-  sayac.textContent = bekleyenler.length;
-  var liste = document.getElementById("bekleyen-liste");
-
-  if(bekleyenler.length === 0) {
-    liste.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-light);">✅ Bekleyen bildirim yok</div>';
-    return;
-  }
-
-  var h = '';
-  bekleyenler.forEach(function(b, i){
-    var o = b.odemeDoc;
-    var bild = b.bildirim;
-    var gonderildi = bild.gonderildi ? new Date(bild.gonderildi).toLocaleString("tr-TR") : "—";
-    h += '<div style="background:#FFF9ED; border:1px solid #FFD4A3; border-radius:12px; padding:18px; display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">';
-    h += '<div style="flex:1; min-width:240px;">';
-    h += '<div style="font-size:15px; font-weight:700; color:var(--sage-dark);">👤 ' + (bild.veliAd || o.veliAd || "—") + '</div>';
-    h += '<div style="font-size:13px; color:var(--text-light); margin-top:2px;">👶 ' + (o.cocukAdi || "—") + '</div>';
-    h += '<div style="font-size:12px; color:var(--text-light); margin-top:4px;">📧 ' + (bild.veliEmail || o.email || "—") + ' · 📞 ' + (o.veliTel || "—") + '</div>';
-    h += '<div style="margin-top:10px; padding:10px 12px; background:white; border-radius:8px; border-left:3px solid var(--gold);">';
-    h += '<div style="font-size:12px; color:var(--text-light);">Taksit</div>';
-    h += '<div style="font-size:14px; font-weight:700; color:var(--text);">' + (bild.taksitAd || "—") + '</div>';
-    h += '<div style="margin-top:6px; font-size:18px; font-weight:700; color:#6B4F3A; font-family:Cormorant Garamond,serif;">' + fmtTL(bild.tutar || 0) + '</div>';
-    h += '</div>';
-    h += '<div style="font-size:11px; color:var(--text-light); margin-top:8px;">📅 Bildirildi: ' + gonderildi + '</div>';
-    h += '</div>';
-    h += '<div style="display:flex; flex-direction:column; gap:8px; min-width:140px;">';
-    h += '<button onclick="adminBildirimOnayla(\'' + b.uid + '\', ' + b.bildirimIdx + ')" style="background:#1F5233; color:white; border:none; border-radius:50px; padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">✅ Onayla</button>';
-    h += '<button onclick="adminBildirimReddet(\'' + b.uid + '\', ' + b.bildirimIdx + ')" style="background:white; color:#C0392B; border:1px solid #F5B7B1; border-radius:50px; padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">❌ Reddet</button>';
-    h += '<button onclick="adminVeliDetay(\'' + b.uid + '\')" style="background:transparent; color:var(--sage); border:1px solid var(--border); border-radius:50px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif;">👁 Detay</button>';
-    h += '</div>';
-    h += '</div>';
-  });
-  liste.innerHTML = h;
-}
-
-// Bildirim Onayla
-async function adminBildirimOnayla(uid, bildirimIdx) {
-  var odemeDoc = adminData.odemeler.find(function(o){ return o.uid === uid; });
-  if(!odemeDoc) { showToast("⚠️ Kayıt bulunamadı"); return; }
-  var bildirim = (odemeDoc.bildirimler || [])[bildirimIdx];
-  if(!bildirim) { showToast("⚠️ Bildirim bulunamadı"); return; }
-
-  if(!confirm(bildirim.veliAd + " için " + bildirim.taksitAd + " (" + fmtTL(bildirim.tutar) + ") ödemesini onaylıyor musunuz?\n\nVeliye otomatik onay maili gönderilecek.")) return;
-
-  showLoading("Onaylanıyor...");
-  try {
-    // 1. Firestore'da bildirim durumunu güncelle ve odemeler dizisine ekle
-    var bildirimler = (odemeDoc.bildirimler || []).map(function(b,i){
-      if(i === bildirimIdx) {
-        return Object.assign({}, b, { durum: "onaylandi", onayTarihi: new Date().toISOString(), onaylayan: currentUser.email });
-      }
-      return b;
-    });
-    var odemeler = (odemeDoc.odemeler || []).concat([{
-      taksitId: bildirim.taksitId,
-      taksitAd: bildirim.taksitAd,
-      tutar: bildirim.tutar,
-      tarih: new Date().toLocaleDateString("tr-TR"),
-      onayTarihi: new Date().toISOString(),
-      yontem: "Havale/EFT",
-      aciklama: bildirim.taksitAd + " - Onaylandı",
-      onaylayan: currentUser.email
-    }]);
-    await db.collection("odemeler").doc(uid).update({
-      bildirimler: bildirimler,
-      odemeler: odemeler,
-      sonGuncelleme: new Date().toISOString()
-    });
-
-    // 2. Veliye onay maili
-    try {
-      var maIcerik =
-        '<p style="font-size:15px;">Sayın <strong>' + (bildirim.veliAd || "—") + '</strong>,</p>' +
-        '<p><strong style="color:#3D6B4F;">' + (odemeDoc.cocukAdi || "") + '</strong> için yapmış olduğunuz <strong>' + bildirim.taksitAd + '</strong> ödemesi okul tarafından kontrol edilmiş ve <strong style="color:#1F5233;">onaylanmıştır</strong>. 🎉</p>' +
-        '<div style="background:#E8F5EE; border:1px solid #A3D9B9; border-radius:12px; padding:20px; margin:20px 0;">' +
-          '<div style="font-size:12px; color:#1F5233; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:8px;">✅ Ödeme Teyidi</div>' +
-          '<table style="width:100%; font-size:14px; border-collapse:collapse;">' +
-            '<tr><td style="padding:4px 0; color:#888; width:100px;">Taksit:</td><td style="padding:4px 0; font-weight:600;">' + bildirim.taksitAd + '</td></tr>' +
-            '<tr><td style="padding:4px 0; color:#888;">Tutar:</td><td style="padding:4px 0; font-weight:700; color:#1F5233; font-size:18px;">' + fmtTL(bildirim.tutar) + '</td></tr>' +
-            '<tr><td style="padding:4px 0; color:#888;">Onay Tarihi:</td><td style="padding:4px 0; font-weight:600;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
-          '</table>' +
-        '</div>' +
-        '<p>Ödeme durumunuzu ve tüm okul bilgilerinizi <a href="https://portal.bircicekkoleji.com" style="color:#3D6B4F; text-decoration:none; font-weight:600;">portal.bircicekkoleji.com</a> adresinden Google hesabınızla giriş yaparak takip edebilirsiniz.</p>' +
-        '<p style="margin-top:28px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
-
-      var toEmail = odemeDoc.email || bildirim.veliEmail;
-      if(toEmail) {
-        await brevoMail({
-          to: toEmail,
-          toName: bildirim.veliAd || "Veli",
-          subject: "✅ Ödemeniz Onaylandı — " + bildirim.taksitAd,
-          htmlContent: mailSablon("✅ Ödemeniz Onaylandı 🎉", maIcerik, "Sorularınız için: <strong>0216 393 54 57</strong>")
-        });
-      }
-    } catch(mailErr) {
-      console.warn("Onay maili gönderilemedi:", mailErr);
-    }
-
-    // 3. Veriyi yenile ve ekranı güncelle
-    adminData.yuklendi = false;
-    await adminYukle();
-    hideLoading();
-    showToast("✅ Ödeme onaylandı ve veliye mail gönderildi");
-  } catch(e) {
-    hideLoading();
-    console.error("Onay hatası:", e);
-    showToast("⚠️ Hata: " + (e.message || "bilinmeyen"));
-  }
-}
-
-// Bildirim Reddet
-async function adminBildirimReddet(uid, bildirimIdx) {
-  var odemeDoc = adminData.odemeler.find(function(o){ return o.uid === uid; });
-  if(!odemeDoc) { showToast("⚠️ Kayıt bulunamadı"); return; }
-  var bildirim = (odemeDoc.bildirimler || [])[bildirimIdx];
-  if(!bildirim) { showToast("⚠️ Bildirim bulunamadı"); return; }
-
-  var sebep = prompt("Reddetme sebebi (veliye gönderilecek mail'de yer alacak):\n\n(Boş bırakırsanız 'Ödeme hesaba ulaşmadı' yazılacak)", "");
-  if(sebep === null) return; // iptal
-  if(!sebep.trim()) sebep = "Ödeme hesaba ulaşmadı. Lütfen banka dekontunu kontrol edin veya bizi arayın.";
-
-  showLoading("Reddediliyor...");
-  try {
-    var bildirimler = (odemeDoc.bildirimler || []).map(function(b,i){
-      if(i === bildirimIdx) {
-        return Object.assign({}, b, { durum: "reddedildi", redTarihi: new Date().toISOString(), redSebebi: sebep, reddedenAdmin: currentUser.email });
-      }
-      return b;
-    });
-    await db.collection("odemeler").doc(uid).update({
-      bildirimler: bildirimler,
-      sonGuncelleme: new Date().toISOString()
-    });
-
-    // Veliye red maili
-    try {
-      var maIcerik =
-        '<p style="font-size:15px;">Sayın <strong>' + (bildirim.veliAd || "—") + '</strong>,</p>' +
-        '<p>' + (odemeDoc.cocukAdi || "") + ' için bildirmiş olduğunuz <strong>' + bildirim.taksitAd + '</strong> ödemesi ne yazık ki şu anda doğrulanamadı.</p>' +
-        '<div style="background:#FEF4E4; border:1px solid #FFD4A3; border-radius:12px; padding:18px; margin:20px 0;">' +
-          '<div style="font-size:12px; color:#B8860B; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:8px;">⚠️ Açıklama</div>' +
-          '<div style="color:#6B4F3A; font-size:14px; line-height:1.6;">' + sebep + '</div>' +
-        '</div>' +
-        '<p>Lütfen bizimle iletişime geçin, birlikte çözelim.</p>' +
-        '<p style="margin-top:20px; font-size:13px;">📞 <strong>0216 393 54 57</strong> · 💬 <strong>WhatsApp: 0555 103 54 57</strong></p>' +
-        '<p style="margin-top:24px;">Sevgilerimizle,<br><strong>Bir Çiçek Koleji Anaokulu</strong></p>';
-
-      var toEmail = odemeDoc.email || bildirim.veliEmail;
-      if(toEmail) {
-        await brevoMail({
-          to: toEmail,
-          toName: bildirim.veliAd || "Veli",
-          subject: "⚠️ Ödeme Bildiriminiz Hk. — " + bildirim.taksitAd,
-          htmlContent: mailSablon("⚠️ Ödeme Bildiriminiz Hakkında", maIcerik)
-        });
-      }
-    } catch(mailErr) { console.warn("Red maili gönderilemedi:", mailErr); }
-
-    adminData.yuklendi = false;
-    await adminYukle();
-    hideLoading();
-    showToast("✅ Bildirim reddedildi ve veliye bilgilendirme maili gönderildi");
-  } catch(e) {
-    hideLoading();
-    console.error("Red hatası:", e);
-    showToast("⚠️ Hata: " + (e.message || "bilinmeyen"));
-  }
-}
-
-// Tüm veli listesini göster
-function adminVeliListesiGoster() {
-  var arama = (document.getElementById("admin-arama").value || "").toLowerCase().trim();
-  var filtre = document.getElementById("admin-filtre-durum").value;
-  var veliler = adminData.veliler.slice();
-
-  // Filtrele
-  if(arama) {
-    veliler = veliler.filter(function(v){
-      var s = [(v.childAd||""), (v.childSoyad||""), (v.veliAd||""), (v.veliSoyad||""), (v.email||""), (v.phone||"")].join(" ").toLowerCase();
-      return s.indexOf(arama) !== -1;
-    });
-  }
-  if(filtre) {
-    veliler = veliler.filter(function(v){
-      var o = adminData.odemeler.find(function(od){ return od.uid === v.uid; });
-      var odemeSay = o ? (o.odemeler || []).length : 0;
-      var bekleyenSay = o ? (o.bildirimler || []).filter(function(b){ return b.durum === "beklemede"; }).length : 0;
-      var gecikmeVar = adminVeliGecikmesiVar(v, o);
-      if(filtre === "odeme_var") return odemeSay > 0;
-      if(filtre === "bildirim_var") return bekleyenSay > 0;
-      if(filtre === "hic_yok") return odemeSay === 0;
-      if(filtre === "gecikmis") return gecikmeVar;
-      return true;
-    });
-  }
-
-  // Sırala: en yeni kayıt önce
-  veliler.sort(function(a,b){ return new Date(b.kayitTarihi || 0) - new Date(a.kayitTarihi || 0); });
-
-  document.getElementById("veli-liste-durum").textContent = "Gösterilen: " + veliler.length + " / Toplam: " + adminData.veliler.length;
-
-  var tbody = document.getElementById("admin-veli-tbody");
-  if(veliler.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:var(--text-light);">Arama kriterlerine uygun veli bulunamadı</td></tr>';
-    return;
-  }
-
-  var h = "";
-  veliler.forEach(function(v){
-    var o = adminData.odemeler.find(function(od){ return od.uid === v.uid; });
-    var planSay = o ? (o.plan || []).length : 0;
-    var odemeSay = o ? (o.odemeler || []).length : 0;
-    var bekleyen = o ? (o.bildirimler || []).filter(function(b){ return b.durum === "beklemede"; }).length : 0;
-    var gecikme = adminVeliGecikmesiVar(v, o);
-
-    // Bakiye hesabı
-    var bakiye = 0;
-    if(o && o.plan) {
-      o.plan.forEach(function(t){
-        var odendi = (o.odemeler || []).some(function(od){ return od.taksitId === t.id; });
-        if(!odendi) bakiye += Number(t.tutar) || 0;
-      });
-    }
-
-    // Durum rozeti
-    var durumHTML = "";
-    if(bekleyen > 0) durumHTML += '<span style="background:#FFF5E6; color:#B8860B; padding:3px 8px; border-radius:50px; font-size:11px; font-weight:700; margin-right:4px;">⏳ ' + bekleyen + ' bekleyen</span>';
-    if(gecikme) durumHTML += '<span style="background:#FEE; color:#C0392B; padding:3px 8px; border-radius:50px; font-size:11px; font-weight:700; margin-right:4px;">🔴 Gecikme</span>';
-    if(odemeSay > 0 && !gecikme && bekleyen === 0) durumHTML += '<span style="background:#E8F5EE; color:#1F5233; padding:3px 8px; border-radius:50px; font-size:11px; font-weight:700;">✓ ' + odemeSay + '/' + planSay + '</span>';
-    if(odemeSay === 0 && bekleyen === 0 && !gecikme) durumHTML += '<span style="background:#F5F5F5; color:#888; padding:3px 8px; border-radius:50px; font-size:11px; font-weight:700;">— Yeni</span>';
-
-    h += '<tr style="border-bottom:1px solid var(--border);">';
-    h += '<td style="padding:12px 10px;"><strong>' + (v.childAd || "") + ' ' + (v.childSoyad || "") + '</strong><div style="font-size:11px; color:var(--text-light);">' + (v.childDogum || "—") + '</div></td>';
-    h += '<td style="padding:12px 10px;">' + (v.veliAd || "") + ' ' + (v.veliSoyad || "") + '<div style="font-size:11px; color:var(--text-light);">' + (v.kayitTur === "onkayit" ? "🔶 Ön Kayıt" : v.kayitTur === "erken" ? "🔷 Erken" : "Normal") + ' · ' + (v.program === "tam" ? "Tam Gün" : "Yarım") + '</div></td>';
-    h += '<td style="padding:12px 10px;"><div style="font-size:12px;">📧 ' + (v.email || "—") + '</div><div style="font-size:11px; color:var(--text-light); margin-top:2px;">📞 ' + (v.phone || "—") + '</div></td>';
-    h += '<td style="padding:12px 10px; text-align:center;">' + (durumHTML || "—") + '</td>';
-    h += '<td style="padding:12px 10px; text-align:right; font-family:Cormorant Garamond,serif; font-weight:700; color:' + (bakiye > 0 ? 'var(--text)' : '#1F5233') + ';">' + fmtTL(bakiye) + '</td>';
-    h += '<td style="padding:12px 10px; text-align:center;">';
-    h += '<button onclick="adminVeliDetay(\'' + v.uid + '\')" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:6px 12px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif; margin-right:4px;">👁 Detay</button>';
-    if(v.phone) {
-      var wa = String(v.phone).replace(/\D/g,"").replace(/^0/, "90");
-      h += '<a href="https://wa.me/' + wa + '" target="_blank" style="background:#25D366; color:white; border:none; border-radius:50px; padding:6px 12px; font-size:11px; font-weight:600; cursor:pointer; font-family:Outfit,sans-serif; text-decoration:none; display:inline-block;">💬</a>';
-    }
-    h += '</td>';
-    h += '</tr>';
-  });
-  tbody.innerHTML = h;
-}
-
-function adminVeliFiltrele() {
-  adminVeliListesiGoster();
-}
-
-// Veli gecikmesi var mı
-function adminVeliGecikmesiVar(v, o) {
-  if(!o || !o.plan) return false;
-  var bugun = new Date();
-  for(var i=0; i<o.plan.length; i++){
-    var taksit = o.plan[i];
-    var odendi = (o.odemeler || []).some(function(od){ return od.taksitId === taksit.id; });
-    if(odendi) continue;
-    var bildirim = (o.bildirimler || []).some(function(b){ return b.taksitId === taksit.id && b.durum === "beklemede"; });
-    if(bildirim) continue;
-    var sonTarih = adminTarihParse(taksit.sonTarih);
-    if(sonTarih && sonTarih < bugun) return true;
-  }
-  return false;
-}
-
-// Veli detay modalı
-function adminVeliDetay(uid) {
-  var v = adminData.veliler.find(function(x){ return x.uid === uid; });
-  var o = adminData.odemeler.find(function(x){ return x.uid === uid; });
-  if(!v) { showToast("⚠️ Veli bulunamadı"); return; }
-
-  var modal = document.getElementById("admin-detay-modal");
-  var icerik = document.getElementById("admin-detay-icerik");
-
-  var h = '';
-  h += '<h2 style="margin:0 0 4px 0; font-family:Cormorant Garamond,serif; color:var(--sage-dark);">👶 ' + (v.childAd || "") + ' ' + (v.childSoyad || "") + '</h2>';
-  h += '<div style="color:var(--text-light); font-size:13px; margin-bottom:20px;">Veli: ' + (v.veliAd || "") + ' ' + (v.veliSoyad || "") + '</div>';
-
-  // Bilgi kartı
-  h += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:20px;">';
-  h += '<div style="background:#FAFAF7; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:var(--text-light); text-transform:uppercase;">Kayıt Türü</div><div style="font-size:14px; font-weight:600; margin-top:4px;">' + (v.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : v.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt") + '</div></div>';
-  h += '<div style="background:#FAFAF7; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:var(--text-light); text-transform:uppercase;">Program</div><div style="font-size:14px; font-weight:600; margin-top:4px;">' + (v.program === "tam" ? "Tam Gün" : "Yarım Gün") + '</div></div>';
-  h += '<div style="background:#FAFAF7; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:var(--text-light); text-transform:uppercase;">Aylık Ücret</div><div style="font-size:14px; font-weight:600; margin-top:4px;">' + fmtTL(v.aylikUcret || 0) + '</div></div>';
-  h += '<div style="background:#FAFAF7; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:var(--text-light); text-transform:uppercase;">E-posta</div><div style="font-size:13px; font-weight:600; margin-top:4px; word-break:break-all;">' + (v.email || "—") + '</div></div>';
-  h += '<div style="background:#FAFAF7; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:var(--text-light); text-transform:uppercase;">Telefon</div><div style="font-size:14px; font-weight:600; margin-top:4px;">' + (v.phone || "—") + '</div></div>';
-  h += '<div style="background:#FAFAF7; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:var(--text-light); text-transform:uppercase;">Fatura İsteği</div><div style="font-size:14px; font-weight:600; margin-top:4px;">' + (v.faturaIstegi ? "✅ Evet" : "Hayır") + '</div></div>';
-  if(v.refKoduKullanildi) h += '<div style="background:#FBF6E9; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:#6B4F3A; text-transform:uppercase;">Kullanılan Referans</div><div style="font-size:14px; font-weight:700; margin-top:4px; color:#6B4F3A;">🎁 ' + v.refKoduKullanildi + '</div></div>';
-  if(v.refKodu) h += '<div style="background:#F5F0E8; padding:12px 14px; border-radius:10px;"><div style="font-size:11px; color:#6B4F3A; text-transform:uppercase;">Kendi Ref Kodu</div><div style="font-size:14px; font-weight:700; margin-top:4px; font-family:monospace; color:#6B4F3A;">' + v.refKodu + '</div></div>';
-  h += '</div>';
-
-  // Ödeme planı
-  if(o && o.plan) {
-    h += '<h3 style="font-family:Cormorant Garamond,serif; color:var(--sage-dark); margin:20px 0 12px;">💰 Ödeme Planı</h3>';
-    h += '<table style="width:100%; border-collapse:collapse; font-size:13px;"><thead><tr style="background:var(--sage-pale); color:var(--sage-dark);">';
-    h += '<th style="padding:10px; text-align:left;">Taksit</th><th style="padding:10px; text-align:right;">Tutar</th><th style="padding:10px; text-align:center;">Durum</th>';
-    h += '</tr></thead><tbody>';
-    o.plan.forEach(function(t){
-      var odendi = (o.odemeler || []).find(function(od){ return od.taksitId === t.id; });
-      var bekliyor = (o.bildirimler || []).find(function(b){ return b.taksitId === t.id && b.durum === "beklemede"; });
-      var durum = odendi ? '<span style="color:#1F5233; font-weight:700;">✅ Ödendi</span>' :
-                  bekliyor ? '<span style="color:#B8860B; font-weight:700;">⏳ Onay Bekliyor</span>' :
-                  '<span style="color:var(--text-light);">— Bekliyor</span>';
-      h += '<tr style="border-bottom:1px solid var(--border);">';
-      h += '<td style="padding:10px;">' + (t.ay || t.aciklama) + '<div style="font-size:11px; color:var(--text-light);">' + (t.sonTarih || "") + '</div></td>';
-      h += '<td style="padding:10px; text-align:right; font-weight:700; font-family:Cormorant Garamond,serif;">' + fmtTL(t.tutar || 0) + '</td>';
-      h += '<td style="padding:10px; text-align:center;">' + durum + '</td>';
-      h += '</tr>';
-    });
-    h += '</tbody></table>';
-  }
-
-  // Yapılan ödemeler
-  if(o && o.odemeler && o.odemeler.length > 0) {
-    h += '<h3 style="font-family:Cormorant Garamond,serif; color:var(--sage-dark); margin:20px 0 12px;">✅ Yapılan Ödemeler</h3>';
-    h += '<div style="background:#E8F5EE; border-radius:10px; padding:16px;">';
-    o.odemeler.forEach(function(od){
-      h += '<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.05);">';
-      h += '<div style="font-size:13px;"><strong>' + (od.taksitAd || od.aciklama) + '</strong><div style="font-size:11px; color:var(--text-light);">' + (od.tarih || "") + (od.yontem ? " · " + od.yontem : "") + '</div></div>';
-      h += '<div style="font-weight:700; color:#1F5233;">' + fmtTL(od.tutar || 0) + '</div>';
-      h += '</div>';
-    });
-    h += '</div>';
-  }
-
-  // İşlem butonları
-  h += '<div style="display:flex; gap:10px; margin-top:24px; flex-wrap:wrap;">';
-  if(v.phone) {
-    var wa = String(v.phone).replace(/\D/g,"").replace(/^0/, "90");
-    h += '<a href="https://wa.me/' + wa + '" target="_blank" style="background:#25D366; color:white; border:none; border-radius:50px; padding:10px 18px; font-size:13px; font-weight:600; text-decoration:none; font-family:Outfit,sans-serif;">💬 WhatsApp</a>';
-  }
-  if(v.email) {
-    h += '<a href="mailto:' + v.email + '" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 18px; font-size:13px; font-weight:600; text-decoration:none; font-family:Outfit,sans-serif;">📧 Mail</a>';
-  }
-  if(v.phone) {
-    h += '<a href="tel:' + v.phone + '" style="background:var(--earth); color:white; border:none; border-radius:50px; padding:10px 18px; font-size:13px; font-weight:600; text-decoration:none; font-family:Outfit,sans-serif;">📞 Ara</a>';
-  }
-  h += '</div>';
-
-  icerik.innerHTML = h;
-  modal.style.display = "flex";
-}
-
-function adminDetayKapat() {
-  document.getElementById("admin-detay-modal").style.display = "none";
 }
 
 // ═══ 15. REFERANS KODLA BAŞLA ═══
@@ -3559,6 +1813,51 @@ function sliderPrev() { goSlide(sliderIdx-1); }
 function reinitSlider() { applySlider(); buildDots(); }
 
 
+
+// ═══ MEVCUT BAŞVURUYU YÜKLEYİP HESAPLAMA EKRANINA GİT ═══
+function basvuruGuncelle() {
+  if(!currentUser) return;
+  showLoading("Bilgiler yükleniyor...");
+  db.collection("yenikayit").doc(currentUser.uid).get().then(function(snap) {
+    hideLoading();
+    if(!snap.exists) { goToScreen("screen-form"); return; }
+    var d = snap.data();
+    // State'i doldur
+    appState2.kayitTur = d.kayitTur || "onkayit";
+    appState2.program  = d.program  || "tam";
+    // Form alanlarını doldur (form ekranı gizli bile olsa)
+    function setVal(id, val) { var el=document.getElementById(id); if(el) el.value=val||""; }
+    setVal("childAd",      d.childAd);
+    setVal("childSoyad",   d.childSoyad);
+    setVal("childDogum",   d.childDogum);
+    setVal("veliAd",       d.veliAd);
+    setVal("veliSoyad",    d.veliSoyad);
+    setVal("veliTel",      d.phone);
+    setVal("refKodGiris",  d.refKoduKullanildi);
+    // Program butonlarını güncelle
+    var btnTam   = document.getElementById("btnTam");
+    var btnYarim = document.getElementById("btnYarim");
+    if(btnTam)   btnTam.classList.toggle("active",   appState2.program==="tam");
+    if(btnYarim) btnYarim.classList.toggle("active", appState2.program==="yarim");
+    // Kayıt türü seçimini güncelle
+    document.querySelectorAll(".kayit-type-card").forEach(function(el){ el.classList.remove("selected"); });
+    var turEl = document.querySelector("[onclick*="selectKayitType('"+appState2.kayitTur+"'"]");
+    if(turEl) turEl.classList.add("selected");
+    // Hesapla ve direkt hesaplama ekranına git
+    appState2.refliGeliyor = d.refliGeliyor || false;
+    appState2.hesap = hesaplaYeni(appState2.kayitTur, appState2.program);
+    renderHesaplama2();
+    // Kullanıcı bilgilerini hesaplama başlığına yaz
+    var el = document.getElementById("childAdDisplay");
+    if(el) el.textContent = (d.childAd||"") + " " + (d.childSoyad||"");
+    goToScreen("screen-hesaplama");
+    showToast("✅ Mevcut başvurunuz yüklendi");
+  }).catch(function(e) {
+    hideLoading();
+    showToast("Hata: " + e.message);
+  });
+}
+
 // ═══ PDF İNDİR ═══
 function pdfIndir() {
   var h = appState2.hesap;
@@ -3569,9 +1868,9 @@ function pdfIndir() {
   var veliSoyad = ((document.getElementById("veliSoyad")||{}).value||"").trim();
   var prog = appState2.program === "tam" ? "Tam Gun (08:00-18:00)" : "Yarim Gun (08:00-13:00)";
   var turLabel = {onkayit:"Avantajli On Kayit", erken:"Erken Kayit", normal:"Normal Kayit"};
-  var turSon = {onkayit:"10 Mayis 2026", erken:"30 Mayis 2026", normal:"30 Eylul 2026"};
+  var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayis 2026", normal:"30 Eylul 2026"};
   var tur = turLabel[appState2.kayitTur] || "Avantajli On Kayit";
-  var son = turSon[appState2.kayitTur] || "10 Mayıs 2026";
+  var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
   try {
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({orientation:"portrait", unit:"mm", format:"a4"});
@@ -3598,12 +1897,12 @@ function pdfIndir() {
     doc.text("Duzenleme: " + new Date().toLocaleDateString("tr-TR"), mL, y);
     doc.text("Gecerlilik: " + son + " tarihine kadar", mL+90, y); y += 12;
     // Özet
-    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,21,"F");
-    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,21); y += 7;
+    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,28,"F");
+    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,28); y += 7;
     doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(42,77,56);
-    doc.text("I. Donem Aylik (5 ay):", mL+4, y); doc.text(fmt(h.iAylik)+" TL", mR-4, y, {align:"right"}); y += 7;
-    doc.text("II. Donem Aylik (5 ay):", mL+4, y); doc.text(fmt(h.iiAylik)+" TL", mR-4, y, {align:"right"}); y += 7;
-    doc.text("On Odeme (Kayit gununde):", mL+4, y); doc.text(fmt(h.onOdeme)+" TL", mR-4, y, {align:"right"}); y += 12;
+    doc.text("Aylik Ucret:", mL+4, y); doc.text(fmt(h.aylik)+" TL", mR-4, y, {align:"right"}); y += 7;
+    doc.text("On Odeme (Kayit gununde):", mL+4, y); doc.text(fmt(h.onOdeme)+" TL", mR-4, y, {align:"right"}); y += 7;
+    doc.text("Yillik Toplam:", mL+4, y); doc.text(fmt(h.yillik)+" TL", mR-4, y, {align:"right"}); y += 12;
     // I. Dönem
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(11);
     doc.text("I. Donem Odeme Takvimi (Eylul 2026 - Ocak 2027)", mL, y); y += 6;
@@ -3632,13 +1931,34 @@ function pdfIndir() {
       doc.setFont("helvetica","normal"); doc.setTextColor(60,60,60);
       doc.text(iiAylar[i]+" Taksiti", mL+3, y+5); doc.text("5 "+iiAylar[i], mL+80, y+5); doc.text(fmt(r.tutar)+" TL", mR-3, y+5, {align:"right"}); y += 7;
     }); y += 8;
+    // Diğer Ödemeler bölümü
+    y += 4;
+    doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(11);
+    doc.text("Ek Odemeler (Ucretler Ayrica Bildirilecektir)", mL, y); y += 6;
+    doc.setFillColor(42,77,56); doc.rect(mL,y,mR-mL,7,"F");
+    doc.setTextColor(255,255,255); doc.setFontSize(9);
+    doc.text("Kalem", mL+3, y+5); doc.text("Odeme Tarihi", mL+80, y+5); doc.text("Durum", mR-3, y+5, {align:"right"}); y += 7;
+    var ekOdemeler = [
+      ["Egitim Materyalleri", "5 Temmuz 2026"],
+      ["Orman Okulu I. Donem Servis", "5 Eylul 2026"],
+      ["Orman Okulu Kiyafeti", "5 Eylul 2026"],
+      ["Orman Okulu II. Donem Servis", "5 Subat 2027"]
+    ];
+    ekOdemeler.forEach(function(row, i){
+      doc.setFillColor(i%2===0?248:255, i%2===0?252:255, i%2===0?249:255);
+      doc.rect(mL,y,mR-mL,7,"F"); doc.rect(mL,y,mR-mL,7);
+      doc.setTextColor(60,60,60); doc.setFont("helvetica","normal"); doc.setFontSize(9);
+      doc.text(row[0], mL+3, y+5); doc.text(row[1], mL+80, y+5);
+      doc.text("15 gun once bildirilir", mR-3, y+5, {align:"right"}); y += 7;
+    }); y += 8;
+
     // Notlar
     doc.setFillColor(248,252,249); doc.rect(mL,y,mR-mL,28,"F");
     doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,28);
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(9);
     doc.text("ONEMLI NOTLAR", mL+4, y+6); doc.setFont("helvetica","normal"); doc.setTextColor(80,80,80);
     doc.text("* Bu plan " + tur + " donemi kapsaminda hazirlanmis olup " + son + " tarihine kadar gecerlidir.", mL+4, y+13);
-    doc.text("* Orman Okulu servis, kiyafet ve materyal ucretleri odeme tarihinden 15 gun once bildirilecektir.", mL+4, y+20);
+    doc.text("* Ek odeme ucretleri ilgili tarihten 15 gun once ayrica bildirilecektir.", mL+4, y+20);
     doc.text("* Tum odemeler belirtilen tarihlerde Bir Cicek Koleji hesabina yapilmalidir.", mL+4, y+27); y += 34;
     // Footer
     doc.setFillColor(42,77,56); doc.rect(0,282,W,15,"F");
