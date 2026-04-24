@@ -617,9 +617,9 @@ img, video, iframe {
         <div class="nav-sub">Montessori & Orman Okulu</div>
       </div>
     </div>
-    <button class="nav-cta" onclick="signInWithGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Başvuru Yap
+    <button class="nav-cta" id="navCtaBtn" onclick="navCtaClick()">
+      <svg id="navCtaIcon" width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <span id="navCtaText">Giriş Yap</span>
     </button>
   </nav>
 
@@ -1192,14 +1192,54 @@ img, video, iframe {
 
     <div id="tab-diger" style="display:none;">
       <div class="odeme-tablo">
-        <div style="background:var(--cream-warm); padding:14px 20px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--earth); font-weight:700; border-bottom:1px solid var(--border);">Ek Ödemeler</div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Eğitim Materyalleri</div><div style="font-size:12px; color:var(--text-light);">5 Temmuz 2026</div></div><div></div><div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu I. Dönem Servis</div><div style="font-size:12px; color:var(--text-light);">5 Eylül 2026</div></div><div></div><div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu Kıyafeti</div><div style="font-size:12px; color:var(--text-light);">5 Eylül 2026</div></div><div></div><div id="kiyafetDisplay" style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
-        <div class="odeme-row"><div><div style="font-weight:600;">Orman Okulu II. Dönem Servis</div><div style="font-size:12px; color:var(--text-light);">5 Şubat 2027</div></div><div></div><div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">15 gün önce bildirilir</div></div>
+        <div class="odeme-header"><div>Kalem</div><div style="text-align:right;">Ödeme Tarihi</div><div style="text-align:right;">Tutar</div></div>
+
+        <!-- Eğitim Materyalleri -->
+        <div class="odeme-row">
+          <div>
+            <div style="font-weight:600;">📚 Eğitim Materyalleri</div>
+            <div style="font-size:12px; color:var(--text-light);">Montessori materyalleri, defter, boya, sanat malzemeleri</div>
+          </div>
+          <div style="text-align:right;"><span class="tarih-chip">5 Temmuz 2026</span></div>
+          <div style="text-align:right;" class="tutar-sage">36.000 TL</div>
+        </div>
+
+        <!-- Okul Kıyafeti -->
+        <div class="odeme-row" id="kiyafetRow">
+          <div>
+            <div style="font-weight:600;">👕 Okul Kıyafeti</div>
+            <div style="font-size:12px; color:var(--text-light);">Tişört, sweatshirt, eşofman altı, önlük — yıllık set</div>
+            <div style="font-size:11px; color:var(--sage); margin-top:4px; font-style:italic;">Okul için ayrıca kıyafetlere gerek yoktur.</div>
+          </div>
+          <div style="text-align:right;"><span class="tarih-chip">5 Ağustos 2026</span></div>
+          <div id="kiyafetDisplay" style="text-align:right;">
+            <div style="text-decoration:line-through; font-size:12px; color:var(--text-light); margin-bottom:2px;">14.570 TL</div>
+            <div class="tutar-sage">9.550 TL</div>
+          </div>
+        </div>
+
+        <!-- I. Dönem Servis -->
+        <div class="odeme-row">
+          <div>
+            <div style="font-weight:600;">🚐 Orman Okulu I. Dönem Servis</div>
+            <div style="font-size:12px; color:var(--text-light);">Haftalık orman günleri için servis hizmeti</div>
+          </div>
+          <div style="text-align:right;"><span class="tarih-chip">5 Ekim 2026</span></div>
+          <div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">20 gün önce<br>bildirilir</div>
+        </div>
+
+        <!-- II. Dönem Servis -->
+        <div class="odeme-row">
+          <div>
+            <div style="font-weight:600;">🚐 Orman Okulu II. Dönem Servis</div>
+            <div style="font-size:12px; color:var(--text-light);">Haftalık orman günleri için servis hizmeti</div>
+          </div>
+          <div style="text-align:right;"><span class="tarih-chip">5 Şubat 2027</span></div>
+          <div style="text-align:right; font-size:12px; color:var(--text-light); font-style:italic;">20 gün önce<br>bildirilir</div>
+        </div>
       </div>
       <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:12px; padding:14px 18px; font-size:13px; color:var(--sage-dark); line-height:1.6; margin-top:12px;">
-        📅 Yukarıdaki ek ödemeler, belirtilen tarihlerden <strong>15 gün önce</strong> ücretleriyle birlikte ayrıca tarafınıza bildirilecektir.
+        📅 <strong>Orman Okulu ve servis ücretleri</strong>, ilgili ödeme tarihinden <strong>20 gün önce</strong> tarafınıza bildirilecektir.
       </div>
     </div>
 
@@ -1238,7 +1278,7 @@ img, video, iframe {
     <div style="background:var(--sage-pale); border:1px solid rgba(61,107,79,0.2); border-radius:14px; padding:18px 20px; margin-top:16px;">
       <div id="gecerlilikYazisi" style="font-size:13px; color:var(--sage-dark); line-height:1.7; margin-bottom:12px;"></div>
       <div style="font-size:13px; color:var(--text-mid); line-height:1.7; padding-top:12px; border-top:1px solid rgba(61,107,79,0.15);">
-        📅 <strong>Ek Ödemeler:</strong> Orman Okulu servis ücreti, kıyafet ve eğitim materyali ücretleri, ilgili ödeme tarihinden <strong>15 gün önce</strong> ayrıca tarafınıza bildirilecektir.
+        📅 <strong>Orman Okulu ve servis ücretleri</strong>, ilgili ödeme tarihinden <strong>20 gün önce</strong> ayrıca tarafınıza bildirilecektir.
       </div>
     </div>
 
@@ -1278,7 +1318,7 @@ img, video, iframe {
       <div class="done-step"><div class="done-step-icon">🔑</div><div>Ön ödemenizi yaparak başvurunuzu tamamlayabilirsiniz</div></div>
       <div class="done-step"><div class="done-step-icon">🎁</div><div>Referans kodunuzu paylaşmayı unutmayın!</div></div>
     </div>
-    <button onclick="goToScreen('screen-portal')" style="margin-top:28px; background:var(--sage); color:white; border:none; border-radius:50px; padding:14px 32px; font-size:15px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif;">Portale Dön</button>
+    <button onclick="goToScreen('screen-portal'); if(currentUser) checkBasvuruDurumu(currentUser.uid);" style="margin-top:28px; background:var(--sage); color:white; border:none; border-radius:50px; padding:14px 32px; font-size:15px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif;">Hesabıma Dön</button>
   </div>
 </div>
 
@@ -1444,6 +1484,7 @@ function signOut() {
     currentUser=null;
     document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="inline"; });
     document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="none"; });
+    updateNavCta();
     goToScreen("screen-hero");
   });
 }
@@ -1459,13 +1500,19 @@ function onLogin(u) {
   goToScreen("screen-portal");
   // Başvuru durumunu kontrol et ve portal kartlarını güncelle
   checkBasvuruDurumu(u.uid);
-  // Giriş sonrası en üste scroll
+  // Giriş sonrası önce en üste scroll, sonra portal kart'a kaydır
   setTimeout(function(){
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, 150);
+  setTimeout(function(){
+    var pk = document.getElementById("portalKartlar");
+    if(pk) pk.scrollIntoView({ behavior:"smooth", block:"center" });
+  }, 900);
   // Referans avantaj metinlerini aç (login olan görür)
   document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="none"; });
   document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="inline"; });
+  // Navbar butonunu güncelle
+  updateNavCta();
 }
 
 function checkBasvuruDurumu(uid) {
@@ -1605,8 +1652,11 @@ function renderHesaplama2() {
   renderRows("iiDonemRows", h.iiRows);
   var kd = s("kiyafetDisplay");
   if(kd) {
-    if(appState2.refliGeliyor) kd.innerHTML = '<span style="background:var(--sage-pale);color:var(--sage);font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;">✓ ÜCRETSİZ</span>';
-    else { kd.textContent="5.500 TL"; kd.className="tutar-sage"; }
+    if(appState2.refliGeliyor) {
+      kd.innerHTML = '<span style="background:var(--sage-pale);color:var(--sage);font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;">✓ ÜCRETSİZ</span>';
+    } else {
+      kd.innerHTML = '<div style="text-decoration:line-through; font-size:12px; color:var(--text-light); margin-bottom:2px;">14.570 TL</div><div class="tutar-sage">9.550 TL</div>';
+    }
   }
   if(s("refKodDisplay")) s("refKodDisplay").textContent = appState2.refKod||"BCK-????";
 
@@ -1707,7 +1757,17 @@ async function kaydet2() {
       if(!q.empty) await q.docs[0].ref.update({ kayitSayisi:(q.docs[0].data().kayitSayisi||0)+1 });
     }
     await sendEmail2(data);
-    hideLoading(); goToScreen("screen-done");
+    hideLoading();
+    goToScreen("screen-done");
+    // 4 saniye sonra portal'a dön ki kullanıcı başvurusunu yönetebilsin
+    setTimeout(function(){
+      goToScreen("screen-portal");
+      checkBasvuruDurumu(currentUser.uid);
+      setTimeout(function(){
+        var pk = document.getElementById("portalKartlar");
+        if(pk) pk.scrollIntoView({ behavior:"smooth", block:"center" });
+      }, 400);
+    }, 4000);
   } catch(e) {
     hideLoading(); showToast("⚠️ Hata: "+e.message);
     if(btn) { btn.disabled=false; btn.textContent="🌸 Başvuruyu Gönder"; }
@@ -1715,16 +1775,76 @@ async function kaydet2() {
 }
 async function sendEmail2(data) {
   emailjs.init(EMAILJS_CONFIG.publicKey);
-  var h=appState2.hesap;
-  var progLabel=data.program==="tam"?"Tam Gün":"Yarım Gün";
-  var tablo="ÖDEME TABLOSU - "+data.childAd+" "+data.childSoyad+"\n"+"=".repeat(40)+"\nKayıt Türü: "+(data.kayitTur==="onkayit"?"Avantajlı Ön Kayıt":data.kayitTur==="erken"?"Erken Kayıt":"Normal Kayıt")+"\nAylık Ücret: "+fmt(data.aylikUcret)+" TL ("+progLabel+")\nÖn Ödeme: "+fmt(data.onOdeme)+" TL\nI. Dönem: "+fmt(data.iAylik)+" TL/ay\nII. Dönem: "+fmt(data.iiAylik)+" TL/ay\nYıllık Toplam: "+fmt(data.yillik)+" TL\nÖdeme Tercihi: "+data.odemeTercihi+"\nFatura: "+(data.faturaIstegi?"Evet":"Hayır");
+  var progLabel = data.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
+  var kayitTurAd = data.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : data.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
+  var tablo = "ÖDEME TABLOSU - " + data.childAd + " " + data.childSoyad + "\n" +
+    "================================================\n" +
+    "Kayıt Türü: " + kayitTurAd + "\n" +
+    "Program: " + progLabel + "\n" +
+    "Aylık Ücret: " + fmt(data.aylikUcret) + " TL\n" +
+    "Ön Ödeme: " + fmt(data.onOdeme) + " TL (Kayıt gününde)\n" +
+    "I. Dönem (Eylül-Ocak): " + fmt(data.iAylik) + " TL/ay × 5 ay\n" +
+    "II. Dönem (Şubat-Haziran): " + fmt(data.iiAylik) + " TL/ay × 5 ay\n" +
+    "YILLIK TOPLAM: " + fmt(data.yillik) + " TL\n\n" +
+    "Ödeme Tercihi: " + data.odemeTercihi + "\n" +
+    "Fatura İsteği: " + (data.faturaIstegi ? "Evet" : "Hayır");
+
+  // 1) OKUL YÖNETİMİNE BAŞVURU MAİLİ
   await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email:SCHOOL_EMAIL, cocuk_adi:data.childAd+" — YENİ KAYIT BAŞVURUSU",
-    mesaj:"🌸 YENİ KAYIT BAŞVURUSU!\n\nVeli: "+data.veliAd+" "+data.veliSoyad+"\nEmail: "+data.email+"\nTel: "+data.phone+"\n\nÇocuk: "+data.childAd+" "+data.childSoyad+"\nDoğum: "+data.childDogum+"\n\n"+tablo+"\n\nRef Kodu: "+data.refKodu+"\nRef Kullanıldı: "+(data.refKoduKullanildi||"Yok")+"\nTarih: "+new Date().toLocaleString("tr-TR")
+    to_email: SCHOOL_EMAIL,
+    cocuk_adi: data.childAd + " " + data.childSoyad + " — YENİ KAYIT BAŞVURUSU",
+    mesaj: "🌸 YENİ KAYIT BAŞVURUSU ALINDI!\n\n" +
+      "═══════════════════════════════\n" +
+      "VELİ BİLGİLERİ\n" +
+      "═══════════════════════════════\n" +
+      "Ad Soyad: " + data.veliAd + " " + data.veliSoyad + "\n" +
+      "E-posta: " + data.email + "\n" +
+      "Telefon: " + data.phone + "\n\n" +
+      "═══════════════════════════════\n" +
+      "ÖĞRENCİ BİLGİLERİ\n" +
+      "═══════════════════════════════\n" +
+      "Ad Soyad: " + data.childAd + " " + data.childSoyad + "\n" +
+      "Doğum Tarihi: " + data.childDogum + "\n" +
+      "Cinsiyet: " + (data.childCinsiyet || "-") + "\n\n" +
+      "═══════════════════════════════\n" +
+      tablo + "\n\n" +
+      "═══════════════════════════════\n" +
+      "REFERANS BİLGİLERİ\n" +
+      "═══════════════════════════════\n" +
+      "Kendi Referans Kodu: " + data.refKodu + "\n" +
+      "Kullandığı Referans: " + (data.refKoduKullanildi || "Yok") + "\n" +
+      "Kıyafet Ücretsiz: " + (data.refliGeliyor ? "EVET" : "Hayır") + "\n\n" +
+      "Başvuru Tarihi: " + new Date().toLocaleString("tr-TR") + "\n\n" +
+      "⚠️ ONAY İÇİN: https://kayityenileme.bircicekkoleji.com/admin"
   });
+
+  // 2) VELİYE TEŞEKKÜR MAİLİ
   await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-    to_email:data.email, cocuk_adi:data.childAd+" "+data.childSoyad,
-    mesaj:"Sayın "+data.veliAd+" "+data.veliSoyad+",\n\n"+data.childAd+"'in başvurusu alındı. En kısa sürede sizi arayacağız.\n\n"+tablo+"\n\nREFERANS KODUNUZ: "+data.refKodu+"\n\n1. Kayıt → I. Dönem Orman Okulu Servis ücreti — ***\n2. Kayıt → II. Dönem Orman Okulu Servis ücreti — ***\n3. Kayıt → Okul Kıyafeti ücreti — alınmaz!\n\nSevgilerimizle,\nBir Çiçek Koleji Anaokulu"
+    to_email: data.email,
+    cocuk_adi: data.childAd + " " + data.childSoyad,
+    mesaj: "Sayın " + data.veliAd + " " + data.veliSoyad + ",\n\n" +
+      "Bir Çiçek Koleji ailesine hoş geldiniz! 🌸\n\n" +
+      data.childAd + " için ön kayıt başvurunuz tarafımıza ulaşmıştır. " +
+      "Okul yönetimimiz başvurunuzu inceleyerek 1-2 iş günü içinde sizi arayacaktır.\n\n" +
+      tablo + "\n\n" +
+      "═══════════════════════════════\n" +
+      "🎁 REFERANS KODUNUZ: " + data.refKodu + "\n" +
+      "═══════════════════════════════\n" +
+      "Bu kodu tanıdıklarınızla paylaşın, her yeni kayıtta sürpriz avantajlar kazanın:\n\n" +
+      "• 1. Kayıt → I. Dönem Orman Okulu Servis ücreti — alınmaz!\n" +
+      "• 2. Kayıt → II. Dönem Orman Okulu Servis ücreti — alınmaz!\n" +
+      "• 3. Kayıt → Okul Kıyafeti ücreti — alınmaz!\n\n" +
+      "═══════════════════════════════\n" +
+      "📱 BAŞVURUNUZU TAKİP EDİN\n" +
+      "═══════════════════════════════\n" +
+      "Başvurunuzun durumunu https://yenikayit.bircicekkoleji.com adresinden Google hesabınızla giriş yaparak her an takip edebilirsiniz.\n\n" +
+      "İletişim:\n" +
+      "📞 0216 393 54 57\n" +
+      "💬 WhatsApp: 0555 103 54 57\n" +
+      "✉️ eposta@bircicekkoleji.com\n\n" +
+      "Sevgilerimizle,\n" +
+      "Bir Çiçek Koleji Anaokulu\n" +
+      "Tuzla / İstanbul"
   });
 }
 
@@ -1841,8 +1961,10 @@ function basvuruGuncelle() {
     if(btnYarim) btnYarim.classList.toggle("active", appState2.program==="yarim");
     // Kayıt türü seçimini güncelle
     document.querySelectorAll(".kayit-type-card").forEach(function(el){ el.classList.remove("selected"); });
-    var turEl = document.querySelector("[onclick*="selectKayitType('"+appState2.kayitTur+"'"]");
-    if(turEl) turEl.classList.add("selected");
+    document.querySelectorAll(".kayit-type-card").forEach(function(el){
+      var click = el.getAttribute("onclick") || "";
+      if(click.indexOf("'" + appState2.kayitTur + "'") >= 0) el.classList.add("selected");
+    });
     // Hesapla ve direkt hesaplama ekranına git
     appState2.refliGeliyor = d.refliGeliyor || false;
     appState2.hesap = hesaplaYeni(appState2.kayitTur, appState2.program);
@@ -1856,6 +1978,36 @@ function basvuruGuncelle() {
     hideLoading();
     showToast("Hata: " + e.message);
   });
+}
+
+
+// ═══ NAVBAR CTA — GİRİŞ YAP / HESABIM ═══
+function navCtaClick() {
+  if(currentUser) {
+    goToScreen("screen-portal");
+    setTimeout(function(){
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Portal kart'a scroll
+      var pk = document.getElementById("portalKartlar");
+      if(pk) setTimeout(function(){ pk.scrollIntoView({ behavior:"smooth", block:"center" }); }, 300);
+    }, 100);
+  } else {
+    signInWithGoogle();
+  }
+}
+
+function updateNavCta() {
+  var btn = document.getElementById("navCtaBtn");
+  var txt = document.getElementById("navCtaText");
+  var ico = document.getElementById("navCtaIcon");
+  if(!btn || !txt) return;
+  if(currentUser) {
+    txt.textContent = "Hesabım";
+    if(ico) ico.style.display = "none";
+  } else {
+    txt.textContent = "Giriş Yap";
+    if(ico) ico.style.display = "inline-block";
+  }
 }
 
 // ═══ PDF İNDİR ═══
@@ -1934,23 +2086,31 @@ function pdfIndir() {
     // Diğer Ödemeler bölümü
     y += 4;
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(11);
-    doc.text("Ek Odemeler (Ucretler Ayrica Bildirilecektir)", mL, y); y += 6;
+    doc.text("Ek Odemeler", mL, y); y += 6;
     doc.setFillColor(42,77,56); doc.rect(mL,y,mR-mL,7,"F");
     doc.setTextColor(255,255,255); doc.setFontSize(9);
-    doc.text("Kalem", mL+3, y+5); doc.text("Odeme Tarihi", mL+80, y+5); doc.text("Durum", mR-3, y+5, {align:"right"}); y += 7;
+    doc.text("Kalem", mL+3, y+5); doc.text("Odeme Ayi", mL+95, y+5); doc.text("Tutar", mR-3, y+5, {align:"right"}); y += 7;
     var ekOdemeler = [
-      ["Egitim Materyalleri", "5 Temmuz 2026"],
-      ["Orman Okulu I. Donem Servis", "5 Eylul 2026"],
-      ["Orman Okulu Kiyafeti", "5 Eylul 2026"],
-      ["Orman Okulu II. Donem Servis", "5 Subat 2027"]
+      ["Egitim Materyalleri",          "5 Temmuz 2026",  "36.000 TL"],
+      ["Okul Kiyafeti",                "5 Agustos 2026", "9.550 TL"],
+      ["Orman Okulu I. Donem Servis",  "5 Ekim 2026",    "20 gun once bildirilir"],
+      ["Orman Okulu II. Donem Servis", "5 Subat 2027",   "20 gun once bildirilir"]
     ];
     ekOdemeler.forEach(function(row, i){
       doc.setFillColor(i%2===0?248:255, i%2===0?252:255, i%2===0?249:255);
       doc.rect(mL,y,mR-mL,7,"F"); doc.rect(mL,y,mR-mL,7);
       doc.setTextColor(60,60,60); doc.setFont("helvetica","normal"); doc.setFontSize(9);
-      doc.text(row[0], mL+3, y+5); doc.text(row[1], mL+80, y+5);
-      doc.text("15 gun once bildirilir", mR-3, y+5, {align:"right"}); y += 7;
-    }); y += 8;
+      doc.text(row[0], mL+3, y+5);
+      doc.text(row[1], mL+95, y+5);
+      doc.text(row[2], mR-3, y+5, {align:"right"});
+      y += 7;
+    });
+    // Kıyafet açıklaması
+    doc.setFillColor(251,246,233);
+    doc.rect(mL,y,mR-mL,10,"F"); doc.rect(mL,y,mR-mL,10);
+    doc.setTextColor(80,80,80); doc.setFont("helvetica","italic"); doc.setFontSize(8);
+    doc.text("* Kiyafet seti: Tisort, sweatshirt, esofman alti, onluk. Okul icin ayrica kiyafetlere gerek yoktur.", mL+3, y+6);
+    y += 14;
 
     // Notlar
     doc.setFillColor(248,252,249); doc.rect(mL,y,mR-mL,28,"F");
@@ -1958,7 +2118,7 @@ function pdfIndir() {
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(9);
     doc.text("ONEMLI NOTLAR", mL+4, y+6); doc.setFont("helvetica","normal"); doc.setTextColor(80,80,80);
     doc.text("* Bu plan " + tur + " donemi kapsaminda hazirlanmis olup " + son + " tarihine kadar gecerlidir.", mL+4, y+13);
-    doc.text("* Ek odeme ucretleri ilgili tarihten 15 gun once ayrica bildirilecektir.", mL+4, y+20);
+    doc.text("* Orman Okulu ve servis ucretleri ilgili odeme tarihinden 20 gun once bildirilir.", mL+4, y+20);
     doc.text("* Tum odemeler belirtilen tarihlerde Bir Cicek Koleji hesabina yapilmalidir.", mL+4, y+27); y += 34;
     // Footer
     doc.setFillColor(42,77,56); doc.rect(0,282,W,15,"F");
