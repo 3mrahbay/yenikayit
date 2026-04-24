@@ -1415,22 +1415,32 @@ async function brevoMail(opts) {
     return { success: false };
   }
   try {
-    await fetch(BREVO_PROXY_URL, {
+    var payload = {
+      origin: window.location.hostname,
+      to: opts.to,
+      toName: opts.toName || "",
+      subject: opts.subject,
+      htmlContent: opts.htmlContent,
+      replyTo: opts.replyTo || SCHOOL_EMAIL,
+      senderName: "Bir Çiçek Koleji Anaokulu",
+      senderEmail: SCHOOL_EMAIL
+    };
+    var response = await fetch(BREVO_PROXY_URL, {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({
-        action: "sendMail",
-        to: opts.to,
-        toName: opts.toName || "",
-        subject: opts.subject,
-        htmlContent: opts.htmlContent,
-        replyTo: opts.replyTo || SCHOOL_EMAIL
-      })
+      redirect: "follow",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
     });
-    return { success: true };
+    var result = await response.json();
+    console.log("Brevo mail sonucu:", result);
+    if(result.success) {
+      return { success: true, messageId: result.messageId };
+    } else {
+      console.error("Brevo API hatası:", result.error || result.detail);
+      return { success: false, error: result.error };
+    }
   } catch(e) {
-    console.error("brevoMail hatası:", e);
+    console.error("brevoMail fetch hatası:", e);
     return { success: false, error: e.message };
   }
 }
