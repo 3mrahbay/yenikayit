@@ -661,7 +661,7 @@ img, video, iframe {
         <div class="price-deadline">
           <div>
             <div class="price-deadline-label">Avantajlı Ön Kayıt Son Gün</div>
-            <div class="price-deadline-val">30 Nisan 2026</div>
+            <div class="price-deadline-val">15 Mayıs 2026</div>
           </div>
           <div class="price-countdown">
             <div class="price-cd-item"><div class="price-cd-num" id="cd2Days">00</div><div class="price-cd-lbl">Gün</div></div>
@@ -675,7 +675,7 @@ img, video, iframe {
           <div class="price-option gold-card" style="background:var(--gold-pale); border-color:rgba(184,150,46,0.4);">
             <div class="price-option-left">
               <div class="price-option-tag" style="color:var(--gold);">⭐ Avantajlı Ön Kayıt</div>
-              <div class="price-option-name">– 30 Nisan 2026</div>
+              <div class="price-option-name">– 15 Mayıs 2026</div>
             </div>
             <div id="cd-onkayit" style="font-size:11px; color:var(--gold); font-weight:700; text-align:right;"></div>
           </div>
@@ -683,7 +683,7 @@ img, video, iframe {
           <div class="price-option featured">
             <div class="price-option-left">
               <div class="price-option-tag">Erken Kayıt</div>
-              <div class="price-option-name">01 Mayıs – 30 Mayıs 2026</div>
+              <div class="price-option-name">16 Mayıs – 15 Haziran 2026</div>
             </div>
             <div id="cd-erken" style="font-size:11px; color:var(--sage); font-weight:700; text-align:right;"></div>
           </div>
@@ -691,7 +691,7 @@ img, video, iframe {
           <div class="price-option" style="background:#29ABD4; border-color:#1E8BAD;">
             <div class="price-option-left">
               <div class="price-option-tag" style="color:rgba(255,255,255,0.9);">Normal Kayıt Dönemi</div>
-              <div class="price-option-name" style="color:white;">01 Haziran – 30 Eylül 2026</div>
+              <div class="price-option-name" style="color:white;">16 Haziran – 30 Eylül 2026</div>
             </div>
             <div id="cd-normal" style="font-size:11px; color:white; font-weight:700; text-align:right;"></div>
           </div>
@@ -1078,7 +1078,7 @@ img, video, iframe {
       <div style="background:linear-gradient(135deg, var(--gold-pale), #FEF9E8); border:1.5px solid rgba(184,150,46,0.35); border-radius:16px; padding:24px; margin-top:24px;">
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
           <span style="font-size:24px;">🎯</span>
-          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--earth);">Avantajlı Ön Kayıt — 10 Mayıs 2026'ya kadar!</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--earth);">Avantajlı Ön Kayıt — 15 Mayıs 2026'ya kadar!</div>
         </div>
         <div style="font-size:14px; line-height:1.75; color:var(--text-mid);">
           <p style="margin-bottom:12px;">Eğitim kalitesinden ödün vermeden, ailelerimizin ekonomik planlamasını da hassasiyetle gözeten bir yaklaşım benimsemeye devam ediyoruz.</p>
@@ -1118,14 +1118,14 @@ img, video, iframe {
         <div class="kayit-type-card gold-card selected" onclick="selectKayitType('onkayit', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">⭐ Avantajlı Ön Kayıt</div>
-            <div class="kayit-desc">30 Nisan 2026'ya kadar · Özel erken başvuru fırsatı</div>
+            <div class="kayit-desc">15 Mayıs 2026'ya kadar · Özel erken başvuru fırsatı</div>
           </div>
           <div style="font-size:12px; color:var(--gold); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
         <div class="kayit-type-card" onclick="selectKayitType('erken', this)">
           <div class="kayit-type-left">
             <div class="kayit-label">Erken Kayıt</div>
-            <div class="kayit-desc">01 Mayıs – 30 Mayıs 2026</div>
+            <div class="kayit-desc">16 Mayıs – 15 Haziran 2026</div>
           </div>
           <div style="font-size:12px; color:var(--sage); font-weight:600; margin-top:4px;">Ücret: Randevu ile</div>
         </div>
@@ -1198,9 +1198,25 @@ img, video, iframe {
     <div class="hesap-summary">
       <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.6); margin-bottom:16px;">Özet</div>
       <div class="hesap-row"><span>Kayıt Türü</span><span class="hesap-val" id="kayitTurDisplay">–</span></div>
-      <div class="hesap-row"><span>Aylık Baz Ücret</span><span class="hesap-val" id="aylikDisplay">–</span></div>
-      <div class="hesap-row"><span>Eğitim Ücreti</span><span class="hesap-val" id="egitimDisplay">–</span></div>
-      <div class="hesap-row"><span>Yemek Ücreti</span><span class="hesap-val" id="yemekDisplay">–</span></div>
+
+      <!-- Aylık Baz Ücret ve içeriği (eğitim + yemek kırılımı) -->
+      <div class="hesap-row" style="align-items:flex-start; padding-top:14px; padding-bottom:8px; border-top:1px solid rgba(255,255,255,0.08);">
+        <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+          <span style="font-weight:700;">Aylık Baz Ücret</span>
+          <div style="display:flex; flex-direction:column; gap:4px; padding-left:12px; border-left:2px solid rgba(255,255,255,0.15); margin-top:2px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px; color:rgba(255,255,255,0.7);">
+              <span>↳ Eğitim Ücreti</span>
+              <span id="egitimDisplay">–</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; color:rgba(255,255,255,0.7);">
+              <span>↳ Yemek Ücreti</span>
+              <span id="yemekDisplay">–</span>
+            </div>
+          </div>
+        </div>
+        <span class="hesap-val" id="aylikDisplay" style="font-size:20px; align-self:center;">–</span>
+      </div>
+
       <div class="hesap-row hesap-row-total"><span>Yıllık Toplam</span><span class="hesap-val" style="font-size:24px;" id="yillikDisplay">–</span></div>
       <div class="hesap-row" style="background:rgba(240,212,144,0.15); border:1px dashed rgba(240,212,144,0.4); border-radius:10px; padding:12px 14px; margin-top:12px;">
         <span style="color:#F0D490;">💰 Peşin Ödeme <span style="font-size:11px; background:#F0D490; color:var(--sage-dark); padding:2px 8px; border-radius:50px; margin-left:4px; font-weight:800;">%10 İNDİRİM</span></span>
@@ -1418,7 +1434,7 @@ async function brevoMail(opts) {
     return { success: false, error: e.message };
   }
 }
-const DEADLINE = new Date("2026-04-30T23:59:59");
+const DEADLINE = new Date("2026-05-15T23:59:59");
 const RANDEVU_LINKS = {
   online:  "https://calendar.app.google/t6kd22VPtPCHyG5o8",
   yuzyuze: "https://calendar.app.google/ocKandk7qZfSnYkPA"
@@ -1501,9 +1517,9 @@ setInterval(updateCD, 1000); updateCD();
 
 // ═══ 5. DÖNEM SAYAÇLARI ═══
 var PERIODS = [
-  { id:"cd-onkayit", end:new Date("2026-04-30T23:59:59") },
-  { id:"cd-erken",   end:new Date("2026-05-30T23:59:59"), start:new Date("2026-05-01") },
-  { id:"cd-normal",  end:new Date("2026-09-30T23:59:59"), start:new Date("2026-06-01") }
+  { id:"cd-onkayit", end:new Date("2026-05-15T23:59:59") },
+  { id:"cd-erken",   end:new Date("2026-06-15T23:59:59"), start:new Date("2026-05-16T00:00:00") },
+  { id:"cd-normal",  end:new Date("2026-09-30T23:59:59"), start:new Date("2026-06-16T00:00:00") }
 ];
 function updatePeriodCountdowns() {
   var now = new Date();
@@ -1713,7 +1729,7 @@ function renderHesaplama2() {
   var childAd = ((document.getElementById("childAd")||{}).value||"").trim();
   var childSoyad = ((document.getElementById("childSoyad")||{}).value||"").trim();
   if(s("childAdDisplay")) s("childAdDisplay").textContent = childAd+" "+childSoyad;
-  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (01 Mayıs – 30 Mayıs)", normal:"Normal Kayıt"};
+  var turLabel = {onkayit:"⭐ Avantajlı Ön Kayıt", erken:"Erken Kayıt (16 Mayıs – 15 Haziran)", normal:"Normal Kayıt (16 Haziran – 30 Eylül)"};
   if(s("kayitTurDisplay")) s("kayitTurDisplay").textContent = turLabel[appState2.kayitTur]||"–";
   if(s("aylikDisplay")) s("aylikDisplay").textContent = fmt(h.aylik)+" TL";
   if(s("egitimDisplay")) s("egitimDisplay").textContent = fmt(h.egitim)+" TL";
@@ -1742,9 +1758,9 @@ function renderHesaplama2() {
   // Geçerlilik yazısı
   var gecerlilik = s("gecerlilikYazisi");
   if(gecerlilik) {
-    var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayıs 2026", normal:"30 Eylül 2026"};
-    var turAd = {onkayit:"Avantajlı Ön Kayıt", erken:"Erken Kayıt", normal:"Normal Kayıt"};
-    var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
+    var turSon = {onkayit:"15 Mayıs 2026", erken:"15 Haziran 2026", normal:"30 Eylül 2026"};
+    var turAd = {onkayit:"Avantajlı Ön Kayıt (–15 Mayıs)", erken:"Erken Kayıt", normal:"Normal Kayıt (16 Haziran – 30 Eylül)"};
+    var son = turSon[appState2.kayitTur] || "15 Mayıs 2026";
     var ad = turAd[appState2.kayitTur] || "Avantajlı Ön Kayıt";
     gecerlilik.innerHTML = "📋 Bu ödeme planı <strong>" + ad + "</strong> dönemi kapsamında hazırlanmıştır. " +
       "<strong>" + son + "</strong> tarihine kadar geçerlidir. Bu tarihten sonra yapılan başvurularda güncel ücretler uygulanır.";
@@ -2169,9 +2185,9 @@ function pdfIndir() {
   var veliSoyad = ((document.getElementById("veliSoyad")||{}).value||"").trim();
   var prog = appState2.program === "tam" ? "Tam Gun (08:00-18:00)" : "Yarim Gun (08:00-13:00)";
   var turLabel = {onkayit:"Avantajli On Kayit", erken:"Erken Kayit", normal:"Normal Kayit"};
-  var turSon = {onkayit:"30 Nisan 2026", erken:"30 Mayis 2026", normal:"30 Eylul 2026"};
+  var turSon = {onkayit:"15 Mayıs 2026", erken:"15 Haziran 2026", normal:"30 Eylul 2026"};
   var tur = turLabel[appState2.kayitTur] || "Avantajli On Kayit";
-  var son = turSon[appState2.kayitTur] || "30 Nisan 2026";
+  var son = turSon[appState2.kayitTur] || "15 Mayıs 2026";
   try {
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({orientation:"portrait", unit:"mm", format:"a4"});
