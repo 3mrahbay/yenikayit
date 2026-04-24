@@ -2281,11 +2281,11 @@ function pdfIndir() {
     // Notlar
     doc.setFillColor(248,252,249); doc.rect(mL,y,mR-mL,20,"F");
     doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,20);
-    doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(8);
-    doc.text("ONEMLI NOTLAR", mL+3, y+4.5); doc.setFont("helvetica","normal"); doc.setTextColor(80,80,80); doc.setFontSize(7.5);
-    doc.text("* Bu plan " + tur + " donemi kapsaminda hazirlanmis olup " + son + " tarihine kadar gecerlidir.", mL+3, y+10);
-    doc.text("* Okul Kiyafeti setinde: Esofman takimi, sweet, polo/penye T-shirt, yagmurluk, cantalar dahildir.", mL+3, y+14);
-    doc.text("* Orman Okulu Kiyafet ve servis ucretleri ilgili tarihten 20 gun once bildirilir.", mL+3, y+18);
+    doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(9);
+    doc.text("ONEMLI NOTLAR", mL+3, y+5); doc.setFont("helvetica","normal"); doc.setTextColor(80,80,80); doc.setFontSize(8);
+    doc.text("* Bu plan " + tur + " donemi kapsaminda hazirlanmis olup " + son + " tarihine kadar gecerlidir.", mL+3, y+10.5);
+    doc.text("* Okul Kiyafeti setinde: Esofman takimi, sweet, polo/penye T-shirt, yagmurluk, kirli cantasi dahildir.", mL+3, y+14.5);
+    doc.text("* Orman Okulu Kiyafet ve servis ucretleri ilgili tarihten 20 gun once bildirilir.", mL+3, y+18.5);
     y += 23;
 
     // Footer
