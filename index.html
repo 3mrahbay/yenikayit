@@ -1823,10 +1823,108 @@ function copyRefKod() {
 
 // ═══ 12. GİRİŞ TAKİBİ ═══
 async function logGiris2(u) {
+  // 1) Firestore'a giriş kaydını ekle
   try {
-    await db.collection("girisler").add({ email:u.email, displayName:u.displayName||"", girisZamani:new Date().toISOString(), sistem:"yenikayit" });
-  } catch(e) { console.log("logGiris2:", e); }
-  // Sistem girişi mail bildirimi gönderilmez (sessiz log)
+    await db.collection("girisler").add({
+      email: u.email,
+      displayName: u.displayName || "",
+      girisZamani: new Date().toISOString(),
+      sistem: "yenikayit"
+    });
+  } catch(e) { console.log("logGiris2 yazım hatası:", e); }
+
+  // 2) Bu email için toplam giriş sayısını sor — ilk 5 girişte admine bildirim, 6+ sessiz
+  try {
+    var girisSnap = await db.collection("girisler")
+      .where("email", "==", u.email)
+      .where("sistem", "==", "yenikayit")
+      .get();
+    var girisSayi = girisSnap.size;
+
+    if(girisSayi > 5) {
+      console.log("logGiris2: " + u.email + " — " + girisSayi + ". giriş, mail eşiği aşıldı (sessiz)");
+      return;
+    }
+
+    // 3) Başvuru durumunu kontrol et
+    var basvuruVarMi = false;
+    var basvuruDurum = "";
+    var basvuruCocuk = "";
+    try {
+      var basvuruSnap = await db.collection("yenikayit").doc(u.uid).get();
+      if(basvuruSnap.exists) {
+        basvuruVarMi = true;
+        var bd = basvuruSnap.data();
+        basvuruDurum = bd.durum || "beklemede";
+        basvuruCocuk = ((bd.childAd || "") + " " + (bd.childSoyad || "")).trim();
+      }
+    } catch(eDurum) { console.log("Başvuru kontrol hatası:", eDurum); }
+
+    // 4) Mail içeriği — siteye giriş bildirimi
+    var simdi = new Date();
+    var tarihStr = simdi.toLocaleDateString("tr-TR", { day:"2-digit", month:"long", year:"numeric" });
+    var saatStr = simdi.toLocaleTimeString("tr-TR", { hour:"2-digit", minute:"2-digit" });
+    var ad = u.displayName || "(Google adı yok)";
+
+    var durumKart = basvuruVarMi
+      ? '<div style="background:rgba(16,185,129,0.1);border-left:4px solid #10B981;padding:14px 16px;border-radius:8px;margin:14px 0;">' +
+          '<div style="font-size:12px;color:#0d7a5f;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">✅ Başvuru Yapılmış</div>' +
+          '<div style="font-size:14px;color:#333;">Çocuk: <strong>' + (basvuruCocuk || "(belirtilmemiş)") + '</strong></div>' +
+          '<div style="font-size:13px;color:#555;margin-top:2px;">Durum: <strong>' +
+            (basvuruDurum === "onaylandi" ? "✅ Onaylandı" : basvuruDurum === "reddedildi" ? "❌ Reddedildi" : "⏳ İnceleniyor") +
+          '</strong></div>' +
+        '</div>'
+      : '<div style="background:#FFF3D6;border-left:4px solid #D4A574;padding:14px 16px;border-radius:8px;margin:14px 0;">' +
+          '<div style="font-size:12px;color:#7a5a1a;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">⏳ Başvuru Yapılmamış</div>' +
+          '<div style="font-size:13.5px;color:#333;">Bu kullanıcı siteye giriş yaptı ama henüz başvuru formunu tamamlamadı.</div>' +
+        '</div>';
+
+    var html =
+      '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">' +
+        '<div style="background:#2A4D38;color:white;padding:20px 24px;border-radius:10px 10px 0 0;">' +
+          '<h1 style="margin:0;font-size:18px;">🚪 Yeni Site Girişi</h1>' +
+          '<p style="margin:4px 0 0;opacity:0.85;font-size:12.5px;">yenikayit.bircicekkoleji.com</p>' +
+        '</div>' +
+        '<div style="padding:22px 24px;background:white;border:1px solid #ddd;border-top:none;border-radius:0 0 10px 10px;">' +
+          '<table style="width:100%;border-collapse:collapse;font-size:13.5px;">' +
+            '<tr><td style="padding:7px 0;color:#888;width:120px;">👤 Ad Soyad</td><td style="padding:7px 0;font-weight:700;">' + escapeHtml(ad) + '</td></tr>' +
+            '<tr><td style="padding:7px 0;color:#888;">📧 E-posta</td><td style="padding:7px 0;font-family:monospace;font-size:12.5px;">' + escapeHtml(u.email) + '</td></tr>' +
+            '<tr><td style="padding:7px 0;color:#888;">🔢 Giriş Sayısı</td><td style="padding:7px 0;font-weight:700;color:#2A4D38;">' + girisSayi + '. giriş' + (girisSayi === 5 ? ' <span style="font-size:11px;color:#888;font-weight:400;">(son bildirim — sonraki girişler bildirim üretmez)</span>' : '') + '</td></tr>' +
+            '<tr><td style="padding:7px 0;color:#888;">🕐 Tarih</td><td style="padding:7px 0;">' + tarihStr + ' — ' + saatStr + '</td></tr>' +
+          '</table>' +
+          durumKart +
+          '<div style="text-align:center;margin-top:18px;">' +
+            '<a href="https://yenikayit.bircicekkoleji.com/takip.html" style="display:inline-block;background:#2A4D38;color:white;text-decoration:none;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:700;">📊 Takip Panelini Aç</a>' +
+          '</div>' +
+          '<p style="font-size:11.5px;color:#888;margin-top:18px;text-align:center;font-style:italic;">' +
+            'Bu otomatik bildirim, bir velinin siteye giriş yaptığında gönderilir. Aynı kullanıcı için ilk 5 girişte mail gelir, sonrası sessizdir.' +
+          '</p>' +
+        '</div>' +
+      '</div>';
+
+    // 5) Brevo proxy üzerinden gönder
+    var konuSaat = simdi.toLocaleString("tr-TR", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
+    await brevoMail({
+      to: SCHOOL_EMAIL,
+      toName: "Bir Çiçek Koleji Yönetim",
+      subject: "🚪 Yeni Giriş — " + ad + " (" + girisSayi + ". giriş) — " + konuSaat,
+      htmlContent: html,
+      replyTo: u.email
+    });
+    console.log("logGiris2: Bildirim maili gönderildi (" + girisSayi + ". giriş)");
+
+  } catch(eMail) {
+    // Mail hatası login akışını ASLA bozmasın
+    console.log("logGiris2 mail bildirim hatası:", eMail);
+  }
+}
+
+// Mail bildiriminde HTML escape için yardımcı
+function escapeHtml(s) {
+  if(s == null) return "";
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[c];
+  });
 }
 
 // ═══ 13. KAYDET ═══
