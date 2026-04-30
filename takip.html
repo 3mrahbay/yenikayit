@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Giriş Takip Paneli — Bir Çiçek Koleji</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --sage:#8EBB9E; --sage-dark:#3D6B4F; --sage-pale:#E8F2EC;
+  --cream:#FAF7F0; --cream-warm:#F5EFE0; --gold:#D4A574;
+  --text:#2D2D2D; --text-mid:#555; --text-light:#888;
+  --border:#E5DFD0; --white:#FFFFFF;
+  --danger:#dc2626; --warn:#F0D490; --success:#10B981;
+  --radius:14px;
+}
+body {
+  font-family:'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  background:var(--cream); color:var(--text); min-height:100vh;
+  font-size:14px; line-height:1.6;
+}
+.wrap { max-width:1200px; margin:0 auto; padding:20px; }
+
+/* Header */
+.header {
+  background:linear-gradient(135deg, var(--sage-dark), #2A4D38);
+  color:white; padding:24px 28px; border-radius:var(--radius);
+  margin-bottom:20px; box-shadow:0 4px 14px rgba(0,0,0,0.08);
+}
+.header h1 { font-family:'Cormorant Garamond', Georgia, serif; font-size:26px; font-weight:700; margin-bottom:4px; }
+.header p { opacity:0.85; font-size:13px; }
+.header .top-row { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+.header .actions { display:flex; gap:8px; }
+.header .actions button {
+  background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.25);
+  padding:8px 14px; border-radius:8px; font-size:13px; cursor:pointer;
+  font-family:inherit; font-weight:600; transition:all 0.2s;
+}
+.header .actions button:hover { background:rgba(255,255,255,0.25); }
+
+/* Login screen */
+.login-box {
+  max-width:420px; margin:80px auto; background:white; border-radius:var(--radius);
+  padding:40px 32px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.08);
+}
+.login-box .logo { font-size:48px; margin-bottom:12px; }
+.login-box h2 { font-family:'Cormorant Garamond', Georgia, serif; font-size:24px; color:var(--sage-dark); margin-bottom:6px; }
+.login-box p { color:var(--text-mid); font-size:13px; margin-bottom:24px; }
+.btn-google {
+  background:white; color:#444; border:1px solid #ddd; padding:12px 24px;
+  border-radius:8px; cursor:pointer; font-family:inherit; font-size:14px;
+  font-weight:600; display:inline-flex; align-items:center; gap:10px;
+  transition:all 0.2s;
+}
+.btn-google:hover { background:#f8f8f8; border-color:#bbb; }
+.btn-google img { width:18px; height:18px; }
+
+/* Stats cards */
+.stats {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:14px; margin-bottom:20px;
+}
+.stat-card {
+  background:white; border-radius:var(--radius); padding:18px 20px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04); border-left:4px solid var(--sage);
+}
+.stat-card.warn { border-left-color:var(--gold); }
+.stat-card.danger { border-left-color:var(--danger); }
+.stat-card.success { border-left-color:var(--success); }
+.stat-card .label { font-size:11.5px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-light); font-weight:600; margin-bottom:6px; }
+.stat-card .value { font-size:28px; font-weight:800; color:var(--text); font-family:'Cormorant Garamond', Georgia, serif; }
+.stat-card .sub { font-size:11.5px; color:var(--text-light); margin-top:2px; }
+
+/* Filter bar */
+.filter-bar {
+  background:white; border-radius:var(--radius); padding:14px 18px;
+  margin-bottom:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.filter-bar .tab {
+  background:transparent; border:1.5px solid var(--border); color:var(--text-mid);
+  padding:7px 14px; border-radius:50px; cursor:pointer; font-family:inherit;
+  font-size:13px; font-weight:600; transition:all 0.15s;
+}
+.filter-bar .tab:hover { border-color:var(--sage); }
+.filter-bar .tab.active { background:var(--sage-dark); color:white; border-color:var(--sage-dark); }
+.filter-bar .search {
+  flex:1; min-width:200px; padding:8px 12px; border:1.5px solid var(--border);
+  border-radius:8px; font-family:inherit; font-size:13px; outline:none;
+}
+.filter-bar .search:focus { border-color:var(--sage); }
+
+/* Table */
+.table-wrap { background:white; border-radius:var(--radius); overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead { background:var(--sage-pale); }
+thead th {
+  padding:12px 14px; text-align:left; font-weight:700; color:var(--sage-dark);
+  font-size:12px; text-transform:uppercase; letter-spacing:0.4px;
+  border-bottom:2px solid var(--sage);
+}
+thead th.num { text-align:center; }
+tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s; }
+tbody tr:hover { background:var(--cream); }
+tbody tr.completed { background:rgba(16, 185, 129, 0.05); }
+tbody td { padding:12px 14px; vertical-align:middle; }
+tbody td.num { text-align:center; font-weight:700; color:var(--sage-dark); }
+.email-cell { font-family:'SF Mono', Monaco, monospace; font-size:12px; color:var(--text-mid); }
+.name-cell { font-weight:600; color:var(--text); }
+.phone-cell { color:var(--text-mid); font-size:12.5px; }
+.phone-cell.empty { color:var(--text-light); font-style:italic; }
+
+.badge {
+  display:inline-block; padding:3px 10px; border-radius:50px; font-size:11px;
+  font-weight:700; text-transform:uppercase; letter-spacing:0.3px;
+}
+.badge.completed { background:rgba(16, 185, 129, 0.15); color:#0d7a5f; }
+.badge.incomplete { background:var(--warn); color:#7a5a1a; }
+
+.empty-state {
+  text-align:center; padding:60px 20px; color:var(--text-light);
+}
+.empty-state .icon { font-size:42px; margin-bottom:10px; opacity:0.4; }
+
+/* Loading */
+.loader { text-align:center; padding:60px; color:var(--text-light); }
+.loader .spin {
+  display:inline-block; width:32px; height:32px; border:3px solid var(--border);
+  border-top-color:var(--sage); border-radius:50%; animation:spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Toast */
+.toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+  background:var(--sage-dark); color:white; padding:12px 24px; border-radius:50px;
+  font-size:13px; box-shadow:0 4px 16px rgba(0,0,0,0.15); z-index:1000;
+  opacity:0; transition:opacity 0.25s, transform 0.25s; pointer-events:none;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(-4px); }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .wrap { padding:14px; }
+  .header { padding:18px 20px; }
+  .header h1 { font-size:21px; }
+  table { font-size:12px; }
+  thead th, tbody td { padding:10px 8px; }
+  .email-cell { font-size:11px; }
+  /* Hide some columns on mobile */
+  .col-count, .col-status { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-box" style="display:none;">
+  <div class="logo">🔐</div>
+  <h2>Giriş Takip Paneli</h2>
+  <p>Bu sayfaya yalnızca yetkili kişiler erişebilir.<br>Yönetici hesabınızla giriş yapın.</p>
+  <button class="btn-google" onclick="googleLogin()">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+    Google ile Giriş Yap
+  </button>
+  <p id="loginErr" style="color:var(--danger); font-size:12px; margin-top:14px; display:none;"></p>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="wrap" style="display:none;">
+
+  <div class="header">
+    <div class="top-row">
+      <div>
+        <h1>🌸 Giriş Takip Paneli</h1>
+        <p>yenikayit.bircicekkoleji.com — Site ziyaretçileri ve başvuru durumları</p>
+      </div>
+      <div class="actions">
+        <button onclick="dataYukle()">🔄 Yenile</button>
+        <button onclick="csvIndir()">📥 CSV İndir</button>
+        <button onclick="cikisYap()">🚪 Çıkış</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats" id="statsRow">
+    <div class="stat-card">
+      <div class="label">Toplam Ziyaretçi</div>
+      <div class="value" id="stToplam">—</div>
+      <div class="sub">benzersiz email</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="label">Tamamlamayanlar</div>
+      <div class="value" id="stTamamlamayan">—</div>
+      <div class="sub">başvuru kaydı yok</div>
+    </div>
+    <div class="stat-card success">
+      <div class="label">Başvuru Yapanlar</div>
+      <div class="value" id="stTamamlayan">—</div>
+      <div class="sub">yenikayit'te kayıtlı</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Toplam Giriş</div>
+      <div class="value" id="stGirisSayi">—</div>
+      <div class="sub">tüm oturumlar</div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <button class="tab active" data-filter="all" onclick="filtreSec('all', this)">📋 Hepsi</button>
+    <button class="tab" data-filter="incomplete" onclick="filtreSec('incomplete', this)">⏳ Tamamlamayanlar</button>
+    <button class="tab" data-filter="completed" onclick="filtreSec('completed', this)">✅ Başvuru Yapanlar</button>
+    <input type="text" class="search" id="aramaInput" placeholder="🔍 Email, ad veya telefonla ara..." oninput="aramayiUygula()">
+  </div>
+
+  <!-- Loading / Table -->
+  <div id="yukleniyor" class="loader">
+    <div class="spin"></div>
+    <p style="margin-top:12px;">Veriler yükleniyor…</p>
+  </div>
+
+  <div id="tabloAlani" class="table-wrap" style="display:none;">
+    <table>
+      <thead>
+        <tr>
+          <th class="num">#</th>
+          <th>Email</th>
+          <th>Ad Soyad</th>
+          <th>Telefon</th>
+          <th>Son Giriş</th>
+          <th class="col-count num">Giriş Sayısı</th>
+          <th class="col-status">Durum</th>
+        </tr>
+      </thead>
+      <tbody id="tabloBody"></tbody>
+    </table>
+  </div>
+
+  <div id="bosListe" class="empty-state" style="display:none;">
+    <div class="icon">📭</div>
+    <p>Bu filtreyle eşleşen kayıt bulunamadı.</p>
+  </div>
+
+</div>
+
+<div id="toast" class="toast">İşlem tamam</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// FIREBASE INIT
+// ═══════════════════════════════════════════════════════════
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyARlqAoh-HRBC9xPwj7qRgG-IuZFSH39Uc",
+  authDomain: "bcka-site.firebaseapp.com",
+  projectId: "bcka-site",
+  storageBucket: "bcka-site.firebasestorage.app",
+  messagingSenderId: "736581475783",
+  appId: "1:736581475783:web:5729a05ed4d05f1d1d0de2"
+};
+
+const ADMIN_EMAIL = "emrahby@gmail.com";
+
+let db, auth;
+let tumKayitlar = [];        // {email, displayName, phone, sonGiris, girisSayi, tamamladi}
+let aktifFiltre = "all";
+let aramaTerim = "";
+
+function initFirebase() {
+  if(typeof firebase === "undefined") {
+    setTimeout(initFirebase, 300);
+    return;
+  }
+  if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+  db = firebase.firestore();
+  auth = firebase.auth();
+  
+  auth.onAuthStateChanged(function(user) {
+    if(user && user.email === ADMIN_EMAIL) {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("adminPanel").style.display = "block";
+      dataYukle();
+    } else if(user) {
+      // Yetkisiz kullanıcı
+      auth.signOut();
+      document.getElementById("loginScreen").style.display = "block";
+      document.getElementById("adminPanel").style.display = "none";
+      const err = document.getElementById("loginErr");
+      err.textContent = "❌ Bu hesap admin değil. Yalnızca " + ADMIN_EMAIL + " erişebilir.";
+      err.style.display = "block";
+    } else {
+      document.getElementById("loginScreen").style.display = "block";
+      document.getElementById("adminPanel").style.display = "none";
+    }
+  });
+}
+
+window.addEventListener("load", initFirebase);
+
+// ═══════════════════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════════════════
+function googleLogin() {
+  if(!auth) { showToast("Sistem hazırlanıyor..."); return; }
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+  auth.signInWithPopup(provider).catch(function(e) {
+    console.error("Login hatası:", e);
+    const err = document.getElementById("loginErr");
+    err.textContent = "Giriş hatası: " + e.message;
+    err.style.display = "block";
+  });
+}
+
+function cikisYap() {
+  if(confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+    auth.signOut();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// VERI YUKLEMESI
+// ═══════════════════════════════════════════════════════════
+async function dataYukle() {
+  document.getElementById("yukleniyor").style.display = "block";
+  document.getElementById("tabloAlani").style.display = "none";
+  document.getElementById("bosListe").style.display = "none";
+  
+  try {
+    // 1) Tüm girişleri çek (sadece yenikayit sistemi)
+    const girislerSnap = await db.collection("girisler")
+      .where("sistem", "==", "yenikayit")
+      .get();
+    
+    // 2) yenikayit koleksiyonundaki başvuruları çek (email → veri map'i)
+    const basvurularSnap = await db.collection("yenikayit").get();
+    const basvuruMap = {};
+    basvurularSnap.forEach(function(doc) {
+      const d = doc.data();
+      if(d.email) {
+        basvuruMap[d.email.toLowerCase()] = {
+          phone: d.phone || "",
+          veliAd: d.veliAd || "",
+          veliSoyad: d.veliSoyad || "",
+          childAd: d.childAd || "",
+          durum: d.durum || ""
+        };
+      }
+    });
+    
+    // 3) Girişleri email'e göre grupla
+    const grupla = {};
+    girislerSnap.forEach(function(doc) {
+      const g = doc.data();
+      if(!g.email) return;
+      const key = g.email.toLowerCase();
+      if(!grupla[key]) {
+        grupla[key] = {
+          email: g.email,
+          displayName: g.displayName || "",
+          girisler: []
+        };
+      }
+      // En güzel displayName'i sakla
+      if(g.displayName && !grupla[key].displayName) {
+        grupla[key].displayName = g.displayName;
+      }
+      grupla[key].girisler.push(g.girisZamani);
+    });
+    
+    // 4) Birleştir
+    tumKayitlar = Object.keys(grupla).map(function(emailKey) {
+      const grup = grupla[emailKey];
+      const basvuru = basvuruMap[emailKey];
+      
+      // Girişleri sırala (en yeni önce)
+      grup.girisler.sort(function(a, b) {
+        return new Date(b) - new Date(a);
+      });
+      
+      return {
+        email: grup.email,
+        displayName: basvuru
+          ? (basvuru.veliAd + " " + basvuru.veliSoyad).trim() || grup.displayName
+          : grup.displayName,
+        phone: basvuru ? basvuru.phone : "",
+        childAd: basvuru ? basvuru.childAd : "",
+        sonGiris: grup.girisler[0] || "",
+        girisSayi: grup.girisler.length,
+        tamamladi: !!basvuru,
+        durum: basvuru ? basvuru.durum : ""
+      };
+    });
+    
+    // En son giriş yapanları en üste koy
+    tumKayitlar.sort(function(a, b) {
+      return new Date(b.sonGiris) - new Date(a.sonGiris);
+    });
+    
+    // 5) İstatistikleri güncelle
+    statsGuncelle(girislerSnap.size);
+    
+    // 6) Tabloyu çiz
+    tabloyuCiz();
+    
+  } catch(e) {
+    console.error("dataYukle hatası:", e);
+    document.getElementById("yukleniyor").innerHTML =
+      '<p style="color:var(--danger);">⚠️ Veri yüklenemedi: ' + e.message + '</p>';
+    showToast("Hata: " + e.message);
+  }
+}
+
+function statsGuncelle(toplamGiris) {
+  const tamamlayan = tumKayitlar.filter(function(k) { return k.tamamladi; }).length;
+  const tamamlamayan = tumKayitlar.length - tamamlayan;
+  
+  document.getElementById("stToplam").textContent = tumKayitlar.length;
+  document.getElementById("stTamamlayan").textContent = tamamlayan;
+  document.getElementById("stTamamlamayan").textContent = tamamlamayan;
+  document.getElementById("stGirisSayi").textContent = toplamGiris;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TABLOYU ÇİZ
+// ═══════════════════════════════════════════════════════════
+function tabloyuCiz() {
+  document.getElementById("yukleniyor").style.display = "none";
+  
+  // Filtre uygula
+  let liste = tumKayitlar;
+  if(aktifFiltre === "incomplete") {
+    liste = liste.filter(function(k) { return !k.tamamladi; });
+  } else if(aktifFiltre === "completed") {
+    liste = liste.filter(function(k) { return k.tamamladi; });
+  }
+  
+  // Arama uygula
+  if(aramaTerim) {
+    const q = aramaTerim.toLowerCase();
+    liste = liste.filter(function(k) {
+      return (k.email && k.email.toLowerCase().indexOf(q) >= 0)
+          || (k.displayName && k.displayName.toLowerCase().indexOf(q) >= 0)
+          || (k.phone && k.phone.toLowerCase().indexOf(q) >= 0);
+    });
+  }
+  
+  if(liste.length === 0) {
+    document.getElementById("tabloAlani").style.display = "none";
+    document.getElementById("bosListe").style.display = "block";
+    return;
+  }
+  
+  document.getElementById("bosListe").style.display = "none";
+  document.getElementById("tabloAlani").style.display = "block";
+  
+  const tbody = document.getElementById("tabloBody");
+  tbody.innerHTML = liste.map(function(k, i) {
+    const tarihFmt = formatTarih(k.sonGiris);
+    const phoneCell = k.phone
+      ? '<span class="phone-cell">' + escHtml(k.phone) + '</span>'
+      : '<span class="phone-cell empty">—</span>';
+    const adCell = k.displayName ? escHtml(k.displayName) : '<span style="color:var(--text-light);">—</span>';
+    const badge = k.tamamladi
+      ? '<span class="badge completed">✅ Tamamladı</span>'
+      : '<span class="badge incomplete">⏳ Tamamlamadı</span>';
+    
+    return '<tr class="' + (k.tamamladi ? 'completed' : '') + '">'
+      + '<td class="num">' + (i+1) + '</td>'
+      + '<td class="email-cell">' + escHtml(k.email) + '</td>'
+      + '<td class="name-cell">' + adCell + '</td>'
+      + '<td>' + phoneCell + '</td>'
+      + '<td style="font-size:12.5px; color:var(--text-mid);">' + tarihFmt + '</td>'
+      + '<td class="col-count num">' + k.girisSayi + '</td>'
+      + '<td class="col-status">' + badge + '</td>'
+    + '</tr>';
+  }).join("");
+}
+
+function filtreSec(filtre, btn) {
+  aktifFiltre = filtre;
+  document.querySelectorAll(".filter-bar .tab").forEach(function(t) {
+    t.classList.remove("active");
+  });
+  btn.classList.add("active");
+  tabloyuCiz();
+}
+
+function aramayiUygula() {
+  aramaTerim = document.getElementById("aramaInput").value.trim();
+  tabloyuCiz();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CSV INDIR
+// ═══════════════════════════════════════════════════════════
+function csvIndir() {
+  if(tumKayitlar.length === 0) { showToast("Liste boş"); return; }
+  
+  // Hangi liste indirilecek? Aktif filtre + arama
+  let liste = tumKayitlar;
+  if(aktifFiltre === "incomplete") liste = liste.filter(function(k) { return !k.tamamladi; });
+  else if(aktifFiltre === "completed") liste = liste.filter(function(k) { return k.tamamladi; });
+  if(aramaTerim) {
+    const q = aramaTerim.toLowerCase();
+    liste = liste.filter(function(k) {
+      return (k.email && k.email.toLowerCase().indexOf(q) >= 0)
+          || (k.displayName && k.displayName.toLowerCase().indexOf(q) >= 0)
+          || (k.phone && k.phone.toLowerCase().indexOf(q) >= 0);
+    });
+  }
+  
+  const baslik = ["Email", "Ad Soyad", "Telefon", "Son Giriş", "Giriş Sayısı", "Durum"];
+  const satirlar = liste.map(function(k) {
+    return [
+      k.email,
+      k.displayName,
+      k.phone,
+      formatTarih(k.sonGiris),
+      k.girisSayi,
+      k.tamamladi ? "Tamamladı" : "Tamamlamadı"
+    ].map(csvEscape).join(",");
+  });
+  
+  const csv = "\uFEFF" + baslik.map(csvEscape).join(",") + "\n" + satirlar.join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "giris_takip_" + new Date().toISOString().split("T")[0] + ".csv";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast("✅ CSV indirildi");
+}
+
+function csvEscape(v) {
+  const s = (v == null ? "" : String(v));
+  if(s.indexOf(",") >= 0 || s.indexOf('"') >= 0 || s.indexOf("\n") >= 0) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function formatTarih(iso) {
+  if(!iso) return "—";
+  try {
+    const d = new Date(iso);
+    if(isNaN(d.getTime())) return iso;
+    const gun = String(d.getDate()).padStart(2, "0");
+    const ay = String(d.getMonth() + 1).padStart(2, "0");
+    const yil = d.getFullYear();
+    const saat = String(d.getHours()).padStart(2, "0");
+    const dk = String(d.getMinutes()).padStart(2, "0");
+    return gun + "." + ay + "." + yil + " " + saat + ":" + dk;
+  } catch(e) {
+    return iso;
+  }
+}
+
+function escHtml(s) {
+  if(s == null) return "";
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[c];
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 2400);
+}
+</script>
+
+</body>
+</html>
