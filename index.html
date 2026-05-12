@@ -1611,6 +1611,11 @@ function onLogin(u) {
   ["userInitial","userInitial2","userInitial3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=ini; });
   ["userName","userName2","userName3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=parts[0]||"Veli"; });
   var pe = document.getElementById("portalEmail"); if(pe) pe.textContent=u.email;
+
+  // 🔒 Admin (emrahby@gmail.com) için takip.html butonu göster
+  var adminBtn = document.getElementById("adminTakipBtn");
+  if(adminBtn) adminBtn.style.display = (u.email === "emrahby@gmail.com") ? "inline-flex" : "none";
+  
   getOrCreateRefKod2(u.uid, u.email);
   goToScreen("screen-portal");
   // Başvuru durumunu kontrol et ve portal kartlarını güncelle
