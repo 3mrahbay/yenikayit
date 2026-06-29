@@ -1086,7 +1086,8 @@ img, video, iframe {
           <p style="margin-bottom:10px;"><strong style="color:var(--sage-dark);">Ödeme planlamamızı da ailelerimizin yaşam gerçekliğini dikkate alarak yapılandırdık:</strong></p>
           <div style="background:rgba(255,255,255,0.6); border-radius:10px; padding:14px 16px; margin-bottom:14px;">
             <div style="display:flex; gap:10px; margin-bottom:8px;"><span style="color:var(--sage);">•</span><span>I. dönem ödemeleri <strong>daha düşük seviyede</strong> planlanmıştır</span></div>
-            <div style="display:flex; gap:10px;"><span style="color:var(--sage);">•</span><span>II. dönem ödemeleri ise <strong>Ocak ayındaki maaş artış dönemleriyle</strong> daha uyumlu olacak şekilde düzenlenmiştir</span></div>
+            <div style="display:flex; gap:10px; margin-bottom:8px;"><span style="color:var(--sage);">•</span><span>II. dönem ödemeleri ise <strong>Ocak ayındaki maaş artış dönemleriyle</strong> daha uyumlu olacak şekilde düzenlenmiştir</span></div>
+            <div style="background:rgba(61,107,79,0.08); border-radius:8px; padding:10px 12px; margin-top:8px; font-size:13px; color:var(--sage-dark);"><strong>ℹ️ Önemli:</strong> Bu yapı, ödenecek <strong>toplam yıllık ücreti değiştirmez</strong> — sadece ailelerimizin nakit akışı planlamasına uygun olacak şekilde aylık taksitler düzenlenmiştir.</div>
           </div>
           <p style="margin-bottom:0; font-style:italic; color:var(--sage-dark);">Çünkü biz inanıyoruz ki; sağlıklı bir eğitim süreci, yalnızca çocukların değil, ailelerin de kendini güvende hissettiği bir yapı ile mümkün olur.</p>
         </div>
@@ -1699,11 +1700,11 @@ function setProgram(tip) {
 // ═══ 9. HESAPLAMA ═══
 function hesaplaYeni(kayitTur, program) {
   // Tam gün aylık ücretler
-  var tamGun = { onkayit:37000, erken:38500, normal:40000 };
+  var tamGun = { onkayit:37000, erken:38500, normal:38500 };
   // Yarım gün aylık ücretler (geçen yıl bazı üzerinden %28 artış ile belirlendi)
   // Avantajlı ön kayıt: 26.000 * 1.28 = 33.280 TL
-  // Erken kayıt ve Normal için aynı fark oranı uygulandı
-  var yarimGun = { onkayit:33280, erken:34640, normal:36000 };
+  // Normal kayıt için Erken Kayıt ile aynı fiyat uygulandı
+  var yarimGun = { onkayit:33280, erken:34640, normal:34640 };
   
   var aylik = program === "yarim" 
     ? (yarimGun[kayitTur] || 33280)
