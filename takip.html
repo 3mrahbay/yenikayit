@@ -184,6 +184,7 @@ tbody td.num { text-align:center; font-weight:700; color:var(--sage-dark); }
       </div>
       <div class="actions">
         <button onclick="dataYukle()">🔄 Yenile</button>
+        <button onclick="mailleriKopyala()">✉️ Mailleri Kopyala</button>
         <button onclick="csvIndir()">📥 CSV İndir</button>
         <button onclick="cikisYap()">🚪 Çıkış</button>
       </div>
@@ -208,6 +209,11 @@ tbody td.num { text-align:center; font-weight:700; color:var(--sage-dark); }
       <div class="sub">yenikayit'te kayıtlı</div>
     </div>
     <div class="stat-card">
+      <div class="label">Telefonu Olanlar</div>
+      <div class="value" id="stTelefonlu">—</div>
+      <div class="sub">aranabilir</div>
+    </div>
+    <div class="stat-card">
       <div class="label">Toplam Giriş</div>
       <div class="value" id="stGirisSayi">—</div>
       <div class="sub">tüm oturumlar</div>
@@ -219,6 +225,8 @@ tbody td.num { text-align:center; font-weight:700; color:var(--sage-dark); }
     <button class="tab active" data-filter="all" onclick="filtreSec('all', this)">📋 Hepsi</button>
     <button class="tab" data-filter="incomplete" onclick="filtreSec('incomplete', this)">⏳ Tamamlamayanlar</button>
     <button class="tab" data-filter="completed" onclick="filtreSec('completed', this)">✅ Başvuru Yapanlar</button>
+    <button class="tab" data-filter="hasphone" onclick="filtreSec('hasphone', this)">📞 Telefonu Olanlar</button>
+    <button class="tab" data-filter="nophone" onclick="filtreSec('nophone', this)">📵 Telefonu Olmayanlar</button>
     <input type="text" class="search" id="aramaInput" placeholder="🔍 Email, ad veya telefonla ara..." oninput="aramayiUygula()">
   </div>
 
@@ -355,7 +363,23 @@ async function dataYukle() {
         };
       }
     });
-    
+
+    // 2b) iletisimBilgileri koleksiyonu — portal veya geri bildirim formundan bırakılan telefonlar
+    const iletisimMap = {};
+    try {
+      const iletisimSnap = await db.collection("iletisimBilgileri").get();
+      iletisimSnap.forEach(function(doc) {
+        const d = doc.data();
+        if(d.email && d.telefon) {
+          iletisimMap[d.email.toLowerCase()] = {
+            telefon: d.telefon,
+            kaynak: d.kaynak || "",
+            displayName: d.displayName || ""
+          };
+        }
+      });
+    } catch(e) { console.log("iletisimBilgileri okunamadı:", e); }
+
     // 3) Girişleri email'e göre grupla
     const grupla = {};
     girislerSnap.forEach(function(doc) {
@@ -366,12 +390,17 @@ async function dataYukle() {
         grupla[key] = {
           email: g.email,
           displayName: g.displayName || "",
+          girisTelefon: "",
           girisler: []
         };
       }
       // En güzel displayName'i sakla
       if(g.displayName && !grupla[key].displayName) {
         grupla[key].displayName = g.displayName;
+      }
+      // girisler kaydında telefon varsa sakla
+      if(g.telefon && !grupla[key].girisTelefon) {
+        grupla[key].girisTelefon = g.telefon;
       }
       grupla[key].girisler.push(g.girisZamani);
     });
@@ -380,18 +409,35 @@ async function dataYukle() {
     tumKayitlar = Object.keys(grupla).map(function(emailKey) {
       const grup = grupla[emailKey];
       const basvuru = basvuruMap[emailKey];
-      
+      const iletisim = iletisimMap[emailKey];
+
       // Girişleri sırala (en yeni önce)
       grup.girisler.sort(function(a, b) {
         return new Date(b) - new Date(a);
       });
-      
+
+      // Telefon önceliği: başvuru formu > iletişim kaydı > giriş kaydı
+      let telefon = "";
+      let telefonKaynak = "";
+      if(basvuru && basvuru.phone) {
+        telefon = basvuru.phone; telefonKaynak = "basvuru";
+      } else if(iletisim && iletisim.telefon) {
+        telefon = iletisim.telefon; telefonKaynak = iletisim.kaynak || "iletisim";
+      } else if(grup.girisTelefon) {
+        telefon = grup.girisTelefon; telefonKaynak = "giris";
+      }
+
+      // İsim önceliği: başvuru > iletişim > Google hesabı
+      let ad = "";
+      if(basvuru) ad = (basvuru.veliAd + " " + basvuru.veliSoyad).trim();
+      if(!ad && iletisim && iletisim.displayName) ad = iletisim.displayName;
+      if(!ad) ad = grup.displayName;
+
       return {
         email: grup.email,
-        displayName: basvuru
-          ? (basvuru.veliAd + " " + basvuru.veliSoyad).trim() || grup.displayName
-          : grup.displayName,
-        phone: basvuru ? basvuru.phone : "",
+        displayName: ad,
+        phone: telefon,
+        telefonKaynak: telefonKaynak,
         childAd: basvuru ? basvuru.childAd : "",
         sonGiris: grup.girisler[0] || "",
         girisSayi: grup.girisler.length,
@@ -423,9 +469,12 @@ function statsGuncelle(toplamGiris) {
   const tamamlayan = tumKayitlar.filter(function(k) { return k.tamamladi; }).length;
   const tamamlamayan = tumKayitlar.length - tamamlayan;
   
+  const telefonlu = tumKayitlar.filter(function(k) { return !!k.phone; }).length;
+
   document.getElementById("stToplam").textContent = tumKayitlar.length;
   document.getElementById("stTamamlayan").textContent = tamamlayan;
   document.getElementById("stTamamlamayan").textContent = tamamlamayan;
+  document.getElementById("stTelefonlu").textContent = telefonlu;
   document.getElementById("stGirisSayi").textContent = toplamGiris;
 }
 
@@ -441,6 +490,10 @@ function tabloyuCiz() {
     liste = liste.filter(function(k) { return !k.tamamladi; });
   } else if(aktifFiltre === "completed") {
     liste = liste.filter(function(k) { return k.tamamladi; });
+  } else if(aktifFiltre === "hasphone") {
+    liste = liste.filter(function(k) { return !!k.phone; });
+  } else if(aktifFiltre === "nophone") {
+    liste = liste.filter(function(k) { return !k.phone; });
   }
   
   // Arama uygula
@@ -465,9 +518,22 @@ function tabloyuCiz() {
   const tbody = document.getElementById("tabloBody");
   tbody.innerHTML = liste.map(function(k, i) {
     const tarihFmt = formatTarih(k.sonGiris);
-    const phoneCell = k.phone
-      ? '<span class="phone-cell">' + escHtml(k.phone) + '</span>'
-      : '<span class="phone-cell empty">—</span>';
+    const KAYNAK_ETIKET = {
+      basvuru: { t:"Başvuru", c:"#3D6B4F", b:"#E8F2EC" },
+      "yenikayit-portal": { t:"Portal", c:"#7A5E1A", b:"#FBF6E9" },
+      geribildirim: { t:"Geri bildirim", c:"#1E5F8A", b:"#E3F0F8" },
+      iletisim: { t:"İletişim", c:"#7A5E1A", b:"#FBF6E9" },
+      giris: { t:"Giriş", c:"#666", b:"#f0f0f0" }
+    };
+    let phoneCell;
+    if(k.phone) {
+      const rakam = k.phone.replace(/\D/g, "");
+      const kaynak = KAYNAK_ETIKET[k.telefonKaynak] || null;
+      phoneCell = '<a href="tel:' + rakam + '" class="phone-cell" style="color:var(--sage-dark); font-weight:600; text-decoration:none; font-size:13.5px;">📞 ' + escHtml(k.phone) + '</a>'
+        + (kaynak ? '<div style="font-size:10px; color:' + kaynak.c + '; background:' + kaynak.b + '; display:inline-block; padding:1px 7px; border-radius:50px; margin-top:3px;">' + kaynak.t + '</div>' : '');
+    } else {
+      phoneCell = '<span class="phone-cell empty">—</span>';
+    }
     const adCell = k.displayName ? escHtml(k.displayName) : '<span style="color:var(--text-light);">—</span>';
     const badge = k.tamamladi
       ? '<span class="badge completed">✅ Tamamladı</span>'
@@ -500,6 +566,56 @@ function aramayiUygula() {
 }
 
 // ═══════════════════════════════════════════════════════════
+// MAİL ADRESLERİNİ KOPYALA (Brevo toplu gönderim için)
+// ═══════════════════════════════════════════════════════════
+function mailleriKopyala() {
+  if(tumKayitlar.length === 0) { showToast("Liste boş"); return; }
+
+  // Aktif filtre + aramaya göre listeyi süz
+  let liste = tumKayitlar;
+  if(aktifFiltre === "incomplete") liste = liste.filter(function(k) { return !k.tamamladi; });
+  else if(aktifFiltre === "completed") liste = liste.filter(function(k) { return k.tamamladi; });
+  else if(aktifFiltre === "hasphone") liste = liste.filter(function(k) { return !!k.phone; });
+  else if(aktifFiltre === "nophone") liste = liste.filter(function(k) { return !k.phone; });
+  if(aramaTerim) {
+    const q = aramaTerim.toLowerCase();
+    liste = liste.filter(function(k) {
+      return (k.email && k.email.toLowerCase().indexOf(q) >= 0)
+          || (k.displayName && k.displayName.toLowerCase().indexOf(q) >= 0)
+          || (k.phone && k.phone.toLowerCase().indexOf(q) >= 0);
+    });
+  }
+
+  const mailler = liste.map(function(k) { return k.email; }).filter(Boolean);
+  if(mailler.length === 0) { showToast("Bu filtrede mail adresi yok"); return; }
+
+  const metin = mailler.join(", ");
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(metin).then(function() {
+      showToast("✅ " + mailler.length + " mail adresi kopyalandı");
+    }).catch(function() { kopyalaFallback(metin, mailler.length); });
+  } else {
+    kopyalaFallback(metin, mailler.length);
+  }
+}
+
+function kopyalaFallback(metin, sayi) {
+  const ta = document.createElement("textarea");
+  ta.value = metin;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand("copy");
+    showToast("✅ " + sayi + " mail adresi kopyalandı");
+  } catch(e) {
+    showToast("⚠️ Kopyalanamadı — CSV indirmeyi deneyin");
+  }
+  document.body.removeChild(ta);
+}
+
+// ═══════════════════════════════════════════════════════════
 // CSV INDIR
 // ═══════════════════════════════════════════════════════════
 function csvIndir() {
@@ -509,6 +625,8 @@ function csvIndir() {
   let liste = tumKayitlar;
   if(aktifFiltre === "incomplete") liste = liste.filter(function(k) { return !k.tamamladi; });
   else if(aktifFiltre === "completed") liste = liste.filter(function(k) { return k.tamamladi; });
+  else if(aktifFiltre === "hasphone") liste = liste.filter(function(k) { return !!k.phone; });
+  else if(aktifFiltre === "nophone") liste = liste.filter(function(k) { return !k.phone; });
   if(aramaTerim) {
     const q = aramaTerim.toLowerCase();
     liste = liste.filter(function(k) {
@@ -517,13 +635,18 @@ function csvIndir() {
           || (k.phone && k.phone.toLowerCase().indexOf(q) >= 0);
     });
   }
-  
-  const baslik = ["Email", "Ad Soyad", "Telefon", "Son Giriş", "Giriş Sayısı", "Durum"];
+
+  const KAYNAK_AD = {
+    basvuru:"Başvuru formu", "yenikayit-portal":"Portal", geribildirim:"Geri bildirim formu",
+    iletisim:"İletişim kaydı", giris:"Giriş kaydı"
+  };
+  const baslik = ["Email", "Ad Soyad", "Telefon", "Telefon Kaynağı", "Son Giriş", "Giriş Sayısı", "Durum"];
   const satirlar = liste.map(function(k) {
     return [
       k.email,
       k.displayName,
       k.phone,
+      k.phone ? (KAYNAK_AD[k.telefonKaynak] || k.telefonKaynak || "") : "",
       formatTarih(k.sonGiris),
       k.girisSayi,
       k.tamamladi ? "Tamamladı" : "Tamamlamadı"

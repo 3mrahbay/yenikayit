@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Görüşünüz Bizim İçin Değerli — Bir Çiçek Koleji</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage: #3D6B4F;
+  --sage-dark: #2A4D38;
+  --sage-mid: #5A8F6E;
+  --sage-light: #8EBB9E;
+  --sage-pale: #EDF5F0;
+  --gold: #B8962E;
+  --gold-pale: #FBF6E9;
+  --earth: #7A5E1A;
+  --cream: #FAFAF7;
+  --cream-warm: #F5F2EA;
+  --white: #FFFFFF;
+  --border: #DDD8CC;
+  --text: #2C2C28;
+  --text-mid: #5A5A52;
+  --text-light: #8A8A80;
+  --radius: 18px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Outfit', -apple-system, sans-serif;
+  background:var(--cream);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:640px; margin:0 auto; padding:0 20px 60px; }
+
+/* Header */
+.header {
+  background:linear-gradient(135deg, var(--sage-dark), var(--sage));
+  color:white;
+  padding:48px 20px 56px;
+  text-align:center;
+  margin-bottom:-32px;
+}
+.header-inner { max-width:640px; margin:0 auto; }
+.header-eyebrow {
+  font-size:11px; text-transform:uppercase; letter-spacing:2.5px;
+  opacity:0.65; font-weight:700; margin-bottom:12px;
+}
+.header h1 {
+  font-family:'Cormorant Garamond', serif;
+  font-size:34px; font-weight:700; line-height:1.2; margin-bottom:10px;
+}
+.header p { font-size:15px; opacity:0.85; line-height:1.7; max-width:460px; margin:0 auto; }
+
+/* Card */
+.card {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px;
+  margin-bottom:16px;
+  box-shadow:0 2px 12px rgba(42,77,56,0.04);
+}
+.card-title {
+  font-family:'Cormorant Garamond', serif;
+  font-size:21px; font-weight:700; color:var(--sage-dark);
+  margin-bottom:6px;
+}
+.card-sub { font-size:13.5px; color:var(--text-light); margin-bottom:18px; line-height:1.6; }
+
+/* Radio / Checkbox options */
+.opt {
+  display:flex; align-items:flex-start; gap:12px;
+  border:1.5px solid var(--border); border-radius:12px;
+  padding:14px 16px; margin-bottom:9px;
+  cursor:pointer; transition:all 0.18s;
+  background:var(--white);
+}
+.opt:hover { border-color:var(--sage-light); background:var(--sage-pale); }
+.opt.on { border-color:var(--sage); background:var(--sage-pale); }
+.opt-box {
+  width:20px; height:20px; border:2px solid var(--border);
+  border-radius:50%; flex-shrink:0; margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.18s;
+}
+.opt-box.sq { border-radius:6px; }
+.opt.on .opt-box { border-color:var(--sage); background:var(--sage); }
+.opt-box::after {
+  content:''; width:8px; height:8px; border-radius:50%;
+  background:white; opacity:0; transition:opacity 0.18s;
+}
+.opt-box.sq::after {
+  width:11px; height:6px; border-radius:0;
+  border-left:2.5px solid white; border-bottom:2.5px solid white;
+  background:none; transform:rotate(-45deg) translateY(-1px);
+}
+.opt.on .opt-box::after { opacity:1; }
+.opt-text { flex:1; font-size:14.5px; color:var(--text); line-height:1.5; }
+.opt-note { font-size:12.5px; color:var(--text-light); margin-top:2px; }
+
+/* Fields */
+label.fl { display:block; font-size:13px; font-weight:600; color:var(--text-mid); margin-bottom:7px; }
+input[type=tel], input[type=text], textarea {
+  width:100%; padding:14px 16px;
+  border:1.5px solid var(--border); border-radius:12px;
+  font-size:15px; font-family:'Outfit', sans-serif;
+  background:var(--white); color:var(--text);
+  transition:border-color 0.18s;
+}
+input:focus, textarea:focus { outline:none; border-color:var(--sage); }
+textarea { min-height:130px; resize:vertical; line-height:1.65; }
+.hint { font-size:12px; color:var(--text-light); margin-top:7px; line-height:1.5; }
+
+/* Submit */
+.submit-btn {
+  width:100%; background:var(--sage); color:white;
+  border:none; border-radius:50px; padding:17px;
+  font-size:16px; font-weight:700; cursor:pointer;
+  font-family:'Outfit', sans-serif; transition:background 0.18s;
+}
+.submit-btn:hover { background:var(--sage-dark); }
+.submit-btn:disabled { opacity:0.6; cursor:not-allowed; }
+
+/* Thanks */
+.thanks { display:none; text-align:center; padding:48px 28px; }
+.thanks-icon { font-size:52px; margin-bottom:18px; }
+.thanks h2 {
+  font-family:'Cormorant Garamond', serif;
+  font-size:28px; color:var(--sage-dark); margin-bottom:12px;
+}
+.thanks p { font-size:15px; color:var(--text-mid); line-height:1.75; max-width:400px; margin:0 auto 20px; }
+
+/* Contact footer */
+.contact-box {
+  background:var(--gold-pale); border:1px solid rgba(184,150,46,0.3);
+  border-radius:14px; padding:20px; margin-top:16px;
+  font-size:13.5px; color:var(--earth); line-height:1.8;
+}
+.contact-box a { color:var(--sage-dark); font-weight:600; text-decoration:none; }
+
+/* Toast */
+.toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120px);
+  background:var(--text); color:white; padding:14px 26px; border-radius:50px;
+  font-size:14px; font-weight:600; z-index:999; transition:transform 0.3s;
+  max-width:90vw; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.2);
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+@media (max-width:600px) {
+  .header { padding:36px 18px 48px; }
+  .header h1 { font-size:27px; }
+  .card { padding:22px 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Bir Çiçek Koleji Anaokulu</div>
+    <h1>Görüşünüz Bizim İçin Değerli</h1>
+    <p>Okulumuzu ziyaret ettiğiniz ve bizi değerlendirdiğiniz için teşekkür ederiz. Kararınızı ve düşüncelerinizi paylaşmanız, kendimizi geliştirmemize yardımcı oluyor.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- FORM -->
+  <div id="formAlan">
+
+    <!-- 1. Karar -->
+    <div class="card">
+      <div class="card-title">Kararınız nedir?</div>
+      <div class="card-sub">Bize hangi aşamada olduğunuzu bildirin.</div>
+      <div id="kararList">
+        <div class="opt" data-v="dusunuyorum"><div class="opt-box"></div><div class="opt-text">Kayıt yaptırmayı düşünüyorum<div class="opt-note">Sürece devam etmek istiyorum</div></div></div>
+        <div class="opt" data-v="kararsiz"><div class="opt-box"></div><div class="opt-text">Henüz karar vermedim<div class="opt-note">Biraz daha düşünmem gerekiyor</div></div></div>
+        <div class="opt" data-v="baska-okul"><div class="opt-box"></div><div class="opt-text">Başka bir okula karar verdik</div></div>
+        <div class="opt" data-v="gondermiyoruz"><div class="opt-box"></div><div class="opt-text">Bu yıl anaokuluna göndermiyoruz</div></div>
+      </div>
+    </div>
+
+    <!-- 2. Nedenler -->
+    <div class="card" id="nedenKart">
+      <div class="card-title">Kararınızda hangi konular etkili oldu?</div>
+      <div class="card-sub">Birden fazla seçenek işaretleyebilirsiniz. Bu bilgiler yalnızca kendimizi geliştirmek için kullanılır.</div>
+      <div id="nedenList">
+        <div class="opt" data-v="ucret"><div class="opt-box sq"></div><div class="opt-text">Ücret bütçemizin üzerinde kaldı</div></div>
+        <div class="opt" data-v="mesafe"><div class="opt-box sq"></div><div class="opt-text">Okulun konumu / mesafe uzak geldi</div></div>
+        <div class="opt" data-v="servis"><div class="opt-box sq"></div><div class="opt-text">Servis imkânları ihtiyacımızı karşılamadı</div></div>
+        <div class="opt" data-v="saat"><div class="opt-box sq"></div><div class="opt-text">Eğitim saatleri çalışma düzenimize uymadı</div></div>
+        <div class="opt" data-v="kontenjan"><div class="opt-box sq"></div><div class="opt-text">Sınıf mevcudu / kontenjan durumu</div></div>
+        <div class="opt" data-v="program"><div class="opt-box sq"></div><div class="opt-text">Eğitim programı beklentimizle örtüşmedi</div></div>
+        <div class="opt" data-v="bilgi"><div class="opt-box sq"></div><div class="opt-text">Yeterli bilgi alamadım / iletişim eksikti</div></div>
+        <div class="opt" data-v="aile"><div class="opt-box sq"></div><div class="opt-text">Ailevi durumumuz değişti (taşınma, iş vb.)</div></div>
+        <div class="opt" data-v="cocuk-hazir"><div class="opt-box sq"></div><div class="opt-text">Çocuğumuzun henüz hazır olmadığını düşündük</div></div>
+        <div class="opt" data-v="diger"><div class="opt-box sq"></div><div class="opt-text">Diğer</div></div>
+      </div>
+    </div>
+
+    <!-- 3. Serbest yazı -->
+    <div class="card">
+      <div class="card-title">Eklemek istedikleriniz</div>
+      <div class="card-sub">Bizimle paylaşmak istediğiniz her şeyi buraya yazabilirsiniz — bir öneri, bir eleştiri ya da sormak istediğiniz bir soru.</div>
+      <textarea id="mesajInput" placeholder="Düşüncelerinizi buraya yazabilirsiniz..."></textarea>
+    </div>
+
+    <!-- 4. Telefon -->
+    <div class="card">
+      <div class="card-title">Sizi arayabilir miyiz?</div>
+      <div class="card-sub">Sorularınızı yanıtlamak veya size özel bir çözüm sunabilmek için telefonla ulaşmak isteriz.</div>
+      <label class="fl" for="telInput">Telefon numaranız</label>
+      <input type="tel" id="telInput" placeholder="0555 123 45 67" maxlength="20">
+      <div class="hint">🔒 Numaranız yalnızca okul yönetimi tarafından görülür, üçüncü kişilerle paylaşılmaz. Bırakmak istemezseniz boş bırakabilirsiniz.</div>
+      <div style="margin-top:16px;">
+        <label class="fl" for="adInput">Adınız (isteğe bağlı)</label>
+        <input type="text" id="adInput" placeholder="Ad Soyad">
+      </div>
+    </div>
+
+    <button class="submit-btn" id="gonderBtn" onclick="gonder()">Görüşümü Gönder</button>
+
+    <div class="contact-box">
+      <strong>Bize doğrudan ulaşmak isterseniz</strong><br>
+      📞 <a href="tel:+902163935457">0216 393 54 57</a> &nbsp;·&nbsp; 💬 <a href="https://wa.me/905551035457" target="_blank">WhatsApp: 0555 103 54 57</a><br>
+      ✉️ <a href="mailto:eposta@bircicekkoleji.com">eposta@bircicekkoleji.com</a><br>
+      📍 Aydınlı Mah. Bahçeler Sk. No:45 Tuzla / İstanbul
+    </div>
+  </div>
+
+  <!-- TEŞEKKÜR -->
+  <div class="card thanks" id="tesekkur">
+    <div class="thanks-icon">🌸</div>
+    <h2>Teşekkür ederiz</h2>
+    <p>Görüşünüz bize ulaştı. Zaman ayırıp düşüncelerinizi paylaştığınız için minnettarız — her geri bildirim, çocuklar için daha iyi bir okul olma yolunda bize yol gösteriyor.</p>
+    <p id="aramaNotu" style="display:none; background:var(--sage-pale); border-radius:12px; padding:14px 18px; font-size:14px; color:var(--sage-dark);">📞 Telefon numaranızı bıraktınız — en kısa sürede sizi arayacağız.</p>
+    <div class="contact-box" style="text-align:left; margin-top:24px;">
+      <strong>Kapımız her zaman açık</strong><br>
+      Fikriniz değişirse ya da bir sorunuz olursa bize dilediğiniz zaman ulaşabilirsiniz.<br><br>
+      📞 <a href="tel:+902163935457">0216 393 54 57</a> &nbsp;·&nbsp; 💬 <a href="https://wa.me/905551035457" target="_blank">WhatsApp</a><br>
+      🌐 <a href="https://bircicekkoleji.com" target="_blank">bircicekkoleji.com</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script>
+// ═══ CONFIG ═══
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyARlqAoh-HRBC9xPwj7qRgG-IuZFSH39Uc",
+  authDomain: "bcka-site.firebaseapp.com",
+  projectId: "bcka-site",
+  storageBucket: "bcka-site.firebasestorage.app",
+  messagingSenderId: "1030548919351",
+  appId: "1:1030548919351:web:2e6bcbdcb1e4a19ff8a1c9"
+};
+const BREVO_PROXY_URL = "https://script.google.com/macros/s/AKfycbwUNvVhTCvxUKOMtbFJ4_UASBo8-sgT13qT_9tWeYKZR3IYaYKUhGdSaGgGaaqMaZLf/exec";
+const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
+
+var db = null;
+var secilenKarar = "";
+var secilenNedenler = [];
+
+// URL'den mail parametresi (mail linkinden gelenler için)
+var params = new URLSearchParams(window.location.search);
+var gelenMail = params.get("e") || params.get("mail") || "";
+var gelenAd = params.get("ad") || "";
+
+// ═══ FIREBASE ═══
+function initFirebase() {
+  if(typeof firebase === "undefined") { setTimeout(initFirebase, 300); return; }
+  try {
+    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+  } catch(e) { console.error("Firebase:", e); }
+}
+initFirebase();
+
+// ═══ SEÇİM ═══
+document.querySelectorAll("#kararList .opt").forEach(function(el){
+  el.onclick = function(){
+    document.querySelectorAll("#kararList .opt").forEach(function(o){ o.classList.remove("on"); });
+    el.classList.add("on");
+    secilenKarar = el.dataset.v;
+    // Olumlu karar verdiyse neden kartını yumuşat
+    var nk = document.getElementById("nedenKart");
+    if(secilenKarar === "dusunuyorum") {
+      nk.querySelector(".card-title").textContent = "Aklınıza takılan bir konu var mı?";
+      nk.querySelector(".card-sub").textContent = "Varsa işaretleyin, sizinle konuşurken bu konulara özellikle değinelim.";
+    } else {
+      nk.querySelector(".card-title").textContent = "Kararınızda hangi konular etkili oldu?";
+      nk.querySelector(".card-sub").textContent = "Birden fazla seçenek işaretleyebilirsiniz. Bu bilgiler yalnızca kendimizi geliştirmek için kullanılır.";
+    }
+  };
+});
+
+document.querySelectorAll("#nedenList .opt").forEach(function(el){
+  el.onclick = function(){
+    el.classList.toggle("on");
+    var v = el.dataset.v;
+    var i = secilenNedenler.indexOf(v);
+    if(i >= 0) secilenNedenler.splice(i, 1); else secilenNedenler.push(v);
+  };
+});
+
+// Ad parametresi geldiyse doldur
+if(gelenAd) { var ai = document.getElementById("adInput"); if(ai) ai.value = gelenAd; }
+
+// ═══ BREVO MAIL ═══
+async function brevoMail(opts) {
+  try {
+    await fetch(BREVO_PROXY_URL, {
+      method:"POST", mode:"no-cors",
+      headers:{ "Content-Type":"text/plain" },
+      body: JSON.stringify({
+        action:"sendMail",
+        to: opts.to, toName: opts.toName || "",
+        subject: opts.subject, htmlContent: opts.htmlContent,
+        replyTo: opts.replyTo || SCHOOL_EMAIL
+      })
+    });
+    return true;
+  } catch(e) { console.error("brevoMail:", e); return false; }
+}
+
+// ═══ GÖNDER ═══
+var NEDEN_ETIKET = {
+  ucret:"Ücret bütçenin üzerinde", mesafe:"Konum / mesafe uzak", servis:"Servis imkânları yetersiz",
+  saat:"Eğitim saatleri uymadı", kontenjan:"Sınıf mevcudu / kontenjan", program:"Eğitim programı beklentiyi karşılamadı",
+  bilgi:"Yeterli bilgi alamadı / iletişim eksik", aile:"Ailevi durum değişikliği",
+  "cocuk-hazir":"Çocuk henüz hazır değil", diger:"Diğer"
+};
+var KARAR_ETIKET = {
+  dusunuyorum:"✅ Kayıt yaptırmayı düşünüyor", kararsiz:"🤔 Henüz karar vermedi",
+  "baska-okul":"↗️ Başka okula karar verdi", gondermiyoruz:"🏠 Bu yıl göndermiyor"
+};
+
+async function gonder() {
+  var btn = document.getElementById("gonderBtn");
+  var mesaj = (document.getElementById("mesajInput").value || "").trim();
+  var tel = (document.getElementById("telInput").value || "").trim();
+  var ad = (document.getElementById("adInput").value || "").trim();
+
+  if(!secilenKarar) { toast("⚠️ Lütfen kararınızı seçin"); window.scrollTo({top:0, behavior:"smooth"}); return; }
+  if(tel) {
+    var rakam = tel.replace(/\D/g, "");
+    if(rakam.length < 10) { toast("⚠️ Telefon numarası eksik görünüyor"); document.getElementById("telInput").focus(); return; }
+  }
+
+  btn.disabled = true; btn.textContent = "Gönderiliyor...";
+
+  var kayit = {
+    karar: secilenKarar,
+    kararEtiket: KARAR_ETIKET[secilenKarar] || secilenKarar,
+    nedenler: secilenNedenler,
+    nedenEtiketler: secilenNedenler.map(function(n){ return NEDEN_ETIKET[n] || n; }),
+    mesaj: mesaj,
+    telefon: tel,
+    ad: ad,
+    email: gelenMail,
+    tarih: new Date().toISOString(),
+    kaynak: "geribildirim-formu"
+  };
+
+  // Firestore
+  try {
+    if(db) await db.collection("geribildirim").add(kayit);
+  } catch(e) { console.error("Firestore:", e); }
+
+  // İletişim bilgisi ayrıca kaydedilsin
+  try {
+    if(db && tel && gelenMail) {
+      await db.collection("iletisimBilgileri").doc(gelenMail.replace(/[^a-zA-Z0-9]/g, "_")).set({
+        email: gelenMail, telefon: tel, displayName: ad,
+        kaynak: "geribildirim", guncellemeTarihi: new Date().toISOString()
+      }, { merge:true });
+    }
+  } catch(e) { console.error("iletisim:", e); }
+
+  // Okula mail
+  try {
+    var nedenHtml = kayit.nedenEtiketler.length
+      ? kayit.nedenEtiketler.map(function(n){ return '<li style="margin-bottom:4px;">' + n + '</li>'; }).join("")
+      : '<li style="color:#999;">Neden belirtilmedi</li>';
+
+    var html =
+      '<div style="font-family:Arial,sans-serif;max-width:580px;margin:0 auto;color:#333;">' +
+        '<div style="background:#2A4D38;color:white;padding:18px 22px;border-radius:8px 8px 0 0;">' +
+          '<div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:0.7;">GERİ BİLDİRİM FORMU</div>' +
+          '<h2 style="margin:4px 0 0;font-size:18px;">💬 Veli Geri Bildirimi</h2>' +
+        '</div>' +
+        '<div style="padding:22px;background:white;border:1px solid #ddd;border-top:none;border-radius:0 0 8px 8px;">' +
+          '<div style="background:#EDF5F0;border-radius:10px;padding:14px 18px;margin-bottom:18px;">' +
+            '<div style="font-size:12px;color:#5A8F6E;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Kararı</div>' +
+            '<div style="font-size:17px;font-weight:700;color:#2A4D38;margin-top:4px;">' + kayit.kararEtiket + '</div>' +
+          '</div>' +
+          '<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:18px;">' +
+            (ad ? '<tr><td style="padding:7px 4px;color:#666;width:100px;">👤 Ad:</td><td style="padding:7px 4px;font-weight:600;">' + ad + '</td></tr>' : '') +
+            (gelenMail ? '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">✉️ E-posta:</td><td style="padding:7px 4px;border-top:1px solid #eee;"><a href="mailto:' + gelenMail + '" style="color:#2A4D38;">' + gelenMail + '</a></td></tr>' : '') +
+            (tel ? '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">📞 Telefon:</td><td style="padding:7px 4px;border-top:1px solid #eee;"><a href="tel:' + tel.replace(/\D/g,'') + '" style="color:#2A4D38;font-weight:700;font-size:15px;text-decoration:none;">' + tel + '</a></td></tr>' : '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">📞 Telefon:</td><td style="padding:7px 4px;border-top:1px solid #eee;color:#c00;">Bırakılmadı</td></tr>') +
+            '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">🕐 Tarih:</td><td style="padding:7px 4px;border-top:1px solid #eee;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
+          '</table>' +
+          '<div style="font-size:13px;font-weight:700;color:#2A4D38;margin-bottom:8px;">Belirtilen Konular</div>' +
+          '<ul style="font-size:13.5px;color:#555;padding-left:20px;margin-bottom:18px;line-height:1.7;">' + nedenHtml + '</ul>' +
+          (mesaj ?
+            '<div style="background:#FBF6E9;border-left:3px solid #B8962E;padding:14px 16px;border-radius:0 8px 8px 0;">' +
+              '<div style="font-size:12px;font-weight:700;color:#7A5E1A;margin-bottom:6px;">VELİNİN MESAJI</div>' +
+              '<div style="font-size:13.5px;color:#4A4A42;line-height:1.7;white-space:pre-wrap;">' + mesaj.replace(/</g,"&lt;") + '</div>' +
+            '</div>' : '') +
+          (tel ? '<div style="background:#EDF5F0;border-left:3px solid #3D6B4F;padding:11px 15px;margin-top:16px;font-size:12.5px;color:#2A4D38;line-height:1.55;">💡 Veli telefon numarası bıraktı — geri arama yapılabilir.</div>' : '') +
+        '</div>' +
+      '</div>';
+
+    await brevoMail({
+      to: SCHOOL_EMAIL,
+      toName: "Bir Çiçek Koleji Yönetim",
+      subject: "💬 Geri Bildirim — " + kayit.kararEtiket + (ad ? " · " + ad : ""),
+      htmlContent: html,
+      replyTo: gelenMail || SCHOOL_EMAIL
+    });
+  } catch(e) { console.error("mail:", e); }
+
+  // Teşekkür ekranı
+  document.getElementById("formAlan").style.display = "none";
+  var t = document.getElementById("tesekkur");
+  t.style.display = "block";
+  if(tel) document.getElementById("aramaNotu").style.display = "block";
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+// ═══ TOAST ═══
+function toast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 3500);
+}
+</script>
+</body>
+</html>
