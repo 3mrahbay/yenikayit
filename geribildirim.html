@@ -100,6 +100,55 @@ body {
 .opt-text { flex:1; font-size:14.5px; color:var(--text); line-height:1.5; }
 .opt-note { font-size:12.5px; color:var(--text-light); margin-top:2px; }
 
+/* Yeni branşlar kartı */
+.branslar-card {
+  background:linear-gradient(160deg, var(--sage-dark), var(--sage));
+  border-color:var(--sage-dark);
+}
+.branslar-card .card-title { color:#ffffff; }
+.branslar-card .card-sub { color:rgba(255,255,255,0.72); }
+.brans-badge {
+  display:inline-block; background:#F0D490; color:var(--sage-dark);
+  font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
+  padding:5px 13px; border-radius:50px;
+}
+.brans-opt {
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(255,255,255,0.18);
+}
+.brans-opt:hover { background:rgba(255,255,255,0.14); border-color:rgba(240,212,144,0.5); }
+.brans-opt.on { background:rgba(240,212,144,0.16); border-color:#F0D490; }
+.brans-opt .opt-box { border-color:rgba(255,255,255,0.4); }
+.brans-opt.on .opt-box { border-color:#F0D490; background:#F0D490; }
+.brans-opt.on .opt-box.sq::after { border-color:var(--sage-dark); }
+.brans-opt .opt-text { color:rgba(255,255,255,0.95); }
+.brans-opt .opt-text strong { color:#F0D490; font-size:15px; font-weight:700; }
+.brans-opt .opt-note { color:rgba(255,255,255,0.68); margin-top:4px; }
+.brans-note {
+  background:rgba(240,212,144,0.14); border:1px solid rgba(240,212,144,0.32);
+  border-radius:10px; padding:12px 16px; margin-top:14px;
+  font-size:13px; color:#F0D490; text-align:center; line-height:1.6;
+}
+.piyano-blok {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(240,212,144,0.4);
+  border-radius:14px; padding:16px 16px 14px; margin-top:16px;
+}
+.piyano-badge {
+  display:inline-block; background:rgba(240,212,144,0.2); color:#F0D490;
+  font-size:9.5px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase;
+  padding:4px 11px; border-radius:50px; margin-bottom:11px;
+}
+.piyano-opt { margin-bottom:0 !important; }
+.piyano-not {
+  font-size:11.5px; color:rgba(255,255,255,0.6); line-height:1.65;
+  margin-top:11px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.12);
+}
+.brans-mevcut {
+  font-size:12.5px; color:rgba(255,255,255,0.62); line-height:1.7;
+  margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.12);
+}
+
 /* Fields */
 label.fl { display:block; font-size:13px; font-weight:600; color:var(--text-mid); margin-bottom:7px; }
 input[type=tel], input[type=text], textarea {
@@ -184,24 +233,59 @@ textarea { min-height:130px; resize:vertical; line-height:1.65; }
     </div>
 
     <!-- 2. Nedenler -->
-    <div class="card" id="nedenKart">
-      <div class="card-title">Kararınızda hangi konular etkili oldu?</div>
-      <div class="card-sub">Birden fazla seçenek işaretleyebilirsiniz. Bu bilgiler yalnızca kendimizi geliştirmek için kullanılır.</div>
-      <div id="nedenList">
-        <div class="opt" data-v="ucret"><div class="opt-box sq"></div><div class="opt-text">Ücret bütçemizin üzerinde kaldı</div></div>
-        <div class="opt" data-v="mesafe"><div class="opt-box sq"></div><div class="opt-text">Okulun konumu / mesafe uzak geldi</div></div>
-        <div class="opt" data-v="servis"><div class="opt-box sq"></div><div class="opt-text">Servis imkânları ihtiyacımızı karşılamadı</div></div>
-        <div class="opt" data-v="saat"><div class="opt-box sq"></div><div class="opt-text">Eğitim saatleri çalışma düzenimize uymadı</div></div>
-        <div class="opt" data-v="kontenjan"><div class="opt-box sq"></div><div class="opt-text">Sınıf mevcudu / kontenjan durumu</div></div>
-        <div class="opt" data-v="program"><div class="opt-box sq"></div><div class="opt-text">Eğitim programı beklentimizle örtüşmedi</div></div>
-        <div class="opt" data-v="bilgi"><div class="opt-box sq"></div><div class="opt-text">Yeterli bilgi alamadım / iletişim eksikti</div></div>
-        <div class="opt" data-v="aile"><div class="opt-box sq"></div><div class="opt-text">Ailevi durumumuz değişti (taşınma, iş vb.)</div></div>
-        <div class="opt" data-v="cocuk-hazir"><div class="opt-box sq"></div><div class="opt-text">Çocuğumuzun henüz hazır olmadığını düşündük</div></div>
-        <div class="opt" data-v="diger"><div class="opt-box sq"></div><div class="opt-text">Diğer</div></div>
+    <div class="card" id="nedenKart" style="display:none;">
+      <div class="card-title" id="nedenBaslik">Kararınızda hangi konular etkili oldu?</div>
+      <div class="card-sub" id="nedenAltBaslik">Birden fazla seçenek işaretleyebilirsiniz.</div>
+      <div id="nedenList"></div>
+    </div>
+
+    <!-- 3. Yeni Branşlar -->
+    <div class="card branslar-card">
+      <div class="brans-badge">2026–2027 Yenilikleri</div>
+      <div class="card-title" style="margin-top:10px;">Eğitim Programımıza 4 Yeni Branş Ekliyoruz</div>
+      <div class="card-sub">Yeni dönemde çocuklarımızın gelişim yolculuğuna eklenen alanlar. İlgilendiğiniz branşları işaretlerseniz, sizinle konuşurken detaylarını paylaşırız.</div>
+
+      <div id="bransList">
+        <div class="opt brans-opt" data-v="kodlama">
+          <div class="opt-box sq"></div>
+          <div class="opt-text"><strong>💻 Kodlama &amp; Robotik</strong>
+            <div class="opt-note">Ekransız, oyun temelli algoritma çalışmalarıyla problem çözme ve mantıksal düşünme</div>
+          </div>
+        </div>
+        <div class="opt brans-opt" data-v="drama">
+          <div class="opt-box sq"></div>
+          <div class="opt-text"><strong>🎭 Drama</strong>
+            <div class="opt-note">Kendini ifade etme, öz güven, empati ve grup içinde iletişim</div>
+          </div>
+        </div>
+        <div class="opt brans-opt" data-v="jimnastik">
+          <div class="opt-box sq"></div>
+          <div class="opt-text"><strong>🤸 Jimnastik</strong>
+            <div class="opt-note">Denge, esneklik, beden farkındalığı ve büyük kas gelişimi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brans-note">✨ Yukarıdaki üç branş eğitim ücretine dahildir — ek ödeme yoktur.</div>
+
+      <!-- Piyano — özel program -->
+      <div class="piyano-blok">
+        <div class="piyano-badge">Özel Program · İsteğe Bağlı</div>
+        <div class="opt brans-opt piyano-opt" data-v="piyano">
+          <div class="opt-box sq"></div>
+          <div class="opt-text"><strong>🎹 Piyano Eğitimi</strong>
+            <div class="opt-note">Alanında uzman eğitmenimizle <strong style="color:rgba(255,255,255,0.9);font-size:inherit;">birebir</strong> yürütülen özel bir program. Her çocuk kendi temposunda ilerler; müzik kulağı, ritim duygusu ve düzenli çalışma alışkanlığı gelişir.</div>
+          </div>
+        </div>
+        <div class="piyano-not">Birebir yürütüldüğü için ayrı bir programa tabidir ve eğitim ücretine dahil değildir. İşaretlerseniz detayları sizinle paylaşırız.</div>
+      </div>
+
+      <div class="brans-mevcut">
+        <strong>Mevcut programımız:</strong> MACTE Onaylı Montessori · 3. Seviye Orman Okulu · Native Speaker İngilizce · Değerler Eğitimi · Ahşap Atölye
       </div>
     </div>
 
-    <!-- 3. Serbest yazı -->
+    <!-- 4. Serbest yazı -->
     <div class="card">
       <div class="card-title">Eklemek istedikleriniz</div>
       <div class="card-sub">Bizimle paylaşmak istediğiniz her şeyi buraya yazabilirsiniz — bir öneri, bir eleştiri ya da sormak istediğiniz bir soru.</div>
@@ -237,6 +321,7 @@ textarea { min-height:130px; resize:vertical; line-height:1.65; }
     <h2>Teşekkür ederiz</h2>
     <p>Görüşünüz bize ulaştı. Zaman ayırıp düşüncelerinizi paylaştığınız için minnettarız — her geri bildirim, çocuklar için daha iyi bir okul olma yolunda bize yol gösteriyor.</p>
     <p id="aramaNotu" style="display:none; background:var(--sage-pale); border-radius:12px; padding:14px 18px; font-size:14px; color:var(--sage-dark);">📞 Telefon numaranızı bıraktınız — en kısa sürede sizi arayacağız.</p>
+    <p id="bransNotu" style="display:none; background:var(--gold-pale); border:1px solid rgba(184,150,46,0.3); border-radius:12px; padding:14px 18px; font-size:14px; color:var(--earth);">✨ İşaretlediğiniz branşlar hakkında detaylı bilgiyi sizinle paylaşacağız.</p>
     <div class="contact-box" style="text-align:left; margin-top:24px;">
       <strong>Kapımız her zaman açık</strong><br>
       Fikriniz değişirse ya da bir sorunuz olursa bize dilediğiniz zaman ulaşabilirsiniz.<br><br>
@@ -267,6 +352,14 @@ const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
 var db = null;
 var secilenKarar = "";
 var secilenNedenler = [];
+var secilenBranslar = [];
+
+var BRANS_ETIKET = {
+  kodlama:"💻 Kodlama & Robotik",
+  drama:"🎭 Drama",
+  jimnastik:"🤸 Jimnastik",
+  piyano:"🎹 Piyano Eğitimi (özel program — ayrı ücretli)"
+};
 
 // URL'den mail parametresi (mail linkinden gelenler için)
 var params = new URLSearchParams(window.location.search);
@@ -283,30 +376,88 @@ function initFirebase() {
 }
 initFirebase();
 
+// ═══ SEÇENEK SETLERİ ═══
+// Olumsuz / kararsız → neden vazgeçildi
+var NEDEN_OLUMSUZ = [
+  { v:"ucret",       t:"Ücret bütçemizin üzerinde kaldı" },
+  { v:"mesafe",      t:"Okulun konumu / mesafe uzak geldi" },
+  { v:"ulasim",      t:"Ulaşım / getir-götür konusunda zorlanacağımızı düşündük" },
+  { v:"saat",        t:"Eğitim saatleri çalışma düzenimize uymadı" },
+  { v:"kontenjan",   t:"Sınıf mevcudu / kontenjan durumu" },
+  { v:"program",     t:"Eğitim programı beklentimizle örtüşmedi" },
+  { v:"bilgi",       t:"Yeterli bilgi alamadım / iletişim eksikti" },
+  { v:"aile",        t:"Ailevi durumumuz değişti (taşınma, iş vb.)" },
+  { v:"cocuk-hazir", t:"Çocuğumuzun henüz hazır olmadığını düşündük" },
+  { v:"diger",       t:"Diğer" }
+];
+// Olumlu → hangi konuda destek istiyor
+var NEDEN_OLUMLU = [
+  { v:"odeme-plani",   t:"Ödeme planı hakkında bilgi almak istiyorum", n:"Taksitler, peşin indirimi, ödeme yöntemleri" },
+  { v:"okul-gezisi",   t:"Okulu yerinde görmek / randevu almak istiyorum" },
+  { v:"program-bilgi", t:"Eğitim programı hakkında detay istiyorum", n:"Montessori, Orman Okulu, İngilizce, Değerler" },
+  { v:"uyum-sureci",   t:"Çocuğumun uyum süreci nasıl işliyor?" },
+  { v:"kontenjan-bilgi", t:"Kontenjan durumunu öğrenmek istiyorum" },
+  { v:"kayit-adim",    t:"Kayıt için sonraki adımları öğrenmek istiyorum" },
+  { v:"diger",         t:"Başka bir konu" }
+];
+
+function nedenListeCiz(set) {
+  var box = document.getElementById("nedenList");
+  box.innerHTML = set.map(function(o){
+    return '<div class="opt" data-v="' + o.v + '">' +
+             '<div class="opt-box sq"></div>' +
+             '<div class="opt-text">' + o.t +
+               (o.n ? '<div class="opt-note">' + o.n + '</div>' : '') +
+             '</div>' +
+           '</div>';
+  }).join("");
+  // Yeni elemanlara tıklama bağla
+  box.querySelectorAll(".opt").forEach(function(el){
+    el.onclick = function(){
+      el.classList.toggle("on");
+      var v = el.dataset.v;
+      var i = secilenNedenler.indexOf(v);
+      if(i >= 0) secilenNedenler.splice(i, 1); else secilenNedenler.push(v);
+    };
+  });
+}
+
 // ═══ SEÇİM ═══
 document.querySelectorAll("#kararList .opt").forEach(function(el){
   el.onclick = function(){
     document.querySelectorAll("#kararList .opt").forEach(function(o){ o.classList.remove("on"); });
     el.classList.add("on");
     secilenKarar = el.dataset.v;
-    // Olumlu karar verdiyse neden kartını yumuşat
-    var nk = document.getElementById("nedenKart");
+    secilenNedenler = [];   // karar değişince seçimleri sıfırla
+
+    var kart = document.getElementById("nedenKart");
+    var bas  = document.getElementById("nedenBaslik");
+    var alt  = document.getElementById("nedenAltBaslik");
+    kart.style.display = "block";
+
     if(secilenKarar === "dusunuyorum") {
-      nk.querySelector(".card-title").textContent = "Aklınıza takılan bir konu var mı?";
-      nk.querySelector(".card-sub").textContent = "Varsa işaretleyin, sizinle konuşurken bu konulara özellikle değinelim.";
+      bas.textContent = "Hangi konuda size yardımcı olabiliriz?";
+      alt.textContent = "İşaretlediğiniz konulara sizinle konuşurken özellikle değineceğiz.";
+      nedenListeCiz(NEDEN_OLUMLU);
+    } else if(secilenKarar === "kararsiz") {
+      bas.textContent = "Kararınızı neler etkiliyor?";
+      alt.textContent = "Tereddüt ettiğiniz konuları işaretlerseniz, size özel bir çözüm sunmaya çalışırız.";
+      nedenListeCiz(NEDEN_OLUMSUZ);
     } else {
-      nk.querySelector(".card-title").textContent = "Kararınızda hangi konular etkili oldu?";
-      nk.querySelector(".card-sub").textContent = "Birden fazla seçenek işaretleyebilirsiniz. Bu bilgiler yalnızca kendimizi geliştirmek için kullanılır.";
+      bas.textContent = "Kararınızda hangi konular etkili oldu?";
+      alt.textContent = "Birden fazla seçenek işaretleyebilirsiniz. Bu bilgiler yalnızca kendimizi geliştirmek için kullanılır.";
+      nedenListeCiz(NEDEN_OLUMSUZ);
     }
   };
 });
 
-document.querySelectorAll("#nedenList .opt").forEach(function(el){
+// ═══ BRANŞ SEÇİMİ ═══
+document.querySelectorAll(".brans-opt").forEach(function(el){
   el.onclick = function(){
     el.classList.toggle("on");
     var v = el.dataset.v;
-    var i = secilenNedenler.indexOf(v);
-    if(i >= 0) secilenNedenler.splice(i, 1); else secilenNedenler.push(v);
+    var i = secilenBranslar.indexOf(v);
+    if(i >= 0) secilenBranslar.splice(i, 1); else secilenBranslar.push(v);
   };
 });
 
@@ -332,10 +483,18 @@ async function brevoMail(opts) {
 
 // ═══ GÖNDER ═══
 var NEDEN_ETIKET = {
-  ucret:"Ücret bütçenin üzerinde", mesafe:"Konum / mesafe uzak", servis:"Servis imkânları yetersiz",
+  // Olumsuz / kararsız
+  ucret:"Ücret bütçenin üzerinde", mesafe:"Konum / mesafe uzak", ulasim:"Ulaşım / getir-götür zorluğu",
   saat:"Eğitim saatleri uymadı", kontenjan:"Sınıf mevcudu / kontenjan", program:"Eğitim programı beklentiyi karşılamadı",
   bilgi:"Yeterli bilgi alamadı / iletişim eksik", aile:"Ailevi durum değişikliği",
-  "cocuk-hazir":"Çocuk henüz hazır değil", diger:"Diğer"
+  "cocuk-hazir":"Çocuk henüz hazır değil", diger:"Diğer",
+  // Olumlu — talep edilen bilgi
+  "odeme-plani":"💰 Ödeme planı bilgisi istiyor",
+  "okul-gezisi":"🏫 Okulu görmek / randevu istiyor",
+  "program-bilgi":"📚 Eğitim programı detayı istiyor",
+  "uyum-sureci":"🤝 Uyum süreci hakkında bilgi istiyor",
+  "kontenjan-bilgi":"📋 Kontenjan durumunu soruyor",
+  "kayit-adim":"✍️ Kayıt adımlarını öğrenmek istiyor"
 };
 var KARAR_ETIKET = {
   dusunuyorum:"✅ Kayıt yaptırmayı düşünüyor", kararsiz:"🤔 Henüz karar vermedi",
@@ -361,6 +520,8 @@ async function gonder() {
     kararEtiket: KARAR_ETIKET[secilenKarar] || secilenKarar,
     nedenler: secilenNedenler,
     nedenEtiketler: secilenNedenler.map(function(n){ return NEDEN_ETIKET[n] || n; }),
+    ilgiBranslar: secilenBranslar,
+    ilgiBransEtiketler: secilenBranslar.map(function(b){ return BRANS_ETIKET[b] || b; }),
     mesaj: mesaj,
     telefon: tel,
     ad: ad,
@@ -407,8 +568,17 @@ async function gonder() {
             (tel ? '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">📞 Telefon:</td><td style="padding:7px 4px;border-top:1px solid #eee;"><a href="tel:' + tel.replace(/\D/g,'') + '" style="color:#2A4D38;font-weight:700;font-size:15px;text-decoration:none;">' + tel + '</a></td></tr>' : '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">📞 Telefon:</td><td style="padding:7px 4px;border-top:1px solid #eee;color:#c00;">Bırakılmadı</td></tr>') +
             '<tr><td style="padding:7px 4px;color:#666;border-top:1px solid #eee;">🕐 Tarih:</td><td style="padding:7px 4px;border-top:1px solid #eee;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
           '</table>' +
-          '<div style="font-size:13px;font-weight:700;color:#2A4D38;margin-bottom:8px;">Belirtilen Konular</div>' +
+          '<div style="font-size:13px;font-weight:700;color:#2A4D38;margin-bottom:8px;">' +
+            (secilenKarar === "dusunuyorum" ? "Bilgi İstediği Konular" : "Belirtilen Konular") +
+          '</div>' +
           '<ul style="font-size:13.5px;color:#555;padding-left:20px;margin-bottom:18px;line-height:1.7;">' + nedenHtml + '</ul>' +
+          (kayit.ilgiBransEtiketler.length ?
+            '<div style="background:#2A4D38;border-radius:10px;padding:14px 18px;margin-bottom:18px;">' +
+              '<div style="font-size:11px;color:#F0D490;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;margin-bottom:8px;">İlgi Duyduğu Yeni Branşlar</div>' +
+              '<div style="font-size:14px;color:#ffffff;line-height:1.8;">' +
+                kayit.ilgiBransEtiketler.join('<br>') +
+              '</div>' +
+            '</div>' : '') +
           (mesaj ?
             '<div style="background:#FBF6E9;border-left:3px solid #B8962E;padding:14px 16px;border-radius:0 8px 8px 0;">' +
               '<div style="font-size:12px;font-weight:700;color:#7A5E1A;margin-bottom:6px;">VELİNİN MESAJI</div>' +
@@ -432,6 +602,7 @@ async function gonder() {
   var t = document.getElementById("tesekkur");
   t.style.display = "block";
   if(tel) document.getElementById("aramaNotu").style.display = "block";
+  if(secilenBranslar.length) document.getElementById("bransNotu").style.display = "block";
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
