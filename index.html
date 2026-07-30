@@ -565,6 +565,80 @@ img, video, iframe {
   .price-countdown { gap:6px !important; }
   .price-cd-item { padding:6px 8px !important; }
 }
+
+/* ═══ ADIM GÖSTERGESİ ═══ */
+.adim { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+.adim-daire {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; font-weight:800; font-family:'Outfit',sans-serif;
+  background:var(--cream-warm); color:var(--text-light);
+  border:2px solid var(--border); transition:all 0.25s;
+}
+.adim-yazi {
+  font-size:11.5px; line-height:1.35; text-align:center;
+  color:var(--text-light); font-weight:600; transition:color 0.25s;
+}
+.adim-cizgi {
+  height:2px; background:var(--border); flex:0 0 auto;
+  width:28px; margin-top:17px; transition:background 0.25s;
+}
+.adim[data-durum="aktif"] .adim-daire {
+  background:var(--sage); color:white; border-color:var(--sage);
+  box-shadow:0 0 0 4px rgba(61,107,79,0.12);
+}
+.adim[data-durum="aktif"] .adim-yazi { color:var(--sage-dark); font-weight:700; }
+.adim[data-durum="tamam"] .adim-daire {
+  background:var(--sage-light); color:white; border-color:var(--sage-light);
+}
+.adim[data-durum="tamam"] .adim-daire::after { content:'✓'; }
+.adim[data-durum="tamam"] .adim-daire { font-size:0; }
+.adim[data-durum="tamam"] .adim-daire::after { font-size:16px; }
+.adim[data-durum="tamam"] .adim-yazi { color:var(--sage); }
+
+/* ═══ MODAL ═══ */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:2000;
+  background:rgba(30,40,34,0.6); backdrop-filter:blur(4px);
+  padding:24px; overflow-y:auto;
+  animation:modalFade 0.25s ease;
+}
+.modal-overlay.acik { display:flex; align-items:flex-start; justify-content:center; }
+@keyframes modalFade { from { opacity:0; } to { opacity:1; } }
+.modal-box {
+  background:var(--white); border-radius:22px;
+  max-width:620px; width:100%; margin:auto;
+  position:relative; box-shadow:0 24px 80px rgba(0,0,0,0.3);
+  animation:modalSlide 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes modalSlide { from { transform:translateY(24px) scale(0.97); opacity:0; } to { transform:none; opacity:1; } }
+.modal-kapat {
+  position:absolute; top:14px; right:14px; z-index:2;
+  width:34px; height:34px; border-radius:50%;
+  background:var(--cream-warm); border:1px solid var(--border);
+  color:var(--text-mid); font-size:15px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Outfit',sans-serif; transition:all 0.18s;
+}
+.modal-kapat:hover { background:var(--border); color:var(--text); }
+.modal-icerik { padding:34px 32px 28px; }
+.modal-devam-btn {
+  width:100%; margin-top:22px;
+  background:var(--sage); color:white; border:none;
+  border-radius:50px; padding:15px;
+  font-size:15.5px; font-weight:700; cursor:pointer;
+  font-family:'Outfit',sans-serif; transition:background 0.18s;
+}
+.modal-devam-btn:hover { background:var(--sage-dark); }
+
+@media (max-width:600px) {
+  .modal-overlay { padding:12px; }
+  .modal-icerik { padding:30px 20px 22px; }
+  .adim-yazi { font-size:10.5px; }
+  .adim-cizgi { width:16px; }
+  .adim-daire { width:32px; height:32px; font-size:14px; }
+}
+
 </style>
 </head>
 <body>
@@ -1059,40 +1133,61 @@ img, video, iframe {
       <div style="color:rgba(255,255,255,0.75); font-size:14px;" id="portalEmail">–</div>
     </div>
 
-    <!-- Kayıt Duyurusu -->
-    <div style="background:var(--white); border:1px solid var(--border); border-radius:20px; padding:32px 32px 28px; margin-bottom:20px;">
-      <div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--gold); font-weight:800; margin-bottom:10px;">📣 Kayıt Duyurusu</div>
-      <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:var(--sage-dark); margin-bottom:6px; line-height:1.25;">2026–2027 Eğitim Öğretim Yılı<br>Kayıt Duyurusu</div>
-      <div style="font-family:'Crimson Pro',serif; font-size:16px; font-style:italic; color:var(--sage); margin-bottom:22px;">Bir Çiçek'te büyüyen her çocuk, geleceğe sevgiyle hazırlanır…</div>
-
-      <div style="font-size:14px; line-height:1.8; color:var(--text-mid);">
-        <p style="margin-bottom:14px;"><strong style="color:var(--text);">Sevgili Ebeveynlerimiz,</strong></p>
-        <p style="margin-bottom:14px;">Bir çocuğun hayatında okul; yalnızca zaman geçirdiği bir yer değil, karakterinin şekillendiği, güven duygusunun beslendiği, merakının büyüdüğü ve hayata bakışının temellerinin atıldığı <strong style="color:var(--sage-dark);">çok kıymetli bir yaşam alanıdır.</strong></p>
-        <p style="margin-bottom:14px;">Bizler, çocuklarımızın yalnızca bugünkü ihtiyaçlarını değil; yarının güçlü, vicdanlı, özgüvenli ve mutlu bireyleri olmaları için ihtiyaç duyacakları tüm gelişim alanlarını önemseyen bir anlayışla yol alıyoruz.</p>
-        <p style="margin-bottom:14px;">Her eğitim yılında olduğu gibi, bu yıl da en büyük gayemiz; çocuklarımızın kendilerini değerli hissettikleri, sevgiyle büyüdükleri, doğayla bağ kurdukları, özgürce keşfettikleri ve iyi insan olmayı içselleştirdikleri bir eğitim ortamını sürdürebilmektir.</p>
-        <p style="margin-bottom:14px;">Bugün geldiğimiz noktada şunu gönül rahatlığıyla söyleyebilirim ki; <strong style="color:var(--sage-dark);">Bir Çiçek ailesi olarak yalnızca bir okul değil, çocukların en kıymetli gelişim yıllarına birlikte şahitlik eden güçlü bir eğitim kurumu olduk.</strong></p>
-        <p style="margin-bottom:0;">İşte tam da bu nedenle, çocuklarımızın bu güvenli ve nitelikli eğitim yolculuğuna aynı istikrarla devam edebilmesi adına, <strong>2026–2027 eğitim öğretim yılı avantajlı kayıt sürecimizi başlatmış bulunuyoruz.</strong></p>
-      </div>
-
-      <!-- Avantaj kutusu -->
-      <div style="background:linear-gradient(135deg, var(--gold-pale), #FEF9E8); border:1.5px solid rgba(184,150,46,0.35); border-radius:16px; padding:24px; margin-top:24px;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span style="font-size:24px;">🎯</span>
-          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--earth);">Avantajlı Ön Kayıt — 15 Mayıs 2026'ya kadar!</div>
+    <!-- ADIM GÖSTERGESİ -->
+    <div id="adimGosterge" style="background:var(--white); border:1px solid var(--border); border-radius:16px; padding:20px 22px; margin-bottom:16px;">
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-light); font-weight:700; margin-bottom:14px;">Kayıt Süreciniz</div>
+      <div style="display:flex; align-items:flex-start; gap:0;">
+        <div class="adim" id="adim1" data-durum="aktif">
+          <div class="adim-daire">1</div>
+          <div class="adim-yazi">Bilgileri<br>Girin</div>
         </div>
-        <div style="font-size:14px; line-height:1.75; color:var(--text-mid);">
-          <p style="margin-bottom:12px;">Eğitim kalitesinden ödün vermeden, ailelerimizin ekonomik planlamasını da hassasiyetle gözeten bir yaklaşım benimsemeye devam ediyoruz.</p>
-          <p style="margin-bottom:14px;">📋 Bildiğiniz üzere Milli Eğitim Bakanlığı'nın 2026–2027 eğitim ve öğretim dönemi için belirlediği artış oranı <strong>%43,92</strong>'dir. Ancak biz bu süreçte ailelerimize destek olabilmek adına, bu oranı <strong style="color:var(--gold); background:#FFF8D9; padding:2px 8px; border-radius:6px;">%28 artış</strong> ile sınırlandırma kararı aldık.</p>
-          <p style="margin-bottom:10px;"><strong style="color:var(--sage-dark);">Ödeme planlamamızı da ailelerimizin yaşam gerçekliğini dikkate alarak yapılandırdık:</strong></p>
-          <div style="background:rgba(255,255,255,0.6); border-radius:10px; padding:14px 16px; margin-bottom:14px;">
-            <div style="display:flex; gap:10px; margin-bottom:8px;"><span style="color:var(--sage);">•</span><span>I. dönem ödemeleri <strong>daha düşük seviyede</strong> planlanmıştır</span></div>
-            <div style="display:flex; gap:10px; margin-bottom:8px;"><span style="color:var(--sage);">•</span><span>II. dönem ödemeleri ise <strong>Ocak ayındaki maaş artış dönemleriyle</strong> daha uyumlu olacak şekilde düzenlenmiştir</span></div>
-            <div style="background:rgba(61,107,79,0.08); border-radius:8px; padding:10px 12px; margin-top:8px; font-size:13px; color:var(--sage-dark);"><strong>ℹ️ Önemli:</strong> Bu yapı, ödenecek <strong>toplam yıllık ücreti değiştirmez</strong> — sadece ailelerimizin nakit akışı planlamasına uygun olacak şekilde aylık taksitler düzenlenmiştir.</div>
-          </div>
-          <p style="margin-bottom:0; font-style:italic; color:var(--sage-dark);">Çünkü biz inanıyoruz ki; sağlıklı bir eğitim süreci, yalnızca çocukların değil, ailelerin de kendini güvende hissettiği bir yapı ile mümkün olur.</p>
+        <div class="adim-cizgi"></div>
+        <div class="adim" id="adim2">
+          <div class="adim-daire">2</div>
+          <div class="adim-yazi">Ödeme Planını<br>İnceleyin</div>
+        </div>
+        <div class="adim-cizgi"></div>
+        <div class="adim" id="adim3">
+          <div class="adim-daire">3</div>
+          <div class="adim-yazi">Başvuruyu<br>Gönderin</div>
         </div>
       </div>
     </div>
+
+    <!-- DUYURU AÇMA BUTONU -->
+    <div onclick="duyuruAc()" style="background:var(--gold-pale); border:1px solid rgba(184,150,46,0.3); border-radius:14px; padding:16px 20px; margin-bottom:16px; cursor:pointer; display:flex; align-items:center; gap:14px; transition:all 0.2s;" onmouseover="this.style.background='#F9F1DC'" onmouseout="this.style.background='var(--gold-pale)'">
+      <div style="font-size:24px;">📣</div>
+      <div style="flex:1;">
+        <div style="font-size:14.5px; font-weight:700; color:var(--earth); margin-bottom:2px;">2026–2027 Kayıt Duyurusu</div>
+        <div style="font-size:12.5px; color:var(--text-mid);">Ücret politikamız ve ödeme kolaylıklarımız hakkında bilgi</div>
+      </div>
+      <div style="color:var(--gold); font-size:20px;">›</div>
+    </div>
+
+    <!-- Telefon Kartı (henüz numara vermemişse görünür) -->
+    <div id="telefonKarti" style="display:none; background:var(--gold-pale); border:1.5px solid rgba(184,150,46,0.35); border-radius:16px; padding:24px; margin-bottom:16px;">
+      <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+        <div style="font-size:28px;">📞</div>
+        <div style="flex:1;">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:700; color:var(--earth); margin-bottom:4px;">Size Ulaşabilmemiz İçin</div>
+          <div style="font-size:13.5px; color:var(--text-mid); line-height:1.6;">Telefon numaranızı bırakırsanız, sorularınızı yanıtlamak ve size özel bilgilendirme yapmak için sizi arayabiliriz.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <input type="tel" id="portalTelInput" placeholder="0555 123 45 67" maxlength="20"
+          style="flex:1; min-width:180px; padding:13px 16px; border:1.5px solid var(--border); border-radius:12px; font-size:15px; font-family:'Outfit',sans-serif; background:white;">
+        <button onclick="telefonKaydet()" id="btnTelKaydet"
+          style="background:var(--gold); color:white; border:none; border-radius:12px; padding:13px 26px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;">Kaydet</button>
+      </div>
+      <div style="font-size:11.5px; color:var(--text-light); margin-top:10px;">🔒 Numaranız yalnızca okul yönetimi tarafından görülür, üçüncü kişilerle paylaşılmaz.</div>
+    </div>
+
+    <!-- Telefon kayıtlı bilgisi -->
+    <div id="telefonKayitli" style="display:none; background:var(--sage-pale); border:1px solid rgba(61,107,79,0.25); border-radius:12px; padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+      <div style="font-size:13.5px; color:var(--sage-dark);">📞 İletişim numaranız: <strong id="telefonGoster">–</strong></div>
+      <button onclick="telefonDuzenle()" style="background:transparent; border:1px solid var(--sage); color:var(--sage-dark); border-radius:50px; padding:6px 16px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif;">Düzenle</button>
+    </div>
+
     <div id="portalKartlar" style="display:flex; flex-direction:column; gap:14px;">
       <!-- JS ile doldurulacak -->
     </div>
@@ -1208,31 +1303,91 @@ img, video, iframe {
     <div class="form-subtitle"><span id="childAdDisplay">Çocuğunuz</span> için hazırlandı.</div>
 
     <div class="hesap-summary">
-      <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.6); margin-bottom:16px;">Özet</div>
-      <div class="hesap-row"><span>Kayıt Türü</span><span class="hesap-val" id="kayitTurDisplay">–</span></div>
+      <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.6); margin-bottom:16px;">Ödeme Planınız</div>
 
-      <!-- Aylık Baz Ücret ve içeriği (eğitim + yemek kırılımı) -->
-      <div class="hesap-row" style="align-items:flex-start; padding-top:14px; padding-bottom:8px; border-top:1px solid rgba(255,255,255,0.08);">
-        <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
-          <span style="font-weight:700;">Aylık Baz Ücret</span>
-          <div style="display:flex; flex-direction:column; gap:4px; padding-left:12px; border-left:2px solid rgba(255,255,255,0.15); margin-top:2px;">
-            <div style="display:flex; justify-content:space-between; font-size:13px; color:rgba(255,255,255,0.7);">
-              <span>↳ Eğitim Ücreti</span>
-              <span id="egitimDisplay">–</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:13px; color:rgba(255,255,255,0.7);">
-              <span>↳ Yemek Ücreti</span>
-              <span id="yemekDisplay">–</span>
-            </div>
-          </div>
-        </div>
-        <span class="hesap-val" id="aylikDisplay" style="font-size:20px; align-self:center;">–</span>
+      <!-- Kayıt türü -->
+      <div class="hesap-row" style="padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.1);">
+        <span style="font-size:14px; color:rgba(255,255,255,0.75);">Kayıt Türü</span>
+        <span class="hesap-val" id="kayitTurDisplay" style="font-size:15px;">–</span>
       </div>
 
-      <div class="hesap-row hesap-row-total"><span>Yıllık Toplam</span><span class="hesap-val" style="font-size:24px;" id="yillikDisplay">–</span></div>
-      <div class="hesap-row" style="background:rgba(240,212,144,0.15); border:1px dashed rgba(240,212,144,0.4); border-radius:10px; padding:12px 14px; margin-top:12px;">
-        <span style="color:#F0D490;">💰 Peşin Ödeme <span style="font-size:11px; background:#F0D490; color:var(--sage-dark); padding:2px 8px; border-radius:50px; margin-left:4px; font-weight:800;">%10 İNDİRİM</span></span>
-        <span class="hesap-val" id="pesinDisplay" style="color:#F0D490;">–</span>
+      <!-- ÖN ÖDEME -->
+      <div style="background:rgba(240,212,144,0.14); border:1px solid rgba(240,212,144,0.3); border-radius:12px; padding:16px 18px; margin-top:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#F0D490; font-weight:800; margin-bottom:3px;">1. Ön Ödeme</div>
+            <div style="font-size:12.5px; color:rgba(255,255,255,0.65);">Kayıt gününde</div>
+          </div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:#F0D490;" id="onOdemeOzet">–</div>
+        </div>
+      </div>
+
+      <!-- I. DÖNEM -->
+      <div style="background:rgba(255,255,255,0.07); border-radius:12px; padding:16px 18px; margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.85); font-weight:800; margin-bottom:3px;">2. I. Dönem</div>
+            <div style="font-size:12.5px; color:rgba(255,255,255,0.6);">Eylül – Ocak · 5 taksit</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white;" id="iDonemOzet">–</div>
+            <div style="font-size:11.5px; color:rgba(255,255,255,0.55);">her ay</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- II. DÖNEM -->
+      <div style="background:rgba(255,255,255,0.07); border-radius:12px; padding:16px 18px; margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.85); font-weight:800; margin-bottom:3px;">3. II. Dönem</div>
+            <div style="font-size:12.5px; color:rgba(255,255,255,0.6);">Şubat – Haziran · 5 taksit</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white;" id="iiDonemOzet">–</div>
+            <div style="font-size:11.5px; color:rgba(255,255,255,0.55);">her ay</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bilgi notu -->
+      <div style="font-size:12px; color:rgba(255,255,255,0.6); line-height:1.65; margin-top:14px; padding:0 4px;">
+        ℹ️ I. dönem taksitleri daha düşük planlanmıştır; II. dönem Ocak maaş artışlarıyla uyumludur. <strong style="color:rgba(255,255,255,0.8);">Toplam ücret değişmez.</strong>
+      </div>
+
+      <!-- PEŞİN ÖDEME -->
+      <div style="background:rgba(240,212,144,0.1); border:1px dashed rgba(240,212,144,0.4); border-radius:12px; padding:14px 18px; margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <span style="color:#F0D490; font-size:14px; font-weight:700;">💰 Peşin Ödeme</span>
+          <span style="font-size:10.5px; background:#F0D490; color:var(--sage-dark); padding:3px 9px; border-radius:50px; margin-left:6px; font-weight:800;">%10 İNDİRİM</span>
+        </div>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:#F0D490;" id="pesinDisplay">–</span>
+      </div>
+
+      <!-- Detaylar (katlanabilir) -->
+      <div style="margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
+        <div onclick="detayAcKapat()" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-size:13px; color:rgba(255,255,255,0.7);">
+          <span>Ücret detaylarını göster</span>
+          <span id="detayOk" style="font-size:15px; transition:transform 0.25s;">⌄</span>
+        </div>
+        <div id="detayIcerik" style="display:none; margin-top:14px;">
+          <div class="hesap-row" style="font-size:13.5px; padding:7px 0;">
+            <span style="color:rgba(255,255,255,0.7);">Aylık Baz Ücret</span>
+            <span class="hesap-val" id="aylikDisplay" style="font-size:15px;">–</span>
+          </div>
+          <div class="hesap-row" style="font-size:13px; padding:5px 0 5px 14px; border-left:2px solid rgba(255,255,255,0.15); margin-left:2px;">
+            <span style="color:rgba(255,255,255,0.55);">↳ Eğitim Ücreti</span>
+            <span style="color:rgba(255,255,255,0.7);" id="egitimDisplay">–</span>
+          </div>
+          <div class="hesap-row" style="font-size:13px; padding:5px 0 5px 14px; border-left:2px solid rgba(255,255,255,0.15); margin-left:2px;">
+            <span style="color:rgba(255,255,255,0.55);">↳ Yemek Ücreti</span>
+            <span style="color:rgba(255,255,255,0.7);" id="yemekDisplay">–</span>
+          </div>
+          <div class="hesap-row" style="font-size:13.5px; padding:10px 0 0; margin-top:8px; border-top:1px solid rgba(255,255,255,0.08);">
+            <span style="color:rgba(255,255,255,0.7);">Yıllık Toplam <span style="font-size:11px; color:rgba(255,255,255,0.45);">(10 taksit)</span></span>
+            <span class="hesap-val" id="yillikDisplay" style="font-size:16px;">–</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1605,14 +1760,18 @@ function onLogin(u) {
   goToScreen("screen-portal");
   // Başvuru durumunu kontrol et ve portal kartlarını güncelle
   checkBasvuruDurumu(u.uid);
+  // Telefon numarası durumunu kontrol et
+  telefonDurumKontrol(u.uid);
   // Giriş sonrası önce en üste scroll, sonra portal kart'a kaydır
   setTimeout(function(){
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, 150);
+  // İlk kez giriyorsa kayıt duyurusunu otomatik göster
   setTimeout(function(){
-    var pk = document.getElementById("portalKartlar");
-    if(pk) pk.scrollIntoView({ behavior:"smooth", block:"center" });
-  }, 900);
+    var goruldu = false;
+    try { goruldu = localStorage.getItem("duyuruGoruldu") === "1"; } catch(e) {}
+    if(!goruldu) duyuruAc();
+  }, 700);
   // Referans avantaj metinlerini aç (login olan görür)
   document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="none"; });
   document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="inline"; });
@@ -1624,61 +1783,78 @@ function checkBasvuruDurumu(uid) {
   db.collection("yenikayit").doc(uid).get().then(function(snap) {
     var kartlar = document.getElementById("portalKartlar");
     if(!kartlar) return;
+
     if(snap.exists) {
-      // Daha önce başvuru yapılmış
+      // ══ BAŞVURU VAR — Adım 3 tamamlandı ══
+      adimGuncelle(3);
       var d = snap.data();
-      var durumRenk = d.durum === "onaylandi" ? "var(--sage)" : d.durum === "reddedildi" ? "#dc2626" : "var(--gold)";
-      var durumYazi = d.durum === "onaylandi" ? "✅ Onaylandı" : d.durum === "reddedildi" ? "❌ Reddedildi" : "⏳ İnceleniyor";
-      var cocukAdi = (d.childAd || "") + " " + (d.childSoyad || "");
-      var program = d.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
-      kartlar.innerHTML = `
-        <div style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px;">
-          <div style="display:flex; align-items:flex-start; gap:16px; margin-bottom:20px;">
-            <div style="font-size:36px;">🌸</div>
-            <div style="flex:1;">
-              <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Başvurunuz Alındı</div>
-              <div style="font-size:13px; color:var(--text-light);">Başvuru bilgileriniz aşağıda görünmektedir.</div>
-            </div>
-            <div style="background:var(--sage-pale); color:var(--sage-dark); padding:6px 14px; border-radius:50px; font-size:12px; font-weight:700;">${durumYazi}</div>
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:var(--cream); border-radius:12px; padding:16px;">
-            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Çocuk</div><div style="font-size:14px; font-weight:700; color:var(--text);">${cocukAdi}</div></div>
-            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Program</div><div style="font-size:14px; font-weight:700; color:var(--text);">${program}</div></div>
-            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Kayıt Türü</div><div style="font-size:14px; font-weight:700; color:var(--text);">${d.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : d.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt"}</div></div>
-            <div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Durum</div><div style="font-size:14px; font-weight:700;" style="color:${durumRenk};">${durumYazi}</div></div>
-          </div>
-          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-            <button onclick="basvuruGuncelle()" style="background:var(--sage); color:white; border:none; border-radius:50px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif;">📄 Ödeme Planımı Gör</button>
-            <a href="https://wa.me/905551035457" target="_blank" style="background:var(--cream-warm); border:1px solid var(--border); color:var(--text-mid); border-radius:50px; padding:10px 20px; font-size:13px; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px;">💬 Okul ile İletişim</a>
-          </div>
-        </div>`;
+      var durumYazi = d.durum === "onaylandi" ? "Onaylandı" : d.durum === "reddedildi" ? "Reddedildi" : "İnceleniyor";
+      var durumIkon = d.durum === "onaylandi" ? "✅" : d.durum === "reddedildi" ? "❌" : "⏳";
+      var durumBg   = d.durum === "onaylandi" ? "var(--sage-pale)" : d.durum === "reddedildi" ? "#FDEAEA" : "var(--gold-pale)";
+      var durumRenk = d.durum === "onaylandi" ? "var(--sage-dark)" : d.durum === "reddedildi" ? "#B91C1C" : "var(--earth)";
+      var cocukAdi = ((d.childAd || "") + " " + (d.childSoyad || "")).trim();
+      var program  = d.program === "tam" ? "Tam Gün (08:00-18:00)" : "Yarım Gün (08:00-13:00)";
+      var turAd    = d.kayitTur === "onkayit" ? "Avantajlı Ön Kayıt" : d.kayitTur === "erken" ? "Erken Kayıt" : "Normal Kayıt";
+
+      kartlar.innerHTML =
+        '<div style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:26px;">' +
+          '<div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">' +
+            '<div style="font-size:32px;">🌸</div>' +
+            '<div style="flex:1;">' +
+              '<div style="font-family:\'Cormorant Garamond\',serif; font-size:21px; font-weight:700; color:var(--sage-dark);">Başvurunuz Alındı</div>' +
+              '<div style="font-size:13px; color:var(--text-light);">1–2 iş günü içinde sizi arayacağız</div>' +
+            '</div>' +
+            '<div style="background:' + durumBg + '; color:' + durumRenk + '; padding:7px 15px; border-radius:50px; font-size:12.5px; font-weight:700; white-space:nowrap;">' + durumIkon + ' ' + durumYazi + '</div>' +
+          '</div>' +
+          '<div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; background:var(--cream); border-radius:12px; padding:16px 18px;">' +
+            '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Çocuk</div><div style="font-size:14.5px; font-weight:700;">' + cocukAdi + '</div></div>' +
+            '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Program</div><div style="font-size:14.5px; font-weight:700;">' + program + '</div></div>' +
+            '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Kayıt Türü</div><div style="font-size:14.5px; font-weight:700;">' + turAd + '</div></div>' +
+            '<div><div style="font-size:11px; color:var(--text-light); margin-bottom:3px;">Aylık Ücret</div><div style="font-size:14.5px; font-weight:700; color:var(--sage-dark);">' + fmt(d.aylikUcret || 0) + ' TL</div></div>' +
+          '</div>' +
+          '<button onclick="basvuruGuncelle()" style="width:100%; margin-top:16px; background:var(--sage); color:white; border:none; border-radius:50px; padding:15px; font-size:15px; font-weight:700; cursor:pointer; font-family:\'Outfit\',sans-serif;">📄 Ödeme Planımı Görüntüle</button>' +
+          '<div style="display:flex; gap:10px; margin-top:10px;">' +
+            '<a href="https://wa.me/905551035457" target="_blank" style="flex:1; text-align:center; background:var(--cream-warm); border:1px solid var(--border); color:var(--text-mid); border-radius:50px; padding:11px; font-size:13px; font-weight:600; text-decoration:none;">💬 Soru Sor</a>' +
+            '<a href="' + RANDEVU_LINKS.yuzyuze + '" target="_blank" style="flex:1; text-align:center; background:var(--cream-warm); border:1px solid var(--border); color:var(--text-mid); border-radius:50px; padding:11px; font-size:13px; font-weight:600; text-decoration:none;">📅 Randevu Al</a>' +
+          '</div>' +
+        '</div>';
+
     } else {
-      // İlk kez başvuracak
-      kartlar.innerHTML = `
-        <div onclick="goToScreen('screen-form')" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer; display:flex; align-items:center; gap:20px; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-          <div style="font-size:36px;">📋</div>
-          <div>
-            <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>
-            <div style="font-size:13px; color:var(--text-light);">Çocuğunuzun bilgilerini girin, ödeme planınızı görün.</div>
-          </div>
-          <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
-        </div>`;
+      // ══ BAŞVURU YOK — Adım 1 ══
+      adimGuncelle(1);
+      kartlar.innerHTML =
+        '<div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); border-radius:var(--radius); padding:30px 26px; color:white;">' +
+          '<div style="font-size:34px; margin-bottom:12px;">📋</div>' +
+          '<div style="font-family:\'Cormorant Garamond\',serif; font-size:24px; font-weight:700; margin-bottom:8px; line-height:1.25;">Ön Kayıt Başvurusuna<br>Başlayalım</div>' +
+          '<div style="font-size:14px; color:rgba(255,255,255,0.82); line-height:1.7; margin-bottom:20px;">Çocuğunuzun bilgilerini girin, size özel ödeme planınızı anında görün. Yaklaşık 2 dakika sürer.</div>' +
+          '<button onclick="basvuruyaBasla()" style="width:100%; background:#F0D490; color:var(--sage-dark); border:none; border-radius:50px; padding:16px; font-size:16px; font-weight:800; cursor:pointer; font-family:\'Outfit\',sans-serif;">Başvuruya Başla →</button>' +
+          '<div style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:14px; text-align:center;">🔒 Bilgileriniz yalnızca okul yönetimi tarafından görülür</div>' +
+        '</div>' +
+        '<div style="display:flex; gap:10px;">' +
+          '<a href="' + RANDEVU_LINKS.yuzyuze + '" target="_blank" style="flex:1; text-align:center; background:var(--white); border:1px solid var(--border); color:var(--text-mid); border-radius:14px; padding:14px 12px; font-size:13px; font-weight:600; text-decoration:none;">📅 Önce Okulu<br>Görmek İsterim</a>' +
+          '<a href="https://wa.me/905551035457" target="_blank" style="flex:1; text-align:center; background:var(--white); border:1px solid var(--border); color:var(--text-mid); border-radius:14px; padding:14px 12px; font-size:13px; font-weight:600; text-decoration:none;">💬 Sorum Var<br>Yazmak İsterim</a>' +
+        '</div>';
     }
   }).catch(function(e) {
     console.error("Başvuru kontrol hatası:", e);
-    // Hata olursa varsayılan başvuru kartını göster
+    adimGuncelle(1);
     var kartlar = document.getElementById("portalKartlar");
-    if(kartlar) kartlar.innerHTML = `
-      <div onclick="goToScreen('screen-form')" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer; display:flex; align-items:center; gap:20px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-        <div style="font-size:36px;">📋</div>
-        <div>
-          <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>
-          <div style="font-size:13px; color:var(--text-light);">Çocuğunuzun bilgilerini girin, ödeme planınızı görün.</div>
-        </div>
-        <div style="margin-left:auto; color:var(--sage); font-size:22px;">→</div>
-      </div>`;
+    if(kartlar) kartlar.innerHTML =
+      '<div onclick="basvuruyaBasla()" style="background:var(--white); border:2px solid var(--sage); border-radius:var(--radius); padding:28px; cursor:pointer;">' +
+        '<div style="font-size:32px; margin-bottom:10px;">📋</div>' +
+        '<div style="font-family:\'Cormorant Garamond\',serif; font-size:21px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>' +
+        '<div style="font-size:13.5px; color:var(--text-light);">Başlamak için tıklayın</div>' +
+      '</div>';
   });
 }
+
+// ═══ BAŞVURUYA BAŞLA (form ekranına geç) ═══
+function basvuruyaBasla() {
+  adimGuncelle(1);
+  goToScreen("screen-form");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 
 // ═══ 8. FORM LOGIC ═══
 function kayitDonemKapali(donemAdi, sonTarih) {
@@ -1738,6 +1914,7 @@ function goToHesaplama() {
   appState2.refliGeliyor = !!(refGiris && refGiris.startsWith("BCK-") && refGiris.length>=7);
   appState2.hesap = hesaplaYeni(appState2.kayitTur, appState2.program);
   renderHesaplama2();
+  adimGuncelle(2);
   goToScreen("screen-hesaplama");
 }
 function renderHesaplama2() {
@@ -1753,6 +1930,10 @@ function renderHesaplama2() {
   if(s("yemekDisplay")) s("yemekDisplay").textContent = fmt(h.yemek)+" TL";
   if(s("yillikDisplay")) s("yillikDisplay").textContent = fmt(h.yillik)+" TL";
   if(s("pesinDisplay")) s("pesinDisplay").textContent = fmt(Math.round(h.yillik * 0.9))+" TL";
+  // Yeni özet kartları
+  if(s("onOdemeOzet"))  s("onOdemeOzet").textContent  = fmt(h.onOdeme) + " TL";
+  if(s("iDonemOzet"))   s("iDonemOzet").textContent   = fmt(h.iAylik) + " TL";
+  if(s("iiDonemOzet"))  s("iiDonemOzet").textContent  = fmt(h.iiAylik) + " TL";
   if(s("onOdemeDisplay")) s("onOdemeDisplay").innerHTML = '<span class="tutar-gold">'+fmt(h.onOdeme)+' TL</span>';
   function renderRows(containerId, rows) {
     var cont = s(containerId); if(!cont) return;
@@ -1830,11 +2011,24 @@ function copyRefKod() {
 
 // ═══ 12. GİRİŞ TAKİBİ ═══
 async function logGiris2(u) {
-  // 1) Firestore'a giriş kaydı ekle
+  // 1) Firestore'a giriş kaydı ekle (varsa telefon ile birlikte)
+  var mevcutTel = "";
+  try {
+    var basvuru = await db.collection("yenikayit").doc(u.uid).get();
+    if(basvuru.exists && basvuru.data().phone) {
+      mevcutTel = basvuru.data().phone;
+    } else {
+      var iletisim = await db.collection("iletisimBilgileri").doc(u.uid).get();
+      if(iletisim.exists && iletisim.data().telefon) mevcutTel = iletisim.data().telefon;
+    }
+  } catch(e) { /* sessiz */ }
+
   try {
     await db.collection("girisler").add({
+      uid: u.uid,
       email: u.email,
       displayName: u.displayName || "",
+      telefon: mevcutTel,
       girisZamani: new Date().toISOString(),
       sistem: "yenikayit"
     });
@@ -1862,6 +2056,8 @@ async function logGiris2(u) {
               '<td style="padding:8px 4px;font-weight:600;">' + (u.displayName || '–') + '</td></tr>' +
             '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">✉️ E-posta:</td>' +
               '<td style="padding:8px 4px;border-top:1px solid #eee;"><a href="mailto:' + u.email + '" style="color:#2A4D38;font-weight:600;text-decoration:none;">' + u.email + '</a></td></tr>' +
+            '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">📞 Telefon:</td>' +
+              '<td style="padding:8px 4px;border-top:1px solid #eee;">' + (mevcutTel ? '<a href="tel:' + mevcutTel.replace(/\D/g,'') + '" style="color:#2A4D38;font-weight:700;text-decoration:none;">' + mevcutTel + '</a>' : '<span style="color:#c00;">Henüz verilmedi</span>') + '</td></tr>' +
             '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">🕐 Tarih/Saat:</td>' +
               '<td style="padding:8px 4px;border-top:1px solid #eee;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
             '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">📱 Sistem:</td>' +
@@ -2165,6 +2361,122 @@ function reinitSlider() { applySlider(); buildDots(); }
 
 
 
+
+// ═══ TELEFON KAYIT / GÖSTER ═══
+async function telefonDurumKontrol(uid) {
+  var kart = document.getElementById("telefonKarti");
+  var kayitli = document.getElementById("telefonKayitli");
+  if(!kart || !kayitli) return;
+  try {
+    // Önce başvuru kaydında telefon var mı bak
+    var basvuru = await db.collection("yenikayit").doc(uid).get();
+    var tel = "";
+    if(basvuru.exists && basvuru.data().phone) {
+      tel = basvuru.data().phone;
+    } else {
+      // Başvuru yoksa iletisim koleksiyonuna bak
+      var iletisim = await db.collection("iletisimBilgileri").doc(uid).get();
+      if(iletisim.exists && iletisim.data().telefon) tel = iletisim.data().telefon;
+    }
+    if(tel) {
+      kart.style.display = "none";
+      kayitli.style.display = "flex";
+      var g = document.getElementById("telefonGoster");
+      if(g) g.textContent = tel;
+    } else {
+      kart.style.display = "block";
+      kayitli.style.display = "none";
+    }
+  } catch(e) {
+    console.log("telefonDurumKontrol:", e);
+    kart.style.display = "block";
+    kayitli.style.display = "none";
+  }
+}
+
+async function telefonKaydet() {
+  var input = document.getElementById("portalTelInput");
+  var btn = document.getElementById("btnTelKaydet");
+  if(!input || !currentUser) return;
+  var tel = (input.value || "").trim();
+  // Basit doğrulama: en az 10 rakam
+  var rakam = tel.replace(/\D/g, "");
+  if(rakam.length < 10) {
+    showToast("⚠️ Lütfen geçerli bir telefon numarası girin");
+    input.focus();
+    return;
+  }
+  if(btn) { btn.disabled = true; btn.textContent = "Kaydediliyor..."; }
+  try {
+    // iletisimBilgileri koleksiyonuna yaz
+    await db.collection("iletisimBilgileri").doc(currentUser.uid).set({
+      uid: currentUser.uid,
+      email: currentUser.email,
+      displayName: currentUser.displayName || "",
+      telefon: tel,
+      kaynak: "yenikayit-portal",
+      guncellemeTarihi: new Date().toISOString()
+    }, { merge: true });
+
+    // Başvuru varsa oradaki phone alanını da güncelle
+    try {
+      var basvuru = await db.collection("yenikayit").doc(currentUser.uid).get();
+      if(basvuru.exists) {
+        await db.collection("yenikayit").doc(currentUser.uid).update({ phone: tel });
+      }
+    } catch(e) { console.log("basvuru phone guncelleme:", e); }
+
+    // Form alanına da yaz (başvuru yaparsa hazır gelsin)
+    var formTel = document.getElementById("veliTel");
+    if(formTel && !formTel.value) formTel.value = tel;
+
+    showToast("✅ Telefon numaranız kaydedildi");
+    await telefonDurumKontrol(currentUser.uid);
+
+    // Okula bildirim maili
+    try {
+      await brevoMail({
+        to: SCHOOL_EMAIL,
+        toName: "Bir Çiçek Koleji Yönetim",
+        subject: "📞 Veli İletişim Numarası — " + (currentUser.displayName || currentUser.email),
+        htmlContent:
+          '<div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#333;">' +
+            '<div style="background:#B8962E;color:white;padding:16px 20px;border-radius:8px 8px 0 0;">' +
+              '<h2 style="margin:0;font-size:17px;">📞 Veli Telefon Numarası Bıraktı</h2>' +
+            '</div>' +
+            '<div style="padding:20px;background:white;border:1px solid #ddd;border-top:none;border-radius:0 0 8px 8px;">' +
+              '<table style="width:100%;border-collapse:collapse;font-size:13.5px;">' +
+                '<tr><td style="padding:8px 4px;color:#666;width:110px;">👤 Ad Soyad:</td><td style="padding:8px 4px;font-weight:600;">' + (currentUser.displayName || '–') + '</td></tr>' +
+                '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">📞 Telefon:</td><td style="padding:8px 4px;border-top:1px solid #eee;"><a href="tel:' + rakam + '" style="color:#2A4D38;font-weight:700;font-size:15px;text-decoration:none;">' + tel + '</a></td></tr>' +
+                '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">✉️ E-posta:</td><td style="padding:8px 4px;border-top:1px solid #eee;"><a href="mailto:' + currentUser.email + '" style="color:#2A4D38;">' + currentUser.email + '</a></td></tr>' +
+                '<tr><td style="padding:8px 4px;color:#666;border-top:1px solid #eee;">🕐 Tarih:</td><td style="padding:8px 4px;border-top:1px solid #eee;">' + new Date().toLocaleString("tr-TR") + '</td></tr>' +
+              '</table>' +
+              '<div style="background:#EDF5F0;border-left:3px solid #3D6B4F;padding:10px 14px;margin-top:16px;font-size:12.5px;color:#2A4D38;line-height:1.55;">' +
+                '💡 Veli sizinle iletişime geçilmesini bekliyor. Uygun bir zamanda arayabilirsiniz.' +
+              '</div>' +
+            '</div>' +
+          '</div>',
+        replyTo: currentUser.email
+      });
+    } catch(e) { console.log("telefon mail:", e); }
+
+  } catch(e) {
+    console.error("telefonKaydet:", e);
+    showToast("⚠️ Kayıt hatası: " + (e.message || "bilinmeyen"));
+  }
+  if(btn) { btn.disabled = false; btn.textContent = "Kaydet"; }
+}
+
+function telefonDuzenle() {
+  var kart = document.getElementById("telefonKarti");
+  var kayitli = document.getElementById("telefonKayitli");
+  var goster = document.getElementById("telefonGoster");
+  var input = document.getElementById("portalTelInput");
+  if(kart) kart.style.display = "block";
+  if(kayitli) kayitli.style.display = "none";
+  if(input && goster) { input.value = goster.textContent; input.focus(); }
+}
+
 // ═══ MEVCUT BAŞVURUYU YÜKLEYİP HESAPLAMA EKRANINA GİT ═══
 function basvuruGuncelle() {
   if(!currentUser) return;
@@ -2203,6 +2515,7 @@ function basvuruGuncelle() {
     // Kullanıcı bilgilerini hesaplama başlığına yaz
     var el = document.getElementById("childAdDisplay");
     if(el) el.textContent = (d.childAd||"") + " " + (d.childSoyad||"");
+    adimGuncelle(2);
     goToScreen("screen-hesaplama");
     showToast("✅ Mevcut başvurunuz yüklendi");
   }).catch(function(e) {
@@ -2211,6 +2524,50 @@ function basvuruGuncelle() {
   });
 }
 
+
+
+
+// ═══ ÜCRET DETAYLARI AÇ/KAPAT ═══
+function detayAcKapat() {
+  var ic = document.getElementById("detayIcerik");
+  var ok = document.getElementById("detayOk");
+  if(!ic) return;
+  var acik = ic.style.display !== "none";
+  ic.style.display = acik ? "none" : "block";
+  if(ok) ok.style.transform = acik ? "none" : "rotate(180deg)";
+}
+
+// ═══ KAYIT DUYURUSU MODAL ═══
+function duyuruAc() {
+  var m = document.getElementById("duyuruModal");
+  if(m) { m.classList.add("acik"); document.body.style.overflow = "hidden"; }
+}
+function duyuruKapat() {
+  var m = document.getElementById("duyuruModal");
+  if(m) { m.classList.remove("acik"); document.body.style.overflow = ""; }
+  try { localStorage.setItem("duyuruGoruldu", "1"); } catch(e) {}
+}
+// ESC ile kapat
+document.addEventListener("keydown", function(e) {
+  if(e.key === "Escape") duyuruKapat();
+});
+
+// ═══ ADIM GÖSTERGESİ ═══
+// asama: 1 = bilgi girişi, 2 = ödeme planı, 3 = gönderildi
+function adimGuncelle(asama) {
+  for(var i = 1; i <= 3; i++) {
+    var el = document.getElementById("adim" + i);
+    if(!el) continue;
+    if(i < asama)       el.setAttribute("data-durum", "tamam");
+    else if(i === asama) el.setAttribute("data-durum", "aktif");
+    else                 el.removeAttribute("data-durum");
+  }
+  // Çizgileri boya
+  var cizgiler = document.querySelectorAll(".adim-cizgi");
+  cizgiler.forEach(function(cz, idx) {
+    cz.style.background = (idx + 1) < asama ? "var(--sage-light)" : "var(--border)";
+  });
+}
 
 // ═══ NAVBAR CTA — GİRİŞ YAP / HESABIM ═══
 function navCtaClick() {
@@ -2395,5 +2752,46 @@ window.addEventListener("load", function(){
 });
 window.addEventListener("resize", reinitSlider);
 </script>
+
+<!-- ═══ KAYIT DUYURUSU MODAL ═══ -->
+<div id="duyuruModal" class="modal-overlay" onclick="if(event.target===this) duyuruKapat()">
+  <div class="modal-box">
+    <button class="modal-kapat" onclick="duyuruKapat()" aria-label="Kapat">✕</button>
+    <div class="modal-icerik">
+<div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--gold); font-weight:800; margin-bottom:10px;">📣 Kayıt Duyurusu</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:var(--sage-dark); margin-bottom:6px; line-height:1.25;">2026–2027 Eğitim Öğretim Yılı<br>Kayıt Duyurusu</div>
+      <div style="font-family:'Crimson Pro',serif; font-size:16px; font-style:italic; color:var(--sage); margin-bottom:22px;">Bir Çiçek'te büyüyen her çocuk, geleceğe sevgiyle hazırlanır…</div>
+
+      <div style="font-size:14px; line-height:1.8; color:var(--text-mid);">
+        <p style="margin-bottom:14px;"><strong style="color:var(--text);">Sevgili Ebeveynlerimiz,</strong></p>
+        <p style="margin-bottom:14px;">Bir çocuğun hayatında okul; yalnızca zaman geçirdiği bir yer değil, karakterinin şekillendiği, güven duygusunun beslendiği, merakının büyüdüğü ve hayata bakışının temellerinin atıldığı <strong style="color:var(--sage-dark);">çok kıymetli bir yaşam alanıdır.</strong></p>
+        <p style="margin-bottom:14px;">Bizler, çocuklarımızın yalnızca bugünkü ihtiyaçlarını değil; yarının güçlü, vicdanlı, özgüvenli ve mutlu bireyleri olmaları için ihtiyaç duyacakları tüm gelişim alanlarını önemseyen bir anlayışla yol alıyoruz.</p>
+        <p style="margin-bottom:14px;">Her eğitim yılında olduğu gibi, bu yıl da en büyük gayemiz; çocuklarımızın kendilerini değerli hissettikleri, sevgiyle büyüdükleri, doğayla bağ kurdukları, özgürce keşfettikleri ve iyi insan olmayı içselleştirdikleri bir eğitim ortamını sürdürebilmektir.</p>
+        <p style="margin-bottom:14px;">Bugün geldiğimiz noktada şunu gönül rahatlığıyla söyleyebilirim ki; <strong style="color:var(--sage-dark);">Bir Çiçek ailesi olarak yalnızca bir okul değil, çocukların en kıymetli gelişim yıllarına birlikte şahitlik eden güçlü bir eğitim kurumu olduk.</strong></p>
+        <p style="margin-bottom:0;">İşte tam da bu nedenle, çocuklarımızın bu güvenli ve nitelikli eğitim yolculuğuna aynı istikrarla devam edebilmesi adına, <strong>2026–2027 eğitim öğretim yılı avantajlı kayıt sürecimizi başlatmış bulunuyoruz.</strong></p>
+      </div>
+
+      <!-- Avantaj kutusu -->
+      <div style="background:linear-gradient(135deg, var(--gold-pale), #FEF9E8); border:1.5px solid rgba(184,150,46,0.35); border-radius:16px; padding:24px; margin-top:24px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span style="font-size:24px;">🎯</span>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--earth);">Avantajlı Ön Kayıt — 15 Mayıs 2026'ya kadar!</div>
+        </div>
+        <div style="font-size:14px; line-height:1.75; color:var(--text-mid);">
+          <p style="margin-bottom:12px;">Eğitim kalitesinden ödün vermeden, ailelerimizin ekonomik planlamasını da hassasiyetle gözeten bir yaklaşım benimsemeye devam ediyoruz.</p>
+          <p style="margin-bottom:14px;">📋 Bildiğiniz üzere Milli Eğitim Bakanlığı'nın 2026–2027 eğitim ve öğretim dönemi için belirlediği artış oranı <strong>%43,92</strong>'dir. Ancak biz bu süreçte ailelerimize destek olabilmek adına, bu oranı <strong style="color:var(--gold); background:#FFF8D9; padding:2px 8px; border-radius:6px;">%28 artış</strong> ile sınırlandırma kararı aldık.</p>
+          <p style="margin-bottom:10px;"><strong style="color:var(--sage-dark);">Ödeme planlamamızı da ailelerimizin yaşam gerçekliğini dikkate alarak yapılandırdık:</strong></p>
+          <div style="background:rgba(255,255,255,0.6); border-radius:10px; padding:14px 16px; margin-bottom:14px;">
+            <div style="display:flex; gap:10px; margin-bottom:8px;"><span style="color:var(--sage);">•</span><span>I. dönem ödemeleri <strong>daha düşük seviyede</strong> planlanmıştır</span></div>
+            <div style="display:flex; gap:10px; margin-bottom:8px;"><span style="color:var(--sage);">•</span><span>II. dönem ödemeleri ise <strong>Ocak ayındaki maaş artış dönemleriyle</strong> daha uyumlu olacak şekilde düzenlenmiştir</span></div>
+            <div style="background:rgba(61,107,79,0.08); border-radius:8px; padding:10px 12px; margin-top:8px; font-size:13px; color:var(--sage-dark);"><strong>ℹ️ Önemli:</strong> Bu yapı, ödenecek <strong>toplam yıllık ücreti değiştirmez</strong> — sadece ailelerimizin nakit akışı planlamasına uygun olacak şekilde aylık taksitler düzenlenmiştir.</div>
+          </div>
+          <p style="margin-bottom:0; font-style:italic; color:var(--sage-dark);">Çünkü biz inanıyoruz ki; sağlıklı bir eğitim süreci, yalnızca çocukların değil, ailelerin de kendini güvende hissettiği bir yapı ile mümkün olur.</p>
+        </div>
+      <button onclick="duyuruKapat()" class="modal-devam-btn">Anladım, Devam Et →</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
