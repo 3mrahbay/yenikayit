@@ -1488,10 +1488,6 @@ img, video, iframe {
           <div class="ot-radio" id="or-kredi"><div class="ot-dot"></div></div>
           <div><div class="ot-title" style="color:white;">💳 Kredi Kartı ile Ödeme</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Sanal Pos — ücretsiz 3-5-8 taksit imkânı. (Bankanızla teyit alınız. Banka toplam ücret üzerinden komisyon uygulayabilir. Örn. %3.x)</div></div>
         </div>
-        <div class="ot-card" id="ot-vinov" onclick="setOdemeTip2('vinov')">
-          <div class="ot-radio" id="or-vinov"><div class="ot-dot"></div></div>
-          <div><div class="ot-title" style="color:white;">⭐ Vakıfbank VİNOV</div><div class="ot-desc" style="color:rgba(255,255,255,0.65);">Toplam ödemenizden <strong style="color:#F0D490;">5.000 TL daha az</strong> ödersiniz. Vakıfbank uygulamasından ücretsiz hesap açılır, sözleşmede limit tanımlanır, ödemeler otomatik aktarılır.</div></div>
-        </div>
       </div>
     </div>
 
@@ -1762,6 +1758,8 @@ function onLogin(u) {
   checkBasvuruDurumu(u.uid);
   // Telefon numarası durumunu kontrol et
   telefonDurumKontrol(u.uid);
+  // Giriş sonrası, başvurusu olmayan veli doğrudan başvuru formuna yönlendirilsin
+  window._girisSonrasiFormaGit = true;
   // Giriş sonrası önce en üste scroll, sonra portal kart'a kaydır
   setTimeout(function(){
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1771,7 +1769,7 @@ function onLogin(u) {
     var goruldu = false;
     try { goruldu = localStorage.getItem("duyuruGoruldu") === "1"; } catch(e) {}
     if(!goruldu) duyuruAc();
-  }, 700);
+  }, 1400);
   // Referans avantaj metinlerini aç (login olan görür)
   document.querySelectorAll(".ref-gizli").forEach(function(el){ el.style.display="none"; });
   document.querySelectorAll(".ref-acik").forEach(function(el){ el.style.display="inline"; });
@@ -1786,6 +1784,8 @@ function checkBasvuruDurumu(uid) {
 
     if(snap.exists) {
       // ══ BAŞVURU VAR — Adım 3 tamamlandı ══
+      // Başvurusu olan veli portalda kalır, forma yönlendirilmez
+      window._girisSonrasiFormaGit = false;
       adimGuncelle(3);
       var d = snap.data();
       var durumYazi = d.durum === "onaylandi" ? "Onaylandı" : d.durum === "reddedildi" ? "Reddedildi" : "İnceleniyor";
@@ -1845,6 +1845,17 @@ function checkBasvuruDurumu(uid) {
         '<div style="font-family:\'Cormorant Garamond\',serif; font-size:21px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>' +
         '<div style="font-size:13.5px; color:var(--text-light);">Başlamak için tıklayın</div>' +
       '</div>';
+
+    // ── Giriş sonrası otomatik form yönlendirmesi ──
+    // Henüz başvurusu olmayan veli, formu aramasın diye doğrudan form ekranına geçer.
+    if(window._girisSonrasiFormaGit) {
+      window._girisSonrasiFormaGit = false;
+      var portalEkran = document.getElementById("screen-portal");
+      setTimeout(function(){
+        // Veli bu arada başka bir ekrana geçtiyse yönlendirme yapılmaz
+        if(portalEkran && portalEkran.classList.contains("active")) basvuruyaBasla();
+      }, 450);
+    }
   });
 }
 
@@ -1974,7 +1985,7 @@ function showTab2(tab) {
 // ═══ 10. ÖDEME TİPİ ═══
 function setOdemeTip2(tip) {
   secilenOdemeTip2 = tip;
-  ["havale","kredi","vinov"].forEach(function(t){
+  ["havale","kredi"].forEach(function(t){
     var card=document.getElementById("ot-"+t);
     var radio=document.getElementById("or-"+t);
     if(!card||!radio) return;
