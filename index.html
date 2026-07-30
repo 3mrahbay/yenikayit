@@ -758,6 +758,63 @@ img, video, iframe {
   .prog-card, .pi-cta { transition:none; }
   .prog-card:hover, .pi-cta:hover { transform:none; }
 }
+
+/* ═══ PORTAL REFERANS BÖLÜMÜ ═══ */
+.ref-kutu {
+  background:var(--gold-pale); border:1px solid rgba(184,150,46,0.28);
+  border-radius:20px; padding:30px 28px;
+}
+.ref-ust { display:flex; gap:16px; align-items:flex-start; margin-bottom:22px; }
+.ref-ico { font-size:28px; line-height:1; }
+.ref-baslik {
+  font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700;
+  color:var(--earth); line-height:1.22; margin-bottom:10px;
+}
+.ref-metin { font-size:14px; line-height:1.75; color:var(--text-mid); }
+.ref-liste { display:flex; flex-direction:column; gap:10px; }
+.ref-satir {
+  display:flex; align-items:center; gap:14px; background:var(--white);
+  border:1px solid rgba(184,150,46,0.2); border-radius:14px;
+  padding:15px 18px; font-size:13.5px; color:var(--text-mid); line-height:1.55;
+}
+.ref-no {
+  width:30px; height:30px; flex-shrink:0; border-radius:50%;
+  background:var(--gold); color:white; font-size:14px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+}
+.ref-not {
+  margin-top:16px; font-size:12px; font-style:italic;
+  color:var(--text-light); line-height:1.65;
+}
+@media (max-width:640px) {
+  .ref-kutu { padding:24px 20px; border-radius:16px; }
+  .ref-baslik { font-size:22px; }
+  .ref-ust { gap:12px; }
+}
+
+/* ═══ GİRİŞ ÖNCESİ SEKİZ PROGRAM ÖZETİ ═══ */
+.sekiz-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.sekiz-cip {
+  background:var(--white); border:1px solid rgba(61,107,79,0.15);
+  border-radius:14px; padding:20px 12px; text-align:center;
+  transition:transform .2s, box-shadow .2s;
+}
+.sekiz-cip:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(61,107,79,0.10); }
+.sekiz-ico { font-size:26px; line-height:1; margin-bottom:9px; }
+.sekiz-ad { font-size:13.5px; font-weight:700; color:var(--sage-dark); line-height:1.35; }
+.sekiz-not {
+  margin-top:22px; font-size:13.5px; line-height:1.75; color:var(--text-mid);
+  max-width:640px;
+}
+@media (max-width:640px) {
+  .sekiz-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+  .sekiz-cip { padding:16px 10px; }
+  .sekiz-ad { font-size:12.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sekiz-cip { transition:none; }
+  .sekiz-cip:hover { transform:none; }
+}
 </style>
 </head>
 <body>
@@ -911,6 +968,36 @@ img, video, iframe {
           <div class="price-include-item"><div class="price-include-dot"></div>Çocuk Pilatesi Eğitimleri</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- SEKİZ PROGRAM ÖZETİ -->
+  <div class="section" style="background:var(--sage-pale); border-top:1px solid rgba(61,107,79,0.12); border-bottom:1px solid rgba(61,107,79,0.12);">
+    <div class="section-inner">
+      <div class="section-tag">Programlarımız</div>
+      <h2 class="section-title">Bir çocuk burada<br><em style="font-style:italic; color:var(--gold);">sekiz ayrı yoldan</em> büyür</h2>
+      <p style="font-size:16px; line-height:1.75; color:var(--text-mid); max-width:640px; margin-bottom:32px;">
+        Çocuğun bir günü tek bir yöntemle değil, birbirini tamamlayan sekiz programla kurulur.
+        Sekizi de aylık eğitim ücretine dahildir; ek ödeme alınmaz.
+      </p>
+      <div class="sekiz-grid">
+        <div class="sekiz-cip"><div class="sekiz-ico">🧩</div><div class="sekiz-ad">Montessori</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🌲</div><div class="sekiz-ad">Orman Okulu</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🤍</div><div class="sekiz-ad">Değerler Eğitimi</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🗣️</div><div class="sekiz-ad">İngilizce</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🪵</div><div class="sekiz-ad">Ahşap Atölye</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🤖</div><div class="sekiz-ad">Kodlama ve Robotik</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🎭</div><div class="sekiz-ad">Drama</div></div>
+        <div class="sekiz-cip"><div class="sekiz-ico">🤸</div><div class="sekiz-ad">Jimnastik</div></div>
+      </div>
+      <div class="sekiz-not">
+        Ayrıca birebir <strong>Piyano Eğitimi</strong> sunuyoruz — her çocuk için ayrı program hazırlanır,
+        aylık ücrete dahil değildir. Programların ayrıntılı anlatımını, giriş yaptıktan sonra
+        başvuru ekranınızda bulacaksınız.
+      </div>
+      <button class="btn-gold" onclick="signInWithGoogle()" style="margin-top:26px;">
+        🌸 Programları görmek için giriş yapın
+      </button>
     </div>
   </div>
 
@@ -1340,11 +1427,11 @@ img, video, iframe {
     </div>
   </div>
 
-  <div class="pi-ayrac">Başvuru Alanınız</div>
+  <div class="pi-ayrac">Başvuru Formu</div>
   <div class="form-wrap" id="portalHosgeldiniz" style="padding-top:28px; scroll-margin-top:90px;">
-    <div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); border-radius:20px; padding:32px; color:white; margin-bottom:20px;">
-      <div style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; margin-bottom:6px;">Hoş geldiniz! 🌸</div>
-      <div style="color:rgba(255,255,255,0.75); font-size:14px;" id="portalEmail">–</div>
+    <div style="margin-bottom:24px;">
+      <h2 style="font-family:'Cormorant Garamond',serif; font-size:31px; font-weight:700; color:var(--sage-dark); line-height:1.2; margin-bottom:10px;">Ön kayıt başvurunuzu<br>burada tamamlayın</h2>
+      <div style="font-size:13.5px; color:var(--text-light);">Giriş yapan hesap: <strong id="portalEmail" style="color:var(--text-mid); font-weight:600;">–</strong></div>
     </div>
 
     <!-- ADIM GÖSTERGESİ -->
@@ -1404,6 +1491,35 @@ img, video, iframe {
 
     <div id="portalKartlar" style="display:flex; flex-direction:column; gap:14px;">
       <!-- JS ile doldurulacak -->
+    </div>
+  </div>
+
+  <!-- ═══════════ REFERANS ═══════════ -->
+  <div class="pi-ayrac">Referans Avantajı</div>
+  <div class="pi-wrap" style="padding-top:26px; padding-bottom:8px;">
+    <div class="ref-kutu">
+      <div class="ref-ust">
+        <div class="ref-ico">🎁</div>
+        <div>
+          <h3 class="ref-baslik">Tanıdıklarınıza referans olun,<br>birlikte kazanın</h3>
+          <p class="ref-metin">
+            Başvurunuz tamamlandığında size özel <strong>BCK-XXXX</strong> formatında bir referans kodu
+            oluşturulur. Bu kodla kayıt olan her aile için avantajınız artar; kodunuzla başvuran ailenin
+            Orman Okulu kıyafeti de ücretsiz sağlanır.
+          </p>
+        </div>
+      </div>
+
+      <div class="ref-liste">
+        <div class="ref-satir"><div class="ref-no">1</div><div><strong>1. kayıt</strong> — I. Dönem Orman Okulu servis ücreti alınmaz</div></div>
+        <div class="ref-satir"><div class="ref-no">2</div><div><strong>2. kayıt</strong> — II. Dönem Orman Okulu servis ücreti alınmaz</div></div>
+        <div class="ref-satir"><div class="ref-no">3</div><div><strong>3. kayıt</strong> — Okul kıyafeti ücreti alınmaz</div></div>
+      </div>
+
+      <div class="ref-not">
+        Ekim ayına kadar referanslı gelen kayıtlarda avantaj uygulanır. Mevcut velilerimizin ücret
+        avantajından yararlanabilmesi için, referans oldukları ailenin okulumuza ilk defa kayıt olması gerekir.
+      </div>
     </div>
   </div>
 
