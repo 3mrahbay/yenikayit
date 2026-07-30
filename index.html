@@ -639,6 +639,125 @@ img, video, iframe {
   .adim-daire { width:32px; height:32px; font-size:14px; }
 }
 
+
+/* ═══ GİRİŞ SONRASI TANITIM EKRANI ═══ */
+.pi-wrap { max-width:780px; margin:0 auto; padding:44px 28px 0; }
+.pi-eyebrow {
+  font-size:11.5px; text-transform:uppercase; letter-spacing:2px;
+  color:var(--gold); font-weight:800; margin-bottom:14px;
+}
+.pi-title {
+  font-family:'Cormorant Garamond',serif; font-size:40px; line-height:1.12;
+  font-weight:700; color:var(--sage-dark); margin-bottom:18px;
+}
+.pi-title em { font-style:italic; color:var(--gold); }
+.pi-lead {
+  font-family:'Crimson Pro',serif; font-size:17.5px; line-height:1.75;
+  color:var(--text-mid); margin-bottom:8px;
+}
+/* Okul künyesi */
+.pi-kunye {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--border); border:1px solid var(--border);
+  border-radius:16px; overflow:hidden; margin:30px 0 40px;
+}
+.pi-kunye-item { background:var(--white); padding:16px 14px; text-align:center; }
+.pi-kunye-num {
+  font-family:'Cormorant Garamond',serif; font-size:23px; font-weight:700;
+  color:var(--sage); line-height:1.1; margin-bottom:3px;
+}
+.pi-kunye-lbl { font-size:11.5px; color:var(--text-light); line-height:1.4; }
+/* Program kartları */
+.pi-bolum-baslik {
+  display:flex; align-items:baseline; gap:12px; margin-bottom:6px;
+}
+.pi-bolum-baslik h3 {
+  font-family:'Cormorant Garamond',serif; font-size:27px; font-weight:700;
+  color:var(--sage-dark);
+}
+.pi-bolum-not { font-size:13px; color:var(--text-light); margin-bottom:20px; }
+.prog-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.prog-card {
+  background:var(--white); border:1px solid var(--border); border-radius:16px;
+  padding:22px 20px; transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+.prog-card:hover {
+  border-color:var(--sage-light); transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(61,107,79,0.09);
+}
+.prog-ust { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.prog-ico { font-size:22px; line-height:1; }
+.prog-name { font-size:16px; font-weight:700; color:var(--text); }
+.prog-tag {
+  display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:1px;
+  font-weight:800; padding:4px 9px; border-radius:50px; margin-bottom:10px;
+}
+.prog-tag.cekirdek { background:var(--sage-pale); color:var(--sage); }
+.prog-tag.haftalik { background:#EAF2E5; color:#4A6B32; }
+.prog-tag.yeni { background:var(--gold-pale); color:var(--gold); }
+.prog-desc { font-size:13.5px; line-height:1.7; color:var(--text-mid); }
+/* Piyano notu */
+.pi-piyano {
+  display:flex; gap:14px; align-items:flex-start;
+  background:var(--cream-warm); border:1px dashed var(--border);
+  border-radius:14px; padding:18px 20px; margin-top:14px;
+}
+/* Başvuru çağrısı */
+.pi-cta {
+  position:relative; overflow:hidden; cursor:pointer;
+  background:linear-gradient(135deg, var(--sage-dark) 0%, var(--sage) 62%, var(--sage-mid) 100%);
+  border-radius:22px; padding:40px 36px; margin:44px 0 8px;
+  text-align:center; color:white; transition:transform .2s, box-shadow .2s;
+}
+.pi-cta:hover { transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.pi-cta:focus-visible { outline:3px solid var(--gold-light); outline-offset:3px; }
+.pi-cta-cicek {
+  position:absolute; right:-28px; bottom:-46px; font-size:150px;
+  opacity:0.09; line-height:1; pointer-events:none; user-select:none;
+}
+.pi-cta-eyebrow {
+  font-size:11px; text-transform:uppercase; letter-spacing:2.5px;
+  color:var(--gold-light); font-weight:800; margin-bottom:12px;
+}
+.pi-cta-title {
+  font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:700;
+  line-height:1.15; margin-bottom:10px;
+}
+.pi-cta-text {
+  font-size:14.5px; line-height:1.7; color:rgba(255,255,255,0.82);
+  max-width:440px; margin:0 auto 24px;
+}
+.pi-cta-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--gold); color:white; border:none; border-radius:50px;
+  padding:15px 34px; font-size:15px; font-weight:700; cursor:pointer;
+  font-family:'Outfit',sans-serif; box-shadow:0 8px 26px rgba(184,150,46,0.35);
+}
+.pi-ayrac {
+  display:flex; align-items:center; gap:16px;
+  max-width:780px; margin:44px auto 0; padding:0 28px;
+  font-size:11.5px; text-transform:uppercase; letter-spacing:2px;
+  color:var(--text-light); font-weight:700;
+}
+.pi-ayrac::before, .pi-ayrac::after {
+  content:""; flex:1; height:1px; background:var(--border);
+}
+@media (max-width:640px) {
+  .pi-wrap { padding:32px 20px 0; }
+  .pi-title { font-size:30px; }
+  .pi-lead { font-size:16px; }
+  .prog-grid { grid-template-columns:1fr; }
+  .pi-kunye { grid-template-columns:repeat(2,1fr); }
+  .pi-cta { padding:32px 22px; border-radius:18px; }
+  .pi-cta-title { font-size:26px; }
+  .pi-cta-cicek { font-size:110px; right:-20px; bottom:-34px; }
+  .pi-bolum-baslik h3 { font-size:23px; }
+  .pi-ayrac { padding:0 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prog-card, .pi-cta { transition:none; }
+  .prog-card:hover, .pi-cta:hover { transform:none; }
+}
 </style>
 </head>
 <body>
@@ -722,7 +841,7 @@ img, video, iframe {
         <button class="btn-primary" onclick="signInWithGoogle()">
           🌸 Ön Kayıt Başvurusu Yap
         </button>
-        <button class="btn-outline" onclick="scrollTo('section-montessori')">
+        <button class="btn-outline" onclick="bolumeKaydir('section-montessori')">
           Daha Fazla Bilgi ↓
         </button>
       </div>
@@ -1127,7 +1246,102 @@ img, video, iframe {
       <span style="color:var(--text-light); font-size:12px;">· Çıkış</span>
     </div>
   </nav>
-  <div class="form-wrap" style="padding-top:48px;">
+
+  <!-- ═══════════ GİRİŞ SONRASI TANITIM ═══════════ -->
+  <div class="pi-wrap">
+    <div class="pi-eyebrow">2026–2027 Eğitim Öğretim Yılı</div>
+    <h1 class="pi-title">Bir çocuk burada<br><em>sekiz ayrı yoldan</em> büyür</h1>
+    <p class="pi-lead">
+      2018'den bu yana Tuzla Aydınlı'dayız. Çocuğun bir günü tek bir yöntemle değil,
+      birbirini tamamlayan sekiz programla kurulur — hepsi aylık eğitim ücretine dahildir.
+    </p>
+
+    <!-- Okul künyesi -->
+    <div class="pi-kunye">
+      <div class="pi-kunye-item"><div class="pi-kunye-num">3 × 150 m²</div><div class="pi-kunye-lbl">Sınıf<br>(1 Toddler, 2 Anaokulu)</div></div>
+      <div class="pi-kunye-item"><div class="pi-kunye-num">1.100 m²</div><div class="pi-kunye-lbl">Kapalı<br>alan</div></div>
+      <div class="pi-kunye-item"><div class="pi-kunye-num">300 m²</div><div class="pi-kunye-lbl">Okul<br>bahçesi</div></div>
+      <div class="pi-kunye-item"><div class="pi-kunye-num">15 dekar</div><div class="pi-kunye-lbl">Orman<br>alanı</div></div>
+      <div class="pi-kunye-item"><div class="pi-kunye-num">6 m²</div><div class="pi-kunye-lbl">Çocuk başına alan<br>(MEB standardının 4 katı)</div></div>
+      <div class="pi-kunye-item"><div class="pi-kunye-num">En fazla 25</div><div class="pi-kunye-lbl">Bir sınıftaki<br>çocuk sayısı</div></div>
+    </div>
+
+    <!-- Programlar -->
+    <div class="pi-bolum-baslik"><h3>Programlarımız</h3></div>
+    <div class="pi-bolum-not">Sekizi de aylık eğitim ücretine dahildir; ek ödeme alınmaz.</div>
+    <div class="prog-grid">
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🧩</span><span class="prog-name">Montessori</span></div>
+          <span class="prog-tag cekirdek">Çekirdek program</span>
+          <div class="prog-desc">MACTE akrediteli müfredat. Günlük yaşam, duyu, matematik, dil ve kozmik eğitim alanlarında hazırlanmış ortamda çocuk materyalini kendi seçer, kendi hızında ilerler. Öğretmen anlatan değil, gözleyen ve yol açan kişidir.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🌲</span><span class="prog-name">Orman Okulu</span></div>
+          <span class="prog-tag haftalik">Haftada bir tam gün</span>
+          <div class="prog-desc">3. Seviye Orman Okulu Liderliği eğitimli ekiple, okulumuza 15 dakika mesafedeki 15 dekar orman alanında. Her hava koşulunda en az iki saat; çamur, ateş, ağaç ve desteklenen risk alma.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🤍</span><span class="prog-name">Değerler Eğitimi</span></div>
+          <span class="prog-tag cekirdek">Çekirdek program</span>
+          <div class="prog-desc">Sabır, paylaşma, saygı ve sorumluluk haftalık temalarla; hikâye, sohbet ve günlük uygulama üzerinden işlenir. Program, erken çocuklukta etik ve değerler eğitimi alanında yüksek lisans yapmış kurucu müdürümüz tarafından hazırlanır.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🗣️</span><span class="prog-name">İngilizce</span></div>
+          <span class="prog-tag cekirdek">Günlük rutine yerleşik</span>
+          <div class="prog-desc">Ayrı bir ders saati değil: karşılama, yemek, oyun ve şarkı rutinlerinin içinde. Çocuk dili kural olarak değil, gün içinde yaşayarak edinir.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🪵</span><span class="prog-name">Ahşap Atölye</span></div>
+          <span class="prog-tag cekirdek">Gerçek alet, gerçek iş</span>
+          <div class="prog-desc">Çocuklar gerçek testere, törpü ve zımparayla kendi işlerini üretir. Ölçmek, hata yapmak, sabretmek ve bitirmek bu atölyede öğrenilir.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🤖</span><span class="prog-name">Kodlama ve Robotik</span></div>
+          <span class="prog-tag yeni">Yeni · 2026–2027</span>
+          <div class="prog-desc">Ekransız başlangıç: yön kartları, algoritma oyunları ve yaş grubuna uygun basit robotlarla sıralama, sebep-sonuç ilişkisi ve problem çözme.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🎭</span><span class="prog-name">Drama</span></div>
+          <span class="prog-tag yeni">Yeni · 2026–2027</span>
+          <div class="prog-desc">Beden, ses ve doğaçlama. Kendini ifade etmek, sırasını beklemek ve bir başkasının yerine geçip bakabilmek.</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-ust"><span class="prog-ico">🤸</span><span class="prog-name">Jimnastik</span></div>
+          <span class="prog-tag yeni">Yeni · 2026–2027</span>
+          <div class="prog-desc">Temel hareket becerileri, denge ve koordinasyon; yaş grubuna uygun minder ve parkur çalışmalarıyla.</div>
+        </div>
+    </div>
+
+    <!-- Piyano -->
+    <div class="pi-piyano">
+      <div style="font-size:22px; line-height:1;">🎹</div>
+      <div>
+        <div style="font-size:15px; font-weight:700; color:var(--earth); margin-bottom:4px;">Piyano Eğitimi — ek program</div>
+        <div style="font-size:13.5px; line-height:1.7; color:var(--text-mid);">
+          Birebir yapılır ve her çocuk için ayrı program hazırlanır. Aylık eğitim ücretine
+          dahil değildir, ayrıca ücretlendirilir. Talep eden ailelerle ders günü ve saati
+          birlikte planlanır.
+        </div>
+      </div>
+    </div>
+
+    <!-- BAŞVURU ÇAĞRISI -->
+    <div class="pi-cta" role="button" tabindex="0"
+         onclick="bolumeKaydir('portalHosgeldiniz')"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();bolumeKaydir('portalHosgeldiniz');}">
+      <div class="pi-cta-cicek">🌸</div>
+      <div class="pi-cta-eyebrow">Kontenjan sınırlıdır</div>
+      <div class="pi-cta-title">Kayıt Başvurusu Yapın</div>
+      <div class="pi-cta-text">
+        Ön kayıt başvurunuz birkaç dakika sürer. Bilgileri girin, ödeme planınızı
+        ekranda görün, başvurunuzu gönderin.
+      </div>
+      <span class="pi-cta-btn">Başvuru adımlarına git <span aria-hidden="true">↓</span></span>
+    </div>
+  </div>
+
+  <div class="pi-ayrac">Başvuru Alanınız</div>
+  <div class="form-wrap" id="portalHosgeldiniz" style="padding-top:28px; scroll-margin-top:90px;">
     <div style="background:linear-gradient(135deg, var(--sage-dark), var(--sage)); border-radius:20px; padding:32px; color:white; margin-bottom:20px;">
       <div style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; margin-bottom:6px;">Hoş geldiniz! 🌸</div>
       <div style="color:rgba(255,255,255,0.75); font-size:14px;" id="portalEmail">–</div>
@@ -1190,6 +1404,24 @@ img, video, iframe {
 
     <div id="portalKartlar" style="display:flex; flex-direction:column; gap:14px;">
       <!-- JS ile doldurulacak -->
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background:var(--sage-dark); padding:40px 40px 32px; text-align:center; margin-top:56px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:13px; font-style:italic; color:rgba(255,255,255,0.55); margin-bottom:20px; letter-spacing:0.3px;">
+      "Her Çocuk Bir Çiçek — Nasıl Açacağını Seçmek Ona Ait."
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white; margin-bottom:6px;">Bir Çiçek Koleji Anaokulu</div>
+    <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px;">Montessori &amp; Orman Okulu · İstanbul Tuzla · <a href="https://bircicekkoleji.com" target="_blank" style="color:rgba(255,255,255,0.7); text-decoration:none;">bircicekkoleji.com</a></div>
+    <div style="font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:16px;">Aydınlı Mahallesi Bahçeler Sk. No: 45 Tuzla - İstanbul</div>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="tel:+905551035457" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px;">📞 0555 103 54 57</a>
+      <a href="tel:+902163935457" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px;">📞 0216 393 54 57</a>
+      <a href="mailto:eposta@bircicekkoleji.com" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px;">✉️ eposta@bircicekkoleji.com</a>
+    </div>
+    <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:rgba(255,255,255,0.3);">
+      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır
     </div>
   </div>
 </div>
@@ -1711,7 +1943,7 @@ function goToScreen(id) {
   var el = document.getElementById(id);
   if(el) { el.classList.add("active"); window.scrollTo(0,0); }
 }
-function scrollTo(id) { document.getElementById(id) && document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
+function bolumeKaydir(id) { var el = document.getElementById(id); if(el) el.scrollIntoView({ behavior:"smooth", block:"start" }); }
 
 // ═══ 7. AUTH ═══
 function signInWithGoogle() {
@@ -1758,8 +1990,6 @@ function onLogin(u) {
   checkBasvuruDurumu(u.uid);
   // Telefon numarası durumunu kontrol et
   telefonDurumKontrol(u.uid);
-  // Giriş sonrası, başvurusu olmayan veli doğrudan başvuru formuna yönlendirilsin
-  window._girisSonrasiFormaGit = true;
   // Giriş sonrası önce en üste scroll, sonra portal kart'a kaydır
   setTimeout(function(){
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1767,7 +1997,8 @@ function onLogin(u) {
   // İlk kez giriyorsa kayıt duyurusunu otomatik göster
   setTimeout(function(){
     var goruldu = false;
-    try { goruldu = localStorage.getItem("duyuruGoruldu") === "1"; } catch(e) {}
+    // Oturum bazlı: veli her yeni girişinde duyuruyu bir kez görür
+    try { goruldu = sessionStorage.getItem("duyuruGoruldu") === "1"; } catch(e) {}
     if(!goruldu) duyuruAc();
   }, 1400);
   // Referans avantaj metinlerini aç (login olan görür)
@@ -1784,8 +2015,6 @@ function checkBasvuruDurumu(uid) {
 
     if(snap.exists) {
       // ══ BAŞVURU VAR — Adım 3 tamamlandı ══
-      // Başvurusu olan veli portalda kalır, forma yönlendirilmez
-      window._girisSonrasiFormaGit = false;
       adimGuncelle(3);
       var d = snap.data();
       var durumYazi = d.durum === "onaylandi" ? "Onaylandı" : d.durum === "reddedildi" ? "Reddedildi" : "İnceleniyor";
@@ -1845,17 +2074,6 @@ function checkBasvuruDurumu(uid) {
         '<div style="font-family:\'Cormorant Garamond\',serif; font-size:21px; font-weight:700; color:var(--sage-dark); margin-bottom:4px;">Ön Kayıt Başvurusu</div>' +
         '<div style="font-size:13.5px; color:var(--text-light);">Başlamak için tıklayın</div>' +
       '</div>';
-
-    // ── Giriş sonrası otomatik form yönlendirmesi ──
-    // Henüz başvurusu olmayan veli, formu aramasın diye doğrudan form ekranına geçer.
-    if(window._girisSonrasiFormaGit) {
-      window._girisSonrasiFormaGit = false;
-      var portalEkran = document.getElementById("screen-portal");
-      setTimeout(function(){
-        // Veli bu arada başka bir ekrana geçtiyse yönlendirme yapılmaz
-        if(portalEkran && portalEkran.classList.contains("active")) basvuruyaBasla();
-      }, 450);
-    }
   });
 }
 
@@ -2556,7 +2774,7 @@ function duyuruAc() {
 function duyuruKapat() {
   var m = document.getElementById("duyuruModal");
   if(m) { m.classList.remove("acik"); document.body.style.overflow = ""; }
-  try { localStorage.setItem("duyuruGoruldu", "1"); } catch(e) {}
+  try { sessionStorage.setItem("duyuruGoruldu", "1"); } catch(e) {}
 }
 // ESC ile kapat
 document.addEventListener("keydown", function(e) {
