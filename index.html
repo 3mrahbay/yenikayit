@@ -1254,7 +1254,7 @@ img, video, iframe {
     <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white; margin-bottom:6px;">Bir Çiçek Koleji Anaokulu</div>
     <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px;">Montessori & Orman Okulu · İstanbul Tuzla · <a href="https://bircicekkoleji.com" target="_blank" style="color:rgba(255,255,255,0.7); text-decoration:none;">bircicekkoleji.com</a></div>
     <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:rgba(255,255,255,0.3);">
-      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-D</span>
+      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-E</span>
     </div>
   </div>
 </div>
@@ -1587,7 +1587,7 @@ img, video, iframe {
     <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white; margin-bottom:6px;">Bir Çiçek Koleji Anaokulu</div>
     <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px;">Montessori & Orman Okulu · İstanbul Tuzla · <a href="https://bircicekkoleji.com" target="_blank" style="color:rgba(255,255,255,0.7); text-decoration:none;">bircicekkoleji.com</a></div>
     <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:rgba(255,255,255,0.3);">
-      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-D</span>
+      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-E</span>
     </div>
   </div>
 </div>
@@ -2104,7 +2104,7 @@ setInterval(updatePeriodCountdowns, 1000);
 updatePeriodCountdowns();
 
 // Yüklenen dosya sürümü — Konsol'da görünür
-console.log("%cBÇKA yenikayit — Sürüm 30.07.2026-D", "background:#3D6B4F;color:#fff;padding:3px 8px;border-radius:4px;");
+console.log("%cBÇKA yenikayit — Sürüm 30.07.2026-E", "background:#3D6B4F;color:#fff;padding:3px 8px;border-radius:4px;");
 
 // ═══ 6. SCREEN NAV ═══
 function goToScreen(id) {
@@ -3038,12 +3038,11 @@ function pdfIndir() {
     doc.text("Duzenleme: " + new Date().toLocaleDateString("tr-TR"), mL, y);
     doc.text("Gecerlilik: " + son, mL+90, y); y += 8;
 
-    // Özet kutusu (kompakt) — yıllık toplam burada gösterilmez, sayfa sonunda küçük notta yer alır
-    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,15,"F");
-    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,15); y += 5;
+    // Özet kutusu — yalnızca ön ödeme; aylık ücret taksit tablolarında zaten görünür
+    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,10,"F");
+    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,10); y += 6.5;
     doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(42,77,56);
-    doc.text("Aylik Ucret:", mL+3, y); doc.text(fmt(h.aylik)+" TL", mR-3, y, {align:"right"}); y += 5;
-    doc.text("On Odeme:", mL+3, y); doc.text(fmt(h.onOdeme)+" TL", mR-3, y, {align:"right"}); y += 8;
+    doc.text("On Odeme (Kayit Gunu):", mL+3, y); doc.text(fmt(h.onOdeme)+" TL", mR-3, y, {align:"right"}); y += 7.5;
 
     // I. Dönem başlık + tablo (kompakt)
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(10);
@@ -3051,9 +3050,7 @@ function pdfIndir() {
     doc.setFillColor(42,77,56); doc.rect(mL,y,mR-mL,5.5,"F");
     doc.setTextColor(255,255,255); doc.setFontSize(8);
     doc.text("Kalem", mL+2, y+4); doc.text("Tarih", mL+85, y+4); doc.text("Tutar", mR-2, y+4, {align:"right"}); y += 5.5;
-    doc.setFillColor(251,246,233); doc.rect(mL,y,mR-mL,5.5,"F"); doc.rect(mL,y,mR-mL,5.5);
-    doc.setTextColor(60,60,60); doc.setFont("helvetica","bold"); doc.setFontSize(8);
-    doc.text("On Odeme", mL+2, y+4); doc.text("Kayit Gunu", mL+85, y+4); doc.text(fmt(h.onOdeme)+" TL", mR-2, y+4, {align:"right"}); y += 5.5;
+    doc.setTextColor(60,60,60); doc.setFontSize(8);
     ["Eylul 2026","Ekim 2026","Kasim 2026","Aralik 2026","Ocak 2027"].forEach(function(ay,i){
       doc.setFillColor(i%2===0?248:255, i%2===0?252:255, i%2===0?249:255);
       doc.rect(mL,y,mR-mL,5.5,"F"); doc.rect(mL,y,mR-mL,5.5);
