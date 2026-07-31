@@ -1254,7 +1254,7 @@ img, video, iframe {
     <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white; margin-bottom:6px;">Bir Çiçek Koleji Anaokulu</div>
     <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px;">Montessori & Orman Okulu · İstanbul Tuzla · <a href="https://bircicekkoleji.com" target="_blank" style="color:rgba(255,255,255,0.7); text-decoration:none;">bircicekkoleji.com</a></div>
     <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:rgba(255,255,255,0.3);">
-      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-C</span>
+      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-D</span>
     </div>
   </div>
 </div>
@@ -1587,7 +1587,7 @@ img, video, iframe {
     <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:white; margin-bottom:6px;">Bir Çiçek Koleji Anaokulu</div>
     <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px;">Montessori & Orman Okulu · İstanbul Tuzla · <a href="https://bircicekkoleji.com" target="_blank" style="color:rgba(255,255,255,0.7); text-decoration:none;">bircicekkoleji.com</a></div>
     <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:rgba(255,255,255,0.3);">
-      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-C</span>
+      © 2026 Bir Çiçek Koleji Anaokulu · Tüm hakları saklıdır · <span style="opacity:0.7;">Sürüm 30.07.2026-D</span>
     </div>
   </div>
 </div>
@@ -2104,7 +2104,7 @@ setInterval(updatePeriodCountdowns, 1000);
 updatePeriodCountdowns();
 
 // Yüklenen dosya sürümü — Konsol'da görünür
-console.log("%cBÇKA yenikayit — Sürüm 30.07.2026-C", "background:#3D6B4F;color:#fff;padding:3px 8px;border-radius:4px;");
+console.log("%cBÇKA yenikayit — Sürüm 30.07.2026-D", "background:#3D6B4F;color:#fff;padding:3px 8px;border-radius:4px;");
 
 // ═══ 6. SCREEN NAV ═══
 function goToScreen(id) {
@@ -3038,13 +3038,12 @@ function pdfIndir() {
     doc.text("Duzenleme: " + new Date().toLocaleDateString("tr-TR"), mL, y);
     doc.text("Gecerlilik: " + son, mL+90, y); y += 8;
 
-    // Özet kutusu (kompakt)
-    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,20,"F");
-    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,20); y += 5;
+    // Özet kutusu (kompakt) — yıllık toplam burada gösterilmez, sayfa sonunda küçük notta yer alır
+    doc.setFillColor(237,245,240); doc.rect(mL,y,mR-mL,15,"F");
+    doc.setDrawColor(142,187,158); doc.rect(mL,y,mR-mL,15); y += 5;
     doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(42,77,56);
     doc.text("Aylik Ucret:", mL+3, y); doc.text(fmt(h.aylik)+" TL", mR-3, y, {align:"right"}); y += 5;
-    doc.text("On Odeme:", mL+3, y); doc.text(fmt(h.onOdeme)+" TL", mR-3, y, {align:"right"}); y += 5;
-    doc.text("Yillik Toplam:", mL+3, y); doc.text(fmt(h.yillik)+" TL", mR-3, y, {align:"right"}); y += 8;
+    doc.text("On Odeme:", mL+3, y); doc.text(fmt(h.onOdeme)+" TL", mR-3, y, {align:"right"}); y += 8;
 
     // I. Dönem başlık + tablo (kompakt)
     doc.setTextColor(42,77,56); doc.setFont("helvetica","bold"); doc.setFontSize(10);
@@ -3098,6 +3097,11 @@ function pdfIndir() {
       doc.text(row[2], mR-2, y+4, {align:"right"});
       y += 5.5;
     }); y += 4;
+
+    // Yıllık toplam — sayfa sonunda, dikkat çekmeyen küçük satır
+    doc.setFont("helvetica","normal"); doc.setFontSize(7.5); doc.setTextColor(130,130,130);
+    doc.text("Yillik egitim toplami (on odeme + 10 taksit): " + fmt(h.yillik) + " TL", mR-2, y+2, {align:"right"});
+    y += 6;
 
     // Notlar
     doc.setFillColor(248,252,249); doc.rect(mL,y,mR-mL,20,"F");
