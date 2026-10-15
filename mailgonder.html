@@ -302,10 +302,19 @@ function veliMailHTML(d) {
   '</div>';
 }
 
+// Mail proxy'si okul dışı alıcılarda gönderenin Firebase oturumunu doğrular.
+async function mailOturumJetonu() {
+  try {
+    var a = (typeof auth !== "undefined" && auth) ? auth : (window.firebase && firebase.auth ? firebase.auth() : null);
+    return a && a.currentUser ? String((await a.currentUser.getIdToken()) || "") : "";
+  } catch (e) { return ""; }
+}
+
 async function brevoMail(opts) {
   try {
     const payload = {
       origin: window.location.hostname,
+      idToken: await mailOturumJetonu(),
       to: opts.to,
       toName: opts.toName || "",
       subject: opts.subject,
