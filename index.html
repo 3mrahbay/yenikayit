@@ -1970,6 +1970,14 @@ const SCHOOL_EMAIL = "eposta@bircicekkoleji.com";
 // ═══ BREVO MAIL PROXY (Apps Script → Brevo) ═══
 const BREVO_PROXY_URL = "https://script.google.com/macros/s/AKfycbwUNvVhTCvxUKOMtbFJ4_UASBo8-sgT13qT_9tWeYKZR3IYaYKUhGdSaGgGaaqMaZLf/exec";
 
+// Mail proxy'si okul dışı alıcılarda gönderenin Firebase oturumunu doğrular.
+async function mailOturumJetonu() {
+  try {
+    var a = (typeof auth !== "undefined" && auth) ? auth : (window.firebase && firebase.auth ? firebase.auth() : null);
+    return a && a.currentUser ? String((await a.currentUser.getIdToken()) || "") : "";
+  } catch (e) { return ""; }
+}
+
 async function brevoMail(opts) {
   if(!opts.to || !opts.subject || !opts.htmlContent) {
     console.warn("brevoMail: to, subject, htmlContent zorunlu");
@@ -1982,6 +1990,7 @@ async function brevoMail(opts) {
       headers: { "Content-Type": "text/plain" },
       body: JSON.stringify({
         action: "sendMail",
+        idToken: await mailOturumJetonu(),
         to: opts.to,
         toName: opts.toName || "",
         subject: opts.subject,
